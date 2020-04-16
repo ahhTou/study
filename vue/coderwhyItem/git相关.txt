@@ -1,0 +1,11 @@
+git remote add origin git@github.com:ahhTou/LearnVueMall.git
+
+git push -u origin master
+
+git status
+
+git add .
+
+git commit -m '初始化项目'
+
+git push

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+</head>
+<body>
+  <script>
+    // new Promise( resolve=> {
+    //   setTimeout(() => {
+    //     resolve('aaa')
+    //   },300)
+    // })
+    // .then(res => {
+    //   console.log(res, '第一层的代码');
+      
+    //   return new Promise( (resolve) => {
+    //     resolve(res + '111')
+    //   })
+    // })
+    // .then(res => {
+    //   console.log(res, '处理结果');
+      
+    // })
+
+
+    // new Promise( resolve=> {
+    //   setTimeout(() => {
+    //     resolve('aaa')
+    //   },300)
+    // })
+    // .then(res => {
+    //   console.log(res, '第一层的代码');
+      
+    //   return Promise.resolve(res + '111')
+    // })
+    // .then(res => {
+    //   console.log(res, '处理结果');
+      
+    // })
+
+    new Promise( resolve=> {
+      setTimeout(() => {
+        resolve('aaa')
+      },300)
+    })
+    .then(res => {
+      console.log(res, '第一层的代码');
+      
+      return res + '111'
+    })
+    .then(res => {
+      console.log(res, '处理结果');
+    })
+  </script>
+</body>
+</html>

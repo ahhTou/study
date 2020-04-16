@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+<style>
+    #text01{
+        height: 100px;
+    }
+    input{
+        margin: 10px;
+    }
+</style>
+<body>
+    <form action="/post" method="POST">
+        <p><a href="/">首页</a></p>
+        <br>
+        <input type="text" name="name" required minlength="2" maxlength="20">
+        <br>
+        <input id="text01" name="message" type="text" height="300px" required minlength="2">
+        <br>
+        <input type="submit">
+    </form>
+
+</body>
+</html>

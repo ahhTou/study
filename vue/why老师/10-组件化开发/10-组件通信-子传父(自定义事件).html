@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-on也可以监听自定义事件，简写是@ -->
+        <cpn @item_click="cpn_click"></cpn>
+    </div>
+    <template id="cpn">
+        <div>
+            <div v-for="(item, index) in catagories" :key="index" @click='btnClick(item)'>
+                <button>{{ item.name }}</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+
+        var cpn = {
+            template: '#cpn',
+            data() {
+                return {
+                    catagories: [
+                        { id: 'aaa', name: '热门推荐' },
+                        { id: 'bbb', name: '手机数码' },
+                        { id: 'ccc', name: '家用家电' },
+                        { id: 'ddd', name: '电脑办公' },
+                    ]
+                }
+            },
+            methods: {
+                btnClick(item) {
+                    console.log('子组件发射了：', item.name);
+                    //发射事件
+                    this.$emit('item_click', item)
+
+                }
+            }
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {},
+            methods: {
+                cpn_click(item) {
+                    console.log('父组件接受了：', item.name);
+
+                }
+            },
+            components: {
+                cpn
+            }
+        });
+    </script>
+</body>
+
+</html>

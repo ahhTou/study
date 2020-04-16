@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+</head>
+<body>
+
+  <script>
+    //多个参数
+    const sum1 = (num1, num2) =>{
+      return num1 + num2
+    }
+    
+    //一个参数可以简写
+    const sum2 = num =>{
+      return num * num
+    }
+
+    //函数中
+    const test1 = () => {
+      console.log('123');
+      console.log('123');
+    } 
+
+    //只有一放代码
+    const test2= (num1, num2) => {
+      return num1 + num2;
+    } 
+    
+    //可以简写    
+    const mul = (num1, num2) => num1 + num2;
+
+    const log = () => console.log('123');
+
+    console.log(mul(1,2));
+    console.log(log());
+    
+    
+
+  </script>
+</body>
+</html>

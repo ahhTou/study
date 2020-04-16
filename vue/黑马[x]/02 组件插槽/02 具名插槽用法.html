@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+<body>
+    <div id="app">
+        <base-layout>
+        <p slot="header">标题信息</p>
+        <p>主要内容1</p>
+        <p>主要内容1</p>
+        <p slot="footer">标题信息</p>
+    </base-layout>
+    </div>
+    <script>
+
+        Vue.component('base-layout',{
+            template:`
+                <div>
+                    <header>
+                        <slot name='header'></slot>
+                    </header>
+                    <main>
+                        <slot></slot>
+                    </ma>
+                    <footer>
+                        <slot name='footer'></slot>
+                    </footer>
+                </div>
+            `
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data:{
+
+            }
+        })
+    </script>
+</body>
+</html>

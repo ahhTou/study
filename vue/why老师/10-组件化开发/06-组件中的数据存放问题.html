@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+<body>
+    <div id="app">
+        <cpn1></cpn1>
+        <cpn2></cpn2>
+
+    </div>
+<!--  分离写法 1-->
+    <template id="cpn2">
+        <div>
+            <h2>我是标题211111</h2>
+            <p>我是内容21111</p>
+            <p>我也是内容21111</p>
+        </div>
+    </template>
+<!-- 分离写法 2  类型必须是 text/x-template -->
+    <script type="text/x-template" id="cpn">
+        <div>
+            <h2>{{ title }}</h2>
+            <p>我是内容2</p>
+            <p>我也是内容2</p>
+        </div>
+    </script>
+
+    <script>
+        Vue.component('cpn1', {
+            template:'#cpn',
+            data(){
+                return {
+                    title:'我是标题'
+                }
+            },
+        })
+        Vue.component('cpn2', {
+            template:'#cpn2'
+        })
+
+
+        var app = new Vue({
+           el:'#app',
+           data:{},
+           methods:{}
+        });
+    </script>
+</body>
+</html>

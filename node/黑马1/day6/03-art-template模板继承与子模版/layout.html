@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+    {{block 'head'}} {{ /block}}
+</head>
+<body>
+    {{ include './header.html' }}
+    
+    <!-- 留坑 -->
+
+    {{ block 'content'}}
+    <h1>404 not Find</h1>
+    {{ /block }}
+
+    {{ include './footer.html' }}
+
+    {{ block 'script' }}
+    {{ /block}}
+</body>
+</html>

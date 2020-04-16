@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <li v-for='i in f'>{{ i }}</li>
+        <li v-for='(i,index) in f'>{{ i+'....' + index }}</li>
+        <li :key='i.id' v-for='(i,index) in fs'>
+            <span>{{ i.cname + '~~~~~' }}</span>
+            <span>{{ i.ename }}</span>
+        </li>
+    </div>
+
+
+    <script>
+        var a = new Vue({
+            el: '#app',
+            data:{
+                score:10,
+                f:['apple','orang','banana'],
+                fs:[
+                {
+                    id:1,
+                    ename:"apple",
+                    cname:"苹果"
+                },
+                {
+                    id:2,
+                    ename:"apple2",
+                    cname:"苹果2"
+                },
+                {
+                    id:3,
+                    ename:"apple3",
+                    cname:"苹果3"
+                },
+            ]
+            }
+
+        })
+    </script>
+</body>
+
+</html>

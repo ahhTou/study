@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+<body>
+    <div id="app">
+        <cpn>wow</cpn>
+        <cpn>
+            <!-- 2.6后的新方法 -->
+            <template v-slot:left>
+                <button><</button>
+            </template>
+            <button slot="center">导航栏</button>
+            <button slot="right">></button>
+
+        </cpn>
+    </div>
+
+<template id="cpn">
+    <div>
+        <slot name="left"><strong>Err: 左</strong></slot>
+        <slot name='center'><strong>Err: 中</strong></slot>
+        <slot name='right'><strong>Err: 右</strong></slot>
+        <div><slot>Err: 底部插槽没有被插入</slot></div>
+    </div>
+</template>
+
+<script>
+    var app = new Vue({
+       el:'#app',
+       data:{},
+       methods:{},
+       components:{
+           cpn:{
+               template:'#cpn'
+           }
+       }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ pmsg }}</div>
+        <menu-item :padd='123' :pnum='312' pstring='12' :parr='parr' :pobj='pobj'></menu-item>
+    </div>
+
+<script>
+    //依旧不推荐使用驼峰
+    Vue.component('menu-item',{
+        props:['padd','pnum', 'pstring', 'parr', 'pobj'],
+        template:`
+            <div>
+                <div>{{ 12 + padd }}</div>
+                <div>{{ typeof pnum }}</div>
+                <div>{{ pstring + 12 }}</div>
+                <ul>
+                    <li :key='index' v-for='(item, index) in parr'>{{ item }}</li>
+                </ul>
+                <div>{{ pobj.age + pobj.gender }}</div>
+                <div :key ='index ' v-for= '(item,index) in pobj'>{{ item }}</div>
+            <div>
+        `
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '父中的值',
+            ptitle: '动态绑定的属性',
+            parr:['wow', 'it is', 'beauty'],
+            pobj:{
+                age: 10,
+                gender:'male'
+            }
+        }
+    })
+</script>
+
+</body>
+
+</html>

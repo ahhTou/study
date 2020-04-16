@@ -1,0 +1,54 @@
+npm install webpack@3.6.0 -g
+
+
+------安装
+npm install --save-dev css-loader
+npm install --save-dev style-loader
+npm install --save-dev less-loader less
+npm install --save-dev url-loader
+npm install --save-dev file-loader
+npm install --save-dev babel-loader@7 babel-core babel-preset-es2015
+
+npm install vue --save
+npm install vue-loader vue-template-compiler --save-dev
+
+npm install html-webpack-plugin --save-dev
+
+npm install uglifyjs-webpack-plugin@1.1.1 --save-dev
+
+npm install --save-dev webpack-dev-server@2.9.3
+
+npm install webpack-merge --save-dev
+
+
+
+
+------配置
+const path = require('path')
+
+module.exports = {
+    entry:'./src/main.js',
+    output:{
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js'
+    },
+    module: {
+        rules: [
+          {
+            test: /\.css$/,
+            //使用时，从右到左
+            use: ['style-loader','css-loader']
+          },
+          {
+            test: /\.less$/,
+            use: [{
+                loader: "style-loader" // creates style nodes from JS strings
+            }, {
+                loader: "css-loader" // translates CSS into CommonJS
+            }, {
+                loader: "less-loader" // compiles Less to CSS
+            }]
+          }
+        ]
+    }
+}

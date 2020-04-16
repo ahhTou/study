@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+<body>
+    <div id="app">
+        <cpn :cmovies="movies"></cpn>
+    </div>
+
+    <template id="cpn">
+        <div>
+            <ul>
+                <li v-for="(item, index) in cmovies" :key="index">{{ item }}</li>
+            </ul>
+        </div>
+    </template>
+
+    <script>
+    
+    var cpn= {
+        template:'#cpn',
+        data(){
+            return{}
+        },
+        //数组写法
+        // props:['cmovies']
+
+        props:{
+            //指定类型
+            // cmovies:Array,
+
+            //更多限制的写法
+            cmovies:{
+                type:Array,
+                // 对于数组类型 这样写会报错
+                // default:[]
+                default(){
+                    return []
+                },
+                //必须的
+                require:false,
+            }
+        }
+    }
+
+    var app = new Vue({
+           el:'#app',
+           data:{
+               movies:['看不见的客人','无名女尸','致命魔术']
+           },
+           methods:{},
+           components:{
+            cpn
+           }
+        });
+    </script>
+</body>
+</html>

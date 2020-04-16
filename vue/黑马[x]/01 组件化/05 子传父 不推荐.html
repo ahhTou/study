@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ pmsg }}</div>
+        <menu-item :parr='parr'></menu-item>
+    </div>
+
+<script>
+    //子组件向父组件传值 基本用法
+    //props 传递数据原则：单项数据流
+    //允许 子传父 但不建议
+    Vue.component('menu-item',{
+        props:['parr'],
+        template:`
+            <div>
+                <button @click='parr.push("lemon")'>点击我</button>
+               <ul>
+                    <li :key='index' v-for='(item, index) in parr'>{{ item }}</li>
+               </ul>
+            <div>
+        `
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '父中的值',
+            parr: ['apple', 'orange', 'banana']
+            }
+    })
+</script>
+
+</body>
+
+</html>

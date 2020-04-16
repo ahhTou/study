@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+<body>
+    <div id="app">
+        <cpn>
+            <button>按钮</button>
+        </cpn>
+
+        <cpn>
+            <h1>Wow</h1>
+        </cpn>
+        <cpn></cpn>
+    </div>
+
+<template id="cpn">
+    <div>
+        <h1>=======</h1>
+        <h2>我是组件</h2>
+        <p>我是组件,哈哈哈哈</p>
+        <slot><strong>Err: 标签/slot为空</strong></slot>
+    </div>
+</template>
+
+<script>
+    var app = new Vue({
+       el:'#app',
+       data:{},
+       methods:{},
+       components:{
+           cpn:{
+               template:'#cpn'
+           }
+       }
+    });
+</script>
+</body>
+</html>

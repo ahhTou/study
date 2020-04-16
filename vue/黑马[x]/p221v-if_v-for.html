@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <li v-for='(a,b,c) in f'>{{ a+'===' +b+'==='+ c }}</li>
+    </div>
+
+
+    <script>
+        var f={
+            unname : 'lala',
+            age:12,
+            gende:'male'
+        }
+        var a = new Vue({
+            el: '#app',
+            data:{
+                score:10,
+
+                
+            }
+
+        })
+    </script>
+</body>
+
+</html>

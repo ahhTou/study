@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+<body>
+    <!-- 在浏览器中要应用lib/teamplate.js文件-->
+    <script src="../node_modules/art-template/lib/template-web.js"></script>
+
+    <script type="text/template" id="tpl">
+        大家好，我叫： {{ name }}
+        我今年 {{ age }} 岁了
+    </script>
+
+    <script>
+        var ret = template('tpl',{
+            name:'jack',
+            age:18,
+        })
+        console.log(ret);
+        
+    </script>
+</body>
+</html>

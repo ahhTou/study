@@ -1,0 +1,3 @@
+ModuleA.obj;
+
+ModuleA.myFunc;

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+</head>
+<body>
+<script>
+    Promise.all([
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('r1')
+        },1000)
+      })
+      ,
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('r2')
+        },1000)
+      })
+    ])
+    .then( results => {
+      console.log(results);
+      
+    })
+</script>
+</body>
+</html>

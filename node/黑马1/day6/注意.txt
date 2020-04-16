@@ -1,0 +1,32 @@
+express直接发送json数据
+res.json({
+
+})
+
+
+
+
+//express是不支持session的
+
+//需要安装express-session
+
+npm i express-seeion
+
+引包
+var session = require('express-session');
+
+var app = express();
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUnintialized: true
+}))
+
+//添加session数据
+req.session.foo = 'bar'
+//访问
+req.session.foo
+
+
+

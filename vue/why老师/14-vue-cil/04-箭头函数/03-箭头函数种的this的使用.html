@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+</head>
+<body>
+
+  <script>
+    setTimeout(() => {
+      console.log(this);
+      
+    },100)
+
+    //箭头函数中用的是最近作用域的this
+    //向外层查找this,一层层查找，直到有this的定义
+    //setTimeout函数的this就是window
+    const obj = {
+      a1() {
+        setTimeout(function(){console.log(this); })
+        setTimeout(() => {console.log(this);})
+      }
+    }
+    obj.a1();
+  </script>
+</body>
+</html>

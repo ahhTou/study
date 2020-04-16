@@ -1,0 +1,272 @@
+    
+        1.[v-cloak]
+
+        2.v-pre
+
+        3.v-once
+
+        4.$event
+
+        事件处理修饰符
+        5.阻止冒泡,click.stop
+
+        6.阻止默认行为，click.prevent
+
+        7.按键修饰符 keyup.delete
+        自定义按键修饰符
+        Vue.config.keyCodes.XXX
+
+        整数
+        parseInt()
+
+        v-bind绑定class={a:isA,b:isB}（样式）
+
+        v-bind:class=[a,b]
+        date{
+            a:类名，类名
+            b:类名，；类名
+        }
+
+        p255 声明式编程
+
+        p277 表单操作，@click.prevent=""禁用默认行为
+
+        <input v-model.number="age" type = "number">
+        v-model.trim 去空格
+        v-model.lazy 失去焦点时才双向更新
+
+        p230 自定义指令
+        Vue.directive('指令名字',{
+            inserted:function(el){
+                //el表示指令绑定的元素
+
+            }
+        })
+
+        p231 自定义指令用法、
+        v-'指令名字'='参数'（data中有这个参数）
+
+        Vue.directive('指令名字',{
+        inserted:function(el,binding){
+                            //binding 形参
+            binding.value
+
+            }
+        })
+
+        p232局部指令
+        new Vue{
+            directives：{
+                指令名字：function(el,binding){
+
+                }
+            }
+        }
+
+        p233 计算属性--计算属性有缓存，方法没有缓存
+        computed:{
+            名称 ： function(){
+                return xxx;
+            }
+        }
+        
+        p235 侦听器
+        watch:{
+            data中元素名字 : function(val){
+                val xxxx
+            }
+        }
+
+        p237 过滤器
+        1.自定义
+        Vue.filter('过滤器名称'，function(value){
+            //业务
+            return xxx
+        })
+        使用 {{ msg | xxxx |可以使用多个}} or xxx="id | xxxx"
+        
+        局部 filters:{
+            xxxx:function(){
+
+            }
+        带参数 Vue.filters('format',function(value[过滤的],arg[参数]){
+            arg xxx
+        }) 
+        } 
+
+        操作列表
+        
+        修改
+        vm.list[1] = 'xxx'
+        Vue.set(vm.list,2,'xxx')
+        vm.$set(vm.list,1,'xxx')
+
+        增加
+        vm.info.gender = 'xxx'
+
+        p245 图书管理系统
+        过滤，返回符合条件的数组，也可以直接传递数组
+        var abc = this.abcS.filter(function(item){
+            return item.==id;
+        })、
+
+        筛选，
+        this.books.some(function(item){
+        
+        })
+        改为
+        this.books.some((item)=>{
+            终止循环
+            return true
+        })
+
+        删除,获得索引
+        var index = this.books.findIndex(function(item){
+            return item.id = id;
+        })
+        this.books.splice(index,1)
+        或者 通过fitter
+        this.books = this.books.filter(funtion(item){
+            retrun item.id!=id;
+        })
+
+======================================
+        p252 组件化
+        Vue.compoent('组件名字'，{
+            data:function(){
+                return{
+                    a : 0
+                }
+            }
+            template:"xxx"
+            or
+            template:`
+            xxx
+            
+            `
+            注意事项
+            驼峰式命名组件，使用组件只能在模板字符串中使用，直接在标签模板中使用时只能用短横线
+
+            局部组件
+            var ComponentA  ={}
+            newVue({
+                el:"#app",
+                components:{
+                    'compoent-a':CompoentA,
+                    'compoent-b':CompoentB,
+                    'compoent-C':CompoentC,
+                }
+            })
+            
+        })
+        父组件向子组件传值：
+        <xxx-xxx title="aaaa" :title='aaaa'> </xxx-xxx>
+        Vue.component('xxx-xxx','sss-sss'){
+            props['title'],
+            template:` <div>{{ title }}</div>`
+        }
+        
+        props也不能使用驼峰！！！！只能单向！父传子！
+        传值时
+        typeof可以看类型==》{{ typeof num}}
+        :pnum='12' 为 number
+        pnum  = '12' 为string
+===============================
+        子向父组件传值p260
+
+        事件
+        von:click='$emit("e-a")'
+        <父 e-a="fun"></父>
+        父亲实例中↓
+        fun:function(){
+
+        }
+
+        值
+        von:click='$emit("e-a",值1(也可以是对象))'
+           von:click='$emit("e-a")'
+        <父 e-a="xxxx( $event )"></父>
+        父亲实例中↓
+        fun:function(val){
+
+        }
+==================================
+        非父子传值
+        创建一个事件中心
+        var eventHub(自定义的) = new Vue()
+        监听 eventHub.$on('e-a',值)
+        销毁 eventHub.$off('e-a')
+
+        传值时在主动方的methods中：
+        handle : function(){
+            eventHub.$emit('e-a',值)
+        }
+        在被传值的组件中的mounted中使用
+        mounted:function(){
+            eventHub.$on('e-a',(val)=>{
+
+            })
+        }
+==========================================
+p263 插槽
+        在模板中定义(假定为 a-b)
+        template:`
+            <div>
+                <slot> 没有插槽时显示的内容</slot>
+            </div>
+        `
+        在html中
+        <div>
+            <a-b>插入slot中的数值</a-b>
+        </div>
+        
+        ================================
+        在模板中定义(假定为 a-b)
+        template:`
+        <div>
+            <header>
+                <slot name = 'header'>
+            </header>
+                <main>
+                <slot></slot>
+                </main>
+            <footer>
+                <slot name = 'footer'></slot>
+            </footrt>
+            </div>
+            `
+        在html中
+        <a-b>
+            <p slot='header'>头信息</p>
+                <p>主要内容</p>
+                <p>主要内容</p>
+            <p slot='footer'>尾巴</p>
+        </a-b>
+        匹配到slot的到匹配到的
+        没匹配到的到默认<slot></slot>中
+
+        也可以：
+            <a-b>
+            <template slot='header'>
+                <p>插入的内容</p>
+                <p>插入的内容</p>
+                <p>插入的内容</p>
+            </template>
+
+                <p>主要内容</p>
+                <p>主要内容</p>
+
+            <template slot='footer'>
+                <p>插入的内容</p>
+                <p>插入的内容</p>
+                <p>插入的内容</p>
+            </template>
+        </a-b>
+
+        p265作用域插槽
+        <a-b>
+            <template slot-scope='msg(来自子组件插槽的数据)'>
+                可以通过msg.xxx的方式控制
+            </template>
+        <a-b>
+    
