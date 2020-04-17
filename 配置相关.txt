@@ -1,0 +1,21 @@
+npm install -g @vue/cli-service-global
+npm install node-sass --save-dev
+npm install sass-loader --save-dev
+
+
+
+git remote add origin git@github.com:ahhTou/LearnVueMall.git
+
+git push -u origin master
+
+git status
+
+git add .
+
+git commit -m '初始化项目'
+
+git push
+
+
+//重命名
+ git mv -f oldfolder newfolder
