@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+      .err{
+        color: red;
+      }
+      .right{
+        color: green;
+      }
+    </style>
+	</head>
+	<body>
+		<input type="text" />
+		<p></p>
+		<script>
+			let tips = '请输入3位以上的字符'
+			let err = '×错误'
+			let right = '√正确'
+			let $input = document.querySelector('input')
+			let $p = document.querySelector('p')
+			$p.innerText = tips
+			$input.onblur = function () {
+				if (this.value === '') {
+          $p.innerText = tips
+          $p.className = ''
+				} else if (this.value.length <= 3) {
+          $p.innerText = err
+          $p.className = 'err'
+				} else if (this.value.length > 3) {
+          $p.innerText = right
+          $p.className = 'right'
+				}
+			}
+		</script>
+	</body>
+</html>

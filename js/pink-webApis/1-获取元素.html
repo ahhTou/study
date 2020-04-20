@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+
+	<body>
+		<h1 id="app"></h1>
+		<h1 class="hs"></h1>
+		<h1 class="hs"></h1>
+		<h2 class="q"></h2>
+
+		<script>
+			//通过id
+			let $app = document.getElementById('app')
+			console.log($app)
+			console.log(typeof $app)
+
+			//通过class。可以获得数组
+			let $hs = document.getElementsByClassName('hs')
+			console.log($hs)
+
+			//直接通过id或者class，只能得到单个
+			let $h = document.querySelector('.q')
+			let $h2 = document.querySelector('h2')
+			console.log($h)
+
+			//直接通过id或者class，可以得到全部
+			let $hs2 = document.querySelectorAll('.hs')
+			let $hs3 = document.querySelectorAll('h1')
+			console.log($hs2)
+		</script>
+	</body>
+</html>

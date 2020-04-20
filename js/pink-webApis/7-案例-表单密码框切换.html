@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<button id="btn">查看密码</button>
+		<input type="password" />
+		<script>
+			let isCheck = false
+			let $btn = document.querySelector('#btn')
+			let $pw = document.querySelector('input')
+			$btn.onclick = () => {
+				console.log('123')
+				if (isCheck) {
+					$btn.value = '查看密码'
+					$pw.type = 'text'
+				} else {
+					$btn.value = '取消查看'
+					$pw.type = 'password'
+				}
+				isCheck = !isCheck
+			}
+		</script>
+	</body>
+</html>

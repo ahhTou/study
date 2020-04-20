@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<h1>我是标题</h1>
+		<button>点击我修改标题</button>
+		<button id="add">增加同类</button>
+		<div></div>
+		<script>
+			const $h1 = document.querySelector('h1')
+			const $btn = document.querySelector('button')
+      const $btnAdd = document.querySelector('#add')
+      //innerText 不识别Html标签，非标准，去除空格和换行
+			$btn.onclick = () => {
+				$h1.innerText = '标题已经被你杀害'
+      }
+      //innerHTML 识别html标签 w3c标准 保留 空格 和换行 
+			$btnAdd.onclick = () => {
+				let $div = document.querySelector('div')
+				$div.innerHTML = '<button>增加同类</button>'
+      }
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</div>
+		<script>
+			let $lis = document.querySelectorAll('li')
+			for (let i = 0; i < $lis.length; i++) {
+				$lis[i].innerText = `我是第${i+1}个li`
+			}
+		</script>
+	</body>
+</html>

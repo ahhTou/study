@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<input type="text" value="显示的内容" style="color: #999999;"/>
+		<script>
+			let $input = document.querySelector('input')
+			$input.onfocus = function () {
+				if (this.value === '显示的内容') {
+					this.value = ''
+        }
+        this.style.color = '#000'
+			}
+			$input.onblur = function () {
+				if (this.value === '') {
+					this.value = '显示的内容'
+        }
+        this.style.color = '#999'
+			}
+		</script>
+	</body>
+</html>
