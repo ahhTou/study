@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<ul>
+      <li>123</li>
+    </ul>
+		<script>
+			// 1. 创建节点、元素节点
+      let $li = document.createElement('li')
+      $li.innerText = '我是$li'
+			// 2. 添加节点到父节点末尾 node.appendChild(child) node为父级 child是子级
+			var $ul = document.querySelector('ul')
+      $ul.appendChild($li)
+      // 3.添加节点 node.insertBefore(child, 指定元素)
+      let $li2 = document.createElement('li')
+      $li2.innerText = '我是$li2'
+      $ul.insertBefore($li2, $ul.children[0])
+		</script>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			tbody tr:nth-child(2n + 1) {
+				background-color: rgb(0, 0, 0, 0.1);
+			}
+		</style>
+	</head>
+	<body>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>动漫</th>
+					<th>评分</th>
+					<th>时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>末日时</td>
+					<td>5</td>
+					<td>2018.1.1</td>
+				</tr>
+				<tr>
+					<td>末日时</td>
+					<td>5</td>
+					<td>2018.1.1</td>
+				</tr>
+				<tr>
+					<td>末日时</td>
+					<td>5</td>
+					<td>2018.1.1</td>
+				</tr>
+				<tr>
+					<td>末日时</td>
+					<td>5</td>
+					<td>2018.1.1</td>
+				</tr>
+				<tr>
+					<td>末日时</td>
+					<td>5</td>
+					<td>2018.1.1</td>
+				</tr>
+			</tbody>
+		</table>
+		<script>
+			let trs = document.querySelector('tbody').querySelectorAll('tr')
+			for (let i = 0; i < trs.length; i++) {
+				trs[i].onmouseenter = function(){
+				  trs[i].style.backgroundColor = 'pink'
+				}
+				trs[i].onmouseleave = function(){
+				  trs[i].style.backgroundColor = ''
+				}
+			}
+		</script>
+	</body>
+</html>

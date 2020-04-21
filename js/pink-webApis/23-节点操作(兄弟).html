@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div></div>
+		<span></span>
+		<script>
+			let $div = document.querySelector('div')
+			// 1.得到 上一个/下一个 兄弟节点，包括元素和文本节点
+			console.log('下一个兄弟节点：', $div.nextSibling)
+			console.log('上一个兄弟节点：', $div.previousSibling)
+		
+			// 2.得到 上一个/下一个 兄弟元素节点,不支持ie9
+			console.log('下一个兄弟元素节点：', $div.nextElementSibling)
+			console.log('上一个兄弟元素节点：', $div.previousElementSibling)
+		
+			//兼容方法
+			function getNextElementSibling(element) {
+				let el = element
+				while ((el = el.nextSibling)) {
+					if (el.nodeType === 1) {
+						return el
+					}
+				}
+				return null
+			}
+		</script>
+	</body>
+</html>

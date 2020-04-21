@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div id="box">
+			<div id="boxSon">
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+			</div>
+		</div>
+		<script>
+			let $boxSon = document.querySelector('#boxSon')
+			//得到父亲节点 (最近的父级节点)，找不到返回为空
+			console.log($boxSon.parentNode)
+
+			//得到子节点,包含所以的元素节点和文本节点
+			//1-元素节点
+			console.log($boxSon.childNodes)
+			console.log($boxSon.childNodes[1].nodeType)
+			//得到所有的 子元素节点 .非标准，但是所有浏览器都支持
+			console.log($boxSon.children)
+			
+			//1.firstChild 和 lastChild 包括文本和元素节点
+			console.log($boxSon.firstChild)
+			console.log($boxSon.lastChild)
+			//2.得到元素 兼容性较差，只支持ie9以上
+			console.log($boxSon.firstElementChild)
+			console.log($boxSon.lastElementChild)
+			//3.实际开发写法
+			console.log($boxSon.children[0])
+			console.log($boxSon.children[$boxSon.children.length -1])
+
+
+		</script>
+	</body>
+</html>

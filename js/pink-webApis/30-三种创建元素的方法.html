@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div class="inner">
+			我杀你🐎
+		</div>
+		<div class=".c"></div>
+		<script>
+			// 1. document.write() 会导致页面重绘
+
+			// 2. innerHTML
+			let $inner = document.querySelector('.inner')
+			console.log($inner)
+			for (let i = 0; i <= 10; i++) {
+				$inner.innerHTML += '我杀你🐎'
+			}
+
+			// 3.createHTML
+			let $c = document.querySelector('.c')
+			for (let i = 0; i <= 10; i++) {
+				let a = document.createElement('a')
+				$c.appendChild(a)
+			}
+		</script>
+	</body>
+</html>

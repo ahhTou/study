@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			body {
+				font-size: 30px;
+			}
+			.btn {
+				width: 300px;
+				height: 100px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+				border-image: linear-gradient(
+						to bottom,
+						#fff,
+						rgb(80, 80, 255, 0.2),
+						#fff
+					)
+					30 30;
+			}
+			.btn:hover {
+				background: rgb(230, 230, 230);
+			}
+			li,
+			ul {
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+			.list li {
+				cursor: pointer;
+				width: 300px;
+				height: 80px;
+				box-sizing: border-box;
+				border-top: 1px solid #ddd;
+				border-image: linear-gradient(
+						to left,
+						#fff,
+						rgb(80, 80, 255, 0.2),
+						#fff
+					)
+					30 30;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.list li:hover {
+				background: rgb(224, 224, 224);
+			}
+			.nav-list {
+				width: 300px;
+			}
+			.list {
+				display: none;
+			}
+			.nav {
+				display: flex;
+			}
+      .nav-list{
+        margin: 10px;
+      }
+		</style>
+	</head>
+	<body>
+		<ul class="nav">
+			<li class="nav-list">
+				<div class="btn">导航</div>
+				<ul class="list">
+					<li>你</li>
+					<li>🐎</li>
+					<li>死</li>
+					<li>了</li>
+				</ul>
+			</li>
+			<li class="nav-list">
+				<div class="btn">导航</div>
+				<ul class="list">
+					<li>你</li>
+					<li>🐎</li>
+					<li>死</li>
+					<li>了</li>
+				</ul>
+			</li>
+			<li class="nav-list">
+				<div class="btn">导航</div>
+				<ul class="list">
+					<li>你</li>
+					<li>🐎</li>
+					<li>死</li>
+					<li>了</li>
+				</ul>
+			</li>
+			<li class="nav-list">
+				<div class="btn">导航</div>
+				<ul class="list">
+					<li>你</li>
+					<li>🐎</li>
+					<li>死</li>
+					<li>了</li>
+				</ul>
+			</li>
+		</ul>
+		<script>
+			let $nav = document.querySelector('.nav')
+			let $lis = $nav.children
+			for (let i = 0; i < $lis.length; i++) {
+				$lis[i].onmouseover = function () {
+					this.children[1].style.display = 'block'
+				}
+				$lis[i].onmouseout = function () {
+					this.children[1].style.display = 'none'
+				}
+			}
+		</script>
+	</body>
+</html>

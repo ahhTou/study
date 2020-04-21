@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<input id="ckAll" type="checkbox" />全选
+		<div id="cb">
+			<input type="checkbox" />
+			<input type="checkbox" />
+			<input type="checkbox" />
+			<input type="checkbox" />
+		</div>
+		<script>
+			let $ckAll = document.getElementById('ckAll')
+      let $cks = document.getElementById('cb').getElementsByTagName('input')
+      
+			$ckAll.onclick = function () {
+				for (let i = 0; i < $cks.length; i++) {
+					$cks[i].checked = this.checked
+				}
+      }
+      
+			for (let i = 0; i < $cks.length; i++) {
+				$cks[i].onclick = function () {
+					let flag = true
+					for (let i = 0; i < $cks.length; i++) {
+						if (!$cks[i].checked) {
+              //当有一个单选框未被选中时，使flag位false
+              flag = false
+              break
+						}
+					}
+					$ckAll.checked = flag
+				}
+			}
+		</script>
+	</body>
+</html>

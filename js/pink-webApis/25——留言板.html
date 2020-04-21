@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<textarea name="" id="" cols="30" rows="10"></textarea>
+		<button>发布</button>
+		<ul></ul>
+		<script>
+			let $btn = document.querySelector('button')
+			let $txt = document.querySelector('textarea')
+			let $ul = document.querySelector('ul')
+			$btn.onclick = function () {
+				// 1.创建
+				let $li = document.createElement('li')
+				$li.innerText = $txt.value
+				if ($txt.value !== '') {
+          // 1.添加到最后
+          // $ul.appendChild($li)
+          
+          // 2.添加到最前
+          $ul.insertBefore($li, $ul.children[0])
+				} else $txt.placeholder = '输入不能为空'
+				$txt.value = ''
+				// 2.添加
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			.color {
+				width: 100px;
+				height: 100px;
+				margin: 10px;
+				border: 1px black solid;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="select">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<script>
+			let color = ['white', 'black', 'pink', 'gray']
+			let $divs = document.querySelector('#select').querySelectorAll('div')
+			for (let i = 0; i < $divs.length; i++) {
+				$divs[i].style.backgroundColor = color[i]
+				$divs[i].className = 'color'
+				$divs[i].onclick = function () {
+					document.body.style.backgroundColor = color[i]
+				}
+			}
+		</script>
+	</body>
+</html>

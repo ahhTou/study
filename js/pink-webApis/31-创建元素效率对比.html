@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<script>
+			let a = () => {
+				let d1 = +new Date()
+				for (let i = 0; i < 1000; i++) {
+					document.body.innerHTML +=
+						'<div style="width: 100px; height: 2px; border: 1px solid pink;"></div>'
+				}
+				let d2 = +new Date()
+				console.log('innerHTML字符串拼接', d2 - d1, 'ms')
+			}
+
+			let b = () => {
+				let d1 = +new Date()
+				let arr = []
+				for (let i = 0; i < 1000; i++) {
+					arr.push(
+						'<div style="width: 100px; height: 2px; border: 1px solid pink;"></div>'
+					)
+					//join将数组中的',' 转变为 ''
+				}
+				document.body.innerHTML = arr.join('')
+				let d2 = +new Date()
+				console.log('innerHTML数组拼接', d2 - d1, 'ms')
+			}
+
+			let c = () => {
+				let d1 = +new Date()
+				for (let i = 0; i < 1000; i++) {
+					let $div = document.createElement('div')
+					$div.style.width = '100px'
+					$div.style.height = '2px'
+					$div.style.border = '1px solid black'
+					document.body.appendChild($div)
+				}
+				let d2 = +new Date()
+				console.log('createElement:', d2 - d1, 'ms')
+			}
+			a()
+			b()
+			c()
+		</script>
+	</body>
+</html>

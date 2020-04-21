@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			a {
+				cursor: pointer;
+			}
+			a:hover {
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea name="" id="" cols="30" rows="10"></textarea>
+		<button>发布</button>
+		<ul></ul>
+		<script>
+			let $btn = document.querySelector('button')
+			let $txt = document.querySelector('textarea')
+			let $ul = document.querySelector('ul')
+			$btn.onclick = function () {
+        let $li = document.createElement('li')
+        //阻止链接跳转 href="javascript:void(0);" or href="javascript"
+				$li.innerHTML ='<a href="javascript:;">删除</a>' + $txt.value
+				if ($txt.value !== '') {
+					$ul.insertBefore($li, $ul.children[0])
+				} else $txt.placeholder = '输入不能为空'
+				$txt.value = ''
+				$li.children[0].onclick = function () {
+					this.parentNode.parentNode.removeChild(this.parentNode)
+				}
+			}
+		</script>
+	</body>
+</html>

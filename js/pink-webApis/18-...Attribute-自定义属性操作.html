@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div id="demo" data-index="1"></div>
+		<script>
+			let $div = document.getElementById('demo')
+			//element.属性 只能得到默认的属性
+			//element.getArribute
+			//getArribute
+			console.log($div.getAttribute('data-index'))
+			//setArribute (element.id=)
+			$div.setAttribute('id', 'demo2')
+			$div.setAttribute('data-index', 2)
+			//remove
+			$div.removeAttribute('id')
+		</script>
+	</body>
+</html>

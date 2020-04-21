@@ -16,7 +16,12 @@
 			let btns = document.getElementsByTagName('button')
 			for (let i = 0; i < btns.length; i++) {
 				btns[i].onclick = function () {
-					console.log('1')
+					// 1.去掉所有按钮的按键颜色【干掉其他人】
+					for (let i = 0; i < btns.length; i++) {
+						btns[i].style.backgroundColor = ''
+          }
+          //再上色
+					btns[i].style.backgroundColor = 'pink'
 				}
 			}
 		</script>

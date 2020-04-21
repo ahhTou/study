@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>
+			<style> *{ color: #e06c75; } </style>
+		</title>
+	</head>
+	<body>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+		</ul>
+		<script>
+			let $ul = document.querySelector('ul')
+			// 1. node.cloneNode() 括号为空，或者里面为false 则为 浅拷贝，只复制标签
+			// 2. node.cloneNode(true) 深拷贝
+			let $li = $ul.children[0].cloneNode()
+			$ul.appendChild($li)
+			let $li2 = $ul.children[0].cloneNode(true)
+			$ul.appendChild($li2)
+		</script>
+	</body>
+</html>

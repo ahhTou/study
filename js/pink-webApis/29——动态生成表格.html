@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<table cellspacing="0" border="1">
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>分数</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<script>
+			// 1.准备好学生的数据
+			let datas = [
+				{
+					name: 'ahhtou1',
+					score: 100,
+				},
+				{
+					name: 'ahhtou2',
+					score: 99,
+				},
+				{
+					name: 'ahhtou3',
+					score: 98,
+				},
+			]
+			let $tbody = document.querySelector('tbody')
+			//创建行
+			for (let i = 0; i < datas.length; i++) {
+				let $tr = document.createElement('tr')
+				$tbody.appendChild($tr)
+				//创建格
+				for (var k in datas[i]) {
+					let $td = document.createElement('td')
+					$tr.appendChild($td)
+					$td.innerText = datas[i][k]
+				}
+				let $td = document.createElement('td')
+				$tr.appendChild($td)
+				$td.innerHTML = '<a href="javascript:;">删除</a>'
+				$td.onclick = () => {
+					$tbody.removeChild($tr)
+				}
+			}
+		</script>
+	</body>
+</html>
