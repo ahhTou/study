@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div>123</div>
+		<ul>
+			<li>li1</li>
+			<li>li2</li>
+			<li>li3</li>
+		</ul>
+		<script>
+      // event.target 返回的是 触发的元素
+      
+			// this 是绑定方法的元素
+			let $div = document.querySelector('div')
+			$div.addEventListener('click', function (e) {
+				console.log('触发事件的元素', e.target)
+				console.log('this是：', this)
+			})
+			let $ul = document.querySelector('ul')
+			$ul.addEventListener('click', function (e) {
+				//兼容性
+				e = e || window.event
+				let target = e.target || e.srcElement
+
+				console.log('触发的元素是', target)
+				console.log('this是', this)
+
+				// this 也有类似的元素，几乎相当于this
+				console.log('currentTarget是:', e.currentTarget)
+			})
+		</script>
+	</body>
+</html>

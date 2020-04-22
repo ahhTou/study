@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<button>传统注册事件</button>
+		<button>方法监听注册事件</button>
+		<button>i9老按钮</button>
+		<script>
+			let $btns = document.querySelectorAll('button')
+			//这种方式只能绑定一个事件
+			$btns[0].onclick = function () {
+				console.log('传统1')
+			}
+			$btns[0].onclick = function () {
+				console.log('传统2')
+			}
+
+			//方法监听注册方式 ie9之前不适配
+			// eventTarget.addEventListener(type, listener[, useCapture])
+			//三个参数：
+			// 1. type 事件类型字符串，click，mouseover，不带on
+			// 2. listener 事件处理函数，时间发生时，会调用该监听函数
+			// 3. useCapture 可选参数是一个布尔值，默认是false，学完dom事件流，再进一步学习
+
+			$btns[1].addEventListener('click', () => {
+				console.log('事件监听注册时间1')
+			})
+			$btns[1].addEventListener('click', () => {
+				console.log('事件监听注册时间2')
+			})
+
+			//i9以前可以使用 eventTarget.attachEvent(eventNameWithOn, callback)
+			// 1. eventNameWithOn 事件类型字符串 比如 onclick，onmouseover 带on
+			// 2. 回到函数
+			console.log('ie才能显示：')
+			$btns[2].attachEvent('onclick', function () {
+				console.log('ie9- 1')
+			})
+			$btns[2].attachEvent('onclick', function () {
+				console.log('ie9- 2')
+			})
+
+			//兼容性封装函数
+			function addEventListener(element, eventName, fn) {
+				// 判断是否支持 addEventListener 方法
+				if (element.addEventListener) {
+					element.addEventListener(eventName, fn)
+				} else if (element.attachEvent) {
+					element.attachEvent('on' + eventName, fn)
+				} else {
+					element['on' + eventName] = fn
+				}
+			}
+		</script>
+	</body>
+</html>

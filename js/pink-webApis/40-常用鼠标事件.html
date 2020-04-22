@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<div style="height: 2000px;"></div>
+		<script>
+			document.addEventListener('click', (e) => {
+				console.log('-')
+				console.log('相对于 可视区域 的 鼠标 坐标 x', e.clientX)
+				console.log('相对于 可视区域 的 鼠标 坐标 y', e.clientY)
+				console.log('-')
+				console.log('相对于 文档页面 的 鼠标 坐标 x', e.pageX)
+				console.log('相对于 文档页面 的 鼠标 坐标 y', e.pageY)
+				console.log('-')
+				console.log('相对于 电脑屏幕 的 鼠标 坐标 x', e.screenX)
+				console.log('相对于 电脑屏幕 的 鼠标 坐标 y', e.screenY)
+			})
+		</script>
+	</body>
+</html>

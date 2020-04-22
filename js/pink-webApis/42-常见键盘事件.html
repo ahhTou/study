@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			body {
+				background: black;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+      //优先级 keydown > keypress > keyup
+
+			let $body = document.querySelector('body')
+
+			document.addEventListener('keyup', () => {
+				console.log('按起')
+				let flag = $body.style.backgroundColor === 'white'
+				$body.style.backgroundColor = flag ? 'black' : 'white'
+			})
+			document.addEventListener('keydown', () => {
+				console.log('按下')
+				let flag = $body.style.backgroundColor === 'white'
+				$body.style.backgroundColor = flag ? 'black' : 'white'
+			})
+			//keypress不能识别功能键
+			document.addEventListener('keypress', () => {
+				console.log('press')
+				let flag = $body.style.backgroundColor === 'white'
+				$body.style.backgroundColor = flag ? 'black' : 'white'
+			})
+		</script>
+	</body>
+</html>

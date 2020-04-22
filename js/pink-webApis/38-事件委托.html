@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<ul>
+			<li>点👴</li>
+			<li>点👴</li>
+			<li>点👴</li>
+			<li>点👴</li>
+			<li>点👴</li>
+		</ul>
+		<script>
+			//  事件委托的原理
+			//  不给每个子节点单独设置事件监听，而是设置在父节点上，然后利用冒泡原理影响到每个子节点
+			let $ul = document.querySelector('ul')
+			$ul.addEventListener('click', function (e) {
+				e.target.style.color = 'pink'
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			body {
+				cursor: none;
+			}
+			div {
+				width: 30px;
+				height: 30px;
+				position: absolute;
+				background-color: pink;
+			}
+		</style>
+	</head>
+	<body>
+		<div></div>
+		<script>
+			let $div = document.querySelector('div')
+			let timer
+			document.addEventListener('mousemove', (e) => {
+				if (timer) clearTimeout(timer)
+				timer = setTimeout(() => {
+					let x = e.pageX
+					let y = e.pageY
+					$div.style.left = x - 15 + 'px'
+					$div.style.top = y - 15 + 'px'
+				})
+			})
+		</script>
+	</body>
+</html>

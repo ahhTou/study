@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+		<style>
+			div {
+				height: 100px;
+				width: 100px;
+				background: pink;
+			}
+		</style>
+	</head>
+	<body>
+		<div>123</div>
+		<script>
+			let $div = document.querySelector('div')
+			// 1.event 就是一个事件对象，写道我们侦听函数的 小括号里面 当形参来看
+			// 2.事件对象只有有了时间才会存在， 他是系统给我们自动创建的， 不需要传递参数
+			// 3.时间对象 是我们事件的一系列相关数据的集合 跟事件相关的
+			// 比如鼠标点击里面就包含了鼠标的相关信息，鼠标坐标，点击了哪个键盘键
+			$div.onclick = function (event) {
+				console.log(event)
+				// ie9-需要使用 windows.event
+			}
+			// 开发时可以间歇为 e
+			$div.addEventListener('click', function (e) {
+        //兼容性写法
+        e = e || window.event
+        console.log(e)
+    
+			})
+		</script>
+	</body>
+</html>
