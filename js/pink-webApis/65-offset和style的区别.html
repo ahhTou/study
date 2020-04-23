@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <style>
+    #a {
+      width: 200px;
+      height: 200px;
+      background-color: pink;
+    }
+  </style>
+  <body>
+    <div id="a"></div>
+    <script>
+      // 1.style只能得到行内样式表的值
+      // 2.offset 属性只读
+      // 3.stye 属性能修改
+      let $a = document.getElementById('a')
+      console.log('style', $a.style.width)
+      console.log('offsetWidth', $a.offsetWidth)
+    </script>
+  </body>
+</html>

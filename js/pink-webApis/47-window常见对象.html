@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<script>
+			// 1. onload 会冲突
+			window.onload = function () {
+				//加载完的时候才会执行代码
+				let $btn = document.querySelector('button')
+				$btn.onclick = () => {
+					alert('！！！')
+				}
+			}
+			// 2. 改写为addEventListener
+			window.addEventListener('load', function () {
+				//不会冲突
+				// 所有元素加载完才会执行，包含用图片等内容
+			})
+
+			// 3. ie9以上才支持
+			window.addEventListener('DOMContentLoaded', function () {
+				// Dom元素加载完就会执行，不包含用图片等内容
+			})
+		</script>
+		<button>点击</button>
+	</body>
+</html>

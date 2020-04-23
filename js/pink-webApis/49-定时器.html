@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<script>
+			console.log('启动爆炸程序')
+			let a = () => {
+				console.log('准备爆炸了')
+			}
+			let b = () => {
+				setTimeout(() => {
+					console.log('爆炸了')
+				}, 1000)
+			}
+			//
+			setTimeout(a, 1000)
+			//不提倡的写法
+			setTimeout('b()', 1000)
+
+			setInterval(() => {
+				console.log('interval爆炸了')
+			}, 1000)
+		</script>
+	</body>
+</html>

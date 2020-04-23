@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<h1></h1>
+		<script>
+			let $h1 = document.querySelector('h1')
+			let time = 3
+      let timer = null //null是空对象，定时器也是对象
+			timer = setInterval(() => {
+				time -= 1
+				if (time === 0) {
+					$h1.innerText = '爆炸了！'
+					clearTimeout(timer)
+				} else {
+					$h1.innerText = time + '秒 后爆炸'
+				}
+			}, 1000)
+		</script>
+	</body>
+</html>

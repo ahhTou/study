@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      #a {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+      }
+      #a:hover {
+        transform: scale(1.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="a"></div>
+    <script>
+      let $a = document.getElementById('a')
+      // 1.相对带有定位的父亲,没有相对body
+      console.log('左', $a.offsetLeft)
+      console.log('上', $a.offsetTop)
+      // 2.包含padding border 不包含margin
+      console.log('高', $a.offsetHeight)
+      console.log('宽', $a.offsetWidth)
+      // 3.返回带有定位的父亲,没有返回body
+      console.log('offset父亲：', $a.offsetParent)
+      console.log('parentNode父亲：', $a.parentNode)
+    </script>
+  </body>
+</html>

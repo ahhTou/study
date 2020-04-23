@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <button>后退</button>
+    <button>前进</button>
+    <button>GO</button>
+    <script>
+      let $btn = document.querySelectorAll('button')
+      $btn[0].addEventListener('click', function () {
+        history.back()
+      })
+      $btn[0].addEventListener('click', function () {
+        history.forward()
+      })
+      $btn[0].addEventListener('click', function () {
+        history.go(1)
+      })
+    </script>
+  </body>
+</html>

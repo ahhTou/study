@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      .box {
+        width: 400px;
+        height: 400px;
+        background-color: pink;
+        margin-left: 100px;
+        margin-top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      let $box = document.querySelector('.box')
+      $box.addEventListener('click', function (e) {
+        // 鼠标相对盒子的坐标 = 鼠标相对页面的坐标 - 盒子相对父元素的坐标
+        let x = e.pageX - this.offsetLeft
+        let y = e.pageY - this.offsetTop
+        this.innerHTML = `x坐标是${x},y坐标是${y}`
+      })
+    </script>
+  </body>
+</html>

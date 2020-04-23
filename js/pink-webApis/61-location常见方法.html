@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <button>跳转哔哩哔哩</button>
+    <button>替换为哔哩哔哩</button>
+    <button>刷新界面</button>
+    <script>
+      let $btn = document.querySelectorAll('button')
+      $btn[0].addEventListener('click', function () {
+        //留下历史记录
+        location.assign('https://www.bilibili.com/')
+      })
+      $btn[1].addEventListener('click', function () {
+        //留下历史记录
+        location.replace('https://www.bilibili.com/')
+      })
+      $btn[2].addEventListener('click', function () {
+        //刷新
+        location.reload()
+      })
+    </script>
+  </body>
+</html>

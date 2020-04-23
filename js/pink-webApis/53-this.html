@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<button>点我</button>
+		<script>
+			// 1.全局情况下是window
+			console.log('全局', this)
+			function a() {
+				console.log('全局方法', this)
+			}
+			//其实是window.a()
+			a()
+
+			//其实是window.setTimeout
+			setTimeout(function () {
+				console.log('全局定时器', this)
+			})
+
+			let b = {
+				sayHi: function () {
+					console.log('对象中的方法', this)
+				},
+			}
+			b.sayHi()
+
+			// 实例
+			let btn = document.querySelector('button')
+			btn.onclick = function () {
+				console.log('按钮点击', this)
+			}
+			btn.addEventListener('click', function () {
+				console.log('addEventListener', this)
+			})
+			function Fun() {
+				console.log('构造函数', this)
+			}
+			let fun = new Fun()
+		</script>
+	</body>
+</html>

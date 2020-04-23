@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <script>
+      // 1. 先执行同步应用
+      // 2. 异步任务（回调函数） 放入任务队列
+      // 3. 一旦执行栈的所有同步任务执行完毕， 系统就会按次序读取任务队列中的
+      //    异步任务，于是被读取的异步任务结束等待状态，进入执行栈，开始执行
+      console.log('我的第一个console.log。我是同步的')
+      setTimeout(() => {
+        console.log('我的第二个console.log。我是异步的')
+      })
+      console.log('我的第三个console.log。我是同步的')
+    </script>
+  </body>
+</html>

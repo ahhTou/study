@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title></title>
+	</head>
+	<body>
+		<button>停止</button>
+		<script>
+			let timer = setTimeout(() => {
+				console.log('!!!')
+			}, 5000)
+
+			let timer2 = setInterval(() => {
+				console.log('interval爆炸了')
+			}, 1000)
+			let $button = document.querySelector('button')
+			$button.onclick = () => {
+				clearTimeout(timer)
+				clearTimeout(timer2)
+			}
+		</script>
+	</body>
+</html>
