@@ -12,10 +12,30 @@
       height: 400px;
       position: absolute;
       background-color: pink;
+      cursor: move;
+      margin: 0;
     }
   </style>
   <body>
-    <div></div>
-    <script></script>
+    <div class="box"></div>
+    <script>
+      let $box = document.querySelector('.box')
+      $box.addEventListener('mousedown', function (e) {
+        let x = e.clientX - $box.offsetLeft
+        let y = e.clientY - $box.offsetTop
+        let timer = null
+        $box.onmousemove = (e) => {
+          timer = setTimeout(() => {
+            $box.style.left = e.clientX - x + 'px'
+            $box.style.top = e.clientY - y + 'px'
+          })
+          if (timer) clearTimeout(timer)
+        }
+      })
+      $box.addEventListener('mouseup', function () {
+        $box.onmousemove = null
+        $box.removeEventListener('mousedown', null)
+      })
+    </script>
   </body>
 </html>

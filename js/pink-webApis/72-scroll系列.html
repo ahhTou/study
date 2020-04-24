@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+        border: 10px solid red;
+        overflow: scroll;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      body {
+        height: 100vw;
+      }
+      div::-webkit-scrollbar {
+        /*滚动条整体样式*/
+        float: right;
+        width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+        height: 4px;
+        scrollbar-arrow-color: red;
+      }
+      div::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
+        border-radius: 5px;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.2);
+        scrollbar-arrow-color: red;
+      }
+      div::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      👴杀了你 👴杀了你 👴杀了你 👴杀了你 👴杀了你 👴杀了你 👴杀了你 👴杀了你
+      👴杀了你 👴杀了你 👴杀了你 👴杀了你
+    </div>
+    <script>
+      // scrollHeight 包含边框、包含内容大小
+      let $div = document.querySelector('div')
+      console.log('offsetHeight', $div.offsetHeight)
+      console.log('clientHeight', $div.clientHeight)
+      console.log('scrollHeight', $div.scrollHeight)
+      $div.onscroll = () => {
+        console.log('scrollTop = 被卷走的距离', $div.scrollTop)
+      }
+    </script>
+  </body>
+</html>

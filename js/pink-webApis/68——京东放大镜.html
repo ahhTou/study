@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      .wrap {
+        width: 500px;
+        height: 500px;
+        position: relative;
+      }
+      .wrap img {
+        height: 500px;
+        width: 500px;
+        position: absolute;
+      }
+      .mask {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        opacity: 0.5;
+        background-color: pink;
+        border: 1px solid #000;
+        display: none;
+        cursor: move;
+      }
+      .big {
+        position: absolute;
+        left: 510px;
+        width: 600px;
+        height: 600px;
+        background-color: pink;
+        display: none;
+        overflow: hidden;
+      }
+      .big img {
+        position: absolute;
+        width: 750px;
+        height: 750px;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <img src="./lib/img/1.JPG" alt="" />
+      <div class="mask"></div>
+      <div class="big">
+        <img src="./lib/img/1.JPG" class="bigImg" />
+      </div>
+    </div>
+    <script>
+      let $mask = document.querySelector('.mask')
+      let $big = document.querySelector('.big')
+      let $wrap = document.querySelector('.wrap')
+      $wrap.addEventListener('mouseover', function () {
+        $mask.style.display = 'block'
+        $big.style.display = 'block'
+      })
+      $wrap.addEventListener('mouseout', function () {
+        $mask.style.display = 'none'
+        $big.style.display = 'none'
+      })
+      $wrap.addEventListener('mousemove', function (e) {
+        let x = e.clientX - this.offsetLeft
+        let y = e.clientY - this.offsetTop
+        // 限制mask移动的距离
+        let maskX = x - $mask.offsetWidth / 2
+        let maskY = y - $mask.offsetHeight / 2
+        let maskMax = $wrap.offsetWidth - $mask.offsetWidth
+        if (maskX <= 0) {
+          maskX = 0
+        } else if (maskX >= maskMax) {
+          maskX = maskMax
+        }
+
+        if (maskY <= 0) {
+          maskY = 0
+        } else if (maskY >= maskMax) {
+          maskY = maskMax
+        }
+        $mask.style.left = maskX + 'px'
+        $mask.style.top = maskY + 'px'
+
+        let $bigImg = document.querySelector('.bigImg')
+        //最大移动距离
+        let bigMax = $bigImg.offsetWidth - $big.offsetWidth
+        //大图片移动距离
+        let bigX = (maskX * bigMax) / maskMax
+        let bigY = (maskY * bigMax) / maskMax
+        $bigImg.style.left = -bigX + 'px'
+        $bigImg.style.top = -bigY + 'px'
+      })
+    </script>
+  </body>
+</html>

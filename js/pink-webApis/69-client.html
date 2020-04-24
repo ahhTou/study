@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+        border: 10px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      //1.client 包含边框
+      let $div = document.querySelector('div')
+      console.log('offsetWidth', $div.offsetWidth)
+      console.log('offsetHeight', $div.offsetHeight)
+      console.log('clientWidth', $div.clientWidth)
+      console.log('clientHeight', $div.clientHeight)
+      console.log('clientTop', $div.clientTop)
+      console.log('clientLeft', $div.clientLeft)
+    </script>
+  </body>
+</html>

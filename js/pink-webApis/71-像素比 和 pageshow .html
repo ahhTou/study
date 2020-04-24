@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <script>
+      console.log('物理像素比：', window.devicePixelRatio)
+      window.addEventListener('pageshow', (e) => {
+        //针对火狐后退不会重新加载页面
+        alert('123')
+        if (e.persisted) {
+          console.log('你是从缓存来的')
+        } else {
+          console.log('你不是从缓存来的')
+        }
+      })
+    </script>
+  </body>
+</html>
