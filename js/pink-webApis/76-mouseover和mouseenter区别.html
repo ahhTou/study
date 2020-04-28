@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      .father {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+      }
+      .son {
+        width: 150px;
+        height: 150px;
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="father">
+      <div class="son"></div>
+    </div>
+    <script>
+      let $father = document.querySelector('.father')
+      let $son = document.querySelector('.son')
+      //mouseover再次经过子元素仍然会触发
+      // 原因是 mouseenter 不会 冒泡
+      // mouseover 搭配 mouseout
+      // mouseenter 搭配 mouseover
+      $father.addEventListener('mouseover', function () {
+        console.log('~~你触发了mouseover')
+      })
+      $father.addEventListener('mouseenter', function () {
+        console.log('~你触发了mouseenter')
+      })
+    </script>
+  </body>
+</html>

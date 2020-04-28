@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <script src="./82-animate.js"></script>
+    <style>
+      .sliderBar {
+        height: 50px;
+        width: 150px;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+      }
+      .logo {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        color: white;
+        position: absolute;
+        left: 100px;
+        z-index: 10;
+      }
+      .con {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 50px;
+        background-color: black;
+        color: white;
+        position: relative;
+        left: 150px;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sliderBar">
+      <div class="logo">←</div>
+      <div class="con">Apple</div>
+    </div>
+    <script>
+      let $sliderBar = document.querySelector('.sliderBar')
+      let $logo = document.querySelector('.logo')
+      let $con = document.querySelector('.con')
+      $logo.addEventListener('mouseenter', function () {
+        animate($con, 0, function () {
+          $logo.innerHTML = ''
+        })
+      })
+      $logo.addEventListener('mouseleave', function () {
+        animate($con, 150, function () {
+          $logo.innerHTML = '←'
+        })
+      })
+    </script>
+  </body>
+</html>

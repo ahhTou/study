@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <button>
+      点击我，第一个div开始运动
+    </button>
+    <div class="move"></div>
+    <div class="wow"></div>
+    <script>
+      let $btn = document.querySelector('button')
+      let $move = document.querySelector('.move')
+      let $wow = document.querySelector('.wow')
+      animate($move, 500)
+      $btn.addEventListener('click', function () {
+        //点击次数越来越多，定时器会越来越多
+        animate($wow, 1000)
+      })
+
+      function animate($obj, target) {
+        // 将 timer 添加到 obj中到一个属性
+        // 给不同元素制定了不同的定时器
+
+        //解决bug
+        clearInterval($obj.timer)
+        //
+
+        $obj.timer = setInterval(() => {
+          if ($obj.offsetLeft >= target) {
+            clearInterval(timer)
+          }
+          $obj.style.left = $obj.offsetLeft + 1 + 'px'
+        }, 30)
+      }
+    </script>
+  </body>
+</html>

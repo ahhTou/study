@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      .header {
+        height: 300px;
+        background-color: black;
+      }
+      .banner {
+        height: 400px;
+        background-color: aquamarine;
+      }
+      .main {
+        height: 1000px;
+        background-color: blueviolet;
+      }
+      .footer {
+        height: 300px;
+        background-color: pink;
+      }
+      .w {
+        width: 80%;
+      }
+      .slider-bar {
+        position: absolute;
+        top: 80%;
+        right: 50px;
+        width: 50px;
+        height: 100px;
+        background-color: gold;
+        float: right;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider-bar">
+      <span class="goBack">返回顶部</span>
+    </div>
+    <div class="header w">我是头部</div>
+    <div class="banner w">我是banner</div>
+    <div class="main w">我是主要内容</div>
+    <div class="footer w">我是尾巴</div>
+    <script>
+      // windows.pageXoffset ie9以下不兼容
+      // 
+      let $sliderBar = document.querySelector('.slider-bar')
+      let $main = document.querySelector('.main')
+      let mainTop = $main.offsetTop
+      let sliderTop = $sliderBar.offsetTop - mainTop
+      document.addEventListener('scroll', function () {
+        console.log(window.pageYOffset)
+        if (window.pageYOffset >= mainTop) {
+          $sliderBar.style.position = 'fixed'
+          $sliderBar.style.top = sliderTop + 'px'
+        } else {
+          $sliderBar.style.position = 'absolute'
+          $sliderBar.style.top = '80%'
+        }
+      })
+    </script>
+  </body>
+</html>

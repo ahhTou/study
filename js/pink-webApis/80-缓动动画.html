@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+        position: relative;
+        padding: 0px;
+        margin: 0px;
+      }
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <button>
+      点击我，第一个div开始运动
+    </button>
+    <div class="wow"></div>
+    <script>
+      let $btn = document.querySelector('button')
+      let $wow = document.querySelector('.wow')
+      let flag = 0
+      $btn.addEventListener('click', function () {
+        console.log($wow.style.left)
+        if (flag) {
+          animate($wow, 500)
+        } else {
+          animate($wow, 800)
+        }
+        flag = !flag
+      })
+
+      function animate($obj, target) {
+        clearInterval($obj.timer)
+        $obj.timer = setInterval(() => {
+          //步长公式
+          // Math.ceil 往大大取整
+          let step = (target - $obj.offsetLeft) / 10
+          step = step > 0 ? Math.ceil(step) : Math.floor(step)
+          if ($obj.offsetLeft === target) {
+            clearInterval($obj.timer)
+          } else {
+            $obj.style.left = $obj.offsetLeft + step + 'px'
+          }
+          // 匀速动画 盒子是当前的位置 + 固定指
+          // 缓动动画 盒子当前的的位置 + 变化的指（目标指 - 现在的位置/10）
+        }, 30)
+      }
+    </script>
+  </body>
+</html>

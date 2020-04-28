@@ -1,0 +1,14 @@
+1. element.offsetWidth
+  返回包括自身的padding、边框、内容的宽度、返回数值不带单位
+  常用于
+    获取元素位置 offsetLeft offsetTop
+
+2. element.clientWidth
+  返回自身包括padding、内容区的宽度、不含边框，返回设置不带单位
+  常用于
+    获取元素大小 clientWidth clientHeight
+
+3. element.scrollWidth 
+  返回自身实际的宽度，不含边框，返回数值不带单位
+  常用于
+      获取滚动距离 scrollTop scrollLeft    
