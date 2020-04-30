@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: tomato;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      let div = document.querySelector('div')
+      div.addEventListener('touchstart', function (e) {
+        console.log('触摸事件对象 ::', e)
+        console.log('有几根手指触摸就有几个touches ::', e.touches)
+        console.log('正在触摸当前dom元素的手指列表 ::', e.targetTouches)
+
+        //从有到无，或者从无到有
+        console.log('手指状态发生了改变的列表 ::', e.changedTouches)
+      })
+      div.addEventListener('touchend', function (e) {
+        console.log('改变后的changeTouches', e.changedTouches)
+        console.log('改变后的targetTouches', e.targetdTouches)
+      })
+    </script>
+  </body>
+</html>

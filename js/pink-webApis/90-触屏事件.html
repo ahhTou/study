@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        background-color: tomato;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      let div = document.querySelector('div')
+      // 1. touchstart
+      div.addEventListener('touchstart', function () {
+        console.log('被触摸了')
+      })
+      // 2. touchmove
+      div.addEventListener('touchmove', function () {
+        console.log('触摸并移动了')
+      })
+      // 3. touchend
+      div.addEventListener('touchend', function () {
+        console.log('触摸结束了')
+      })
+    </script>
+  </body>
+</html>

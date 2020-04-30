@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      body {
+        height: 400vw;
+      }
+      a {
+        position: fixed;
+        top: 100px;
+        right: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="javascript:;">返回顶部</a>
+    <script>
+      let $a = document.querySelector('a')
+      $a.addEventListener('click', function () {
+        // 1. 原生
+        // window.scroll(0, 0)
+
+        // 2.使用动画函数
+        animate(window, 0)
+      })
+
+      function animate($obj, target, callback) {
+        clearInterval($obj.timer)
+        $obj.timer = setInterval(() => {
+          let step = (target - $obj.pageYOffset) / 10
+          step = step > 0 ? Math.ceil(step) : Math.floor(step)
+          if ($obj.pageYOffset === target) {
+            clearInterval($obj.timer)
+            if (callback) {
+              callback()
+            }
+          } else {
+            window.scroll(0, window.pageYOffset + step)
+          }
+        }, 30)
+      }
+    </script>
+  </body>
+</html>

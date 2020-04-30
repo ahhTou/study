@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <script src="./82-animate.js"></script>
+  </head>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+    }
+    * {
+      list-style: none;
+      margin: 0px;
+      padding: 0px;
+    }
+    li {
+      position: relative;
+      z-index: 10;
+      border: 1px white solid;
+      text-align: center;
+      line-height: 50px;
+      width: 100px;
+      height: 50px;
+      float: left;
+      margin: 0px 10px 0px 10px;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+    .cloud {
+      width: 100px;
+      height: 50px;
+      background-color: tomato;
+      position: absolute;
+      z-index: 0;
+      opacity: 0.3;
+      box-sizing: border-box;
+    }
+    ul {
+      box-sizing: border-box;
+      border: 1px white solid;
+      height: 70px;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  <body>
+    <ul class="nav">
+      <div class="cloud"></div>
+      <li>神仙玩意</li>
+      <li>神仙玩意</li>
+      <li>神仙玩意</li>
+      <li>神仙玩意</li>
+      <li>神仙玩意</li>
+    </ul>
+    <script>
+      let $cloud = document.querySelector('.cloud')
+      let $nav = document.querySelector('.nav')
+      let lis = $nav.querySelectorAll('li')
+
+      let current = 10
+      $cloud.style.left = current + 'px'
+
+      for (let i = 0; i < lis.length; i++) {
+        lis[i].addEventListener('mouseenter', function () {
+          animate($cloud, this.offsetLeft)
+          if (i === 0) {
+            current = this.offsetLeft
+            $cloud.style.left = current + 'px'
+          }
+        })
+        lis[i].addEventListener('mouseleave', function () {
+          animate($cloud, current)
+        })
+        lis[i].addEventListener('click', function () {
+          current = this.offsetLeft
+        })
+      }
+    </script>
+  </body>
+</html>

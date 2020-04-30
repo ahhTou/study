@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <input type="text" id="demo" />
+    <div id="div">{{name}}</div>
+    <script>
+      let obj = {}
+      Object.defineProperty(obj, 'name', {
+        set: (value) => {
+          document.querySelector('#div').innerHTML = value
+          document.querySelector('#demo').value = value
+        },
+      })
+      document.querySelector('#demo').oninput = (e) => {
+        obj.name = e.target.value
+      }
+      obj.name = ''
+    </script>
+  </body>
+</html>
