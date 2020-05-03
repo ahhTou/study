@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <style>
+    div {
+      display: none;
+      position: fixed;
+      right: 10px;
+      bottom: 50px;
+      height: 50px;
+      width: 50px;
+      background-color: pink;
+    }
+    body {
+      height: 2000px;
+    }
+  </style>
+  <body>
+    <div></div>
+    <script>
+      let $div = document.querySelector('div')
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset >= 200) {
+          $div.style.display = 'block'
+        } else {
+          $div.style.display = 'none'
+        }
+      })
+      $div.addEventListener('click', function () {
+        window.scroll(0, 0)
+      })
+    </script>
+  </body>
+</html>

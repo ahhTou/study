@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <style>
+      .bg {
+        background: #000;
+      }
+      .b {
+        border: 1px solid #000;
+        width: 300px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <button>点我切换</button>
+    <div class="a b c d"></div>
+    <script>
+      let $div = document.querySelector('div')
+      // 1.返回类名
+      console.log($div.classList)
+
+      // 2.追加类名
+      $div.classList.add('e')
+      console.log($div.classList)
+
+      // 3.移除类名
+      $div.classList.remove('a')
+      console.log($div.classList)
+
+      // 4.切换类名
+      let $btn = document.querySelector('button')
+      $btn.addEventListener('click', function () {
+        //有则删除， 无则添加
+        $div.classList.toggle('bg')
+      })
+    </script>
+  </body>
+</html>

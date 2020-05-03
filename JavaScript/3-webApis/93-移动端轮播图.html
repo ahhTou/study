@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <script src="./94-轮播图.js"></script>
+    <style>
+      * {
+        list-style: none;
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .focus {
+        margin: 50px;
+        overflow: hidden;
+        position: relative;
+        width: 720px;
+        height: 455px;
+        border-radius: 10px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+      }
+      .focus ul {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 500%;
+      }
+      .focus ul li {
+        float: left;
+      }
+      .focus ul li div {
+        width: 720px;
+        height: 455px;
+      }
+      li:nth-child(1) div {
+        background-color: #95e1d3;
+      }
+      li:nth-child(2) div {
+        background-color: #eaffd0;
+      }
+      li:nth-child(3) div {
+        background-color: #fce38a;
+      }
+      li:nth-child(4) div {
+        background-color: #f38181;
+      }
+      li:nth-child(5) div {
+        background-color: #95e1d3;
+      }
+      li:nth-child(6) div {
+        background-color: #eaffd0;
+      }
+      ol li {
+        margin: 5px;
+        width: 15px;
+        height: 15px;
+        border: 2px black solid;
+        float: left;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .current {
+        background-color: black;
+      }
+      ol {
+        bottom: 0%;
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="focus">
+      <ul>
+        <li><div></div></li>
+        <li><div></div></li>
+        <li><div></div></li>
+        <li><div></div></li>
+        <li><div></div></li>
+      </ul>
+      <ol class="ol">
+        <li class="current"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ol>
+    </div>
+  </body>
+</html>
