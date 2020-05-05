@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      let $div = document.querySelector('div')
+
+      // 1. 获取元素 常用方法 document可以是其他document实例
+      document.getElementById('')
+      document.getElementsByClassName('')
+      document.querySelector('')
+      document.querySelectorAll('')
+
+      // 2.事件触发
+      $div.onclick = function () {}
+      $div.addEventListener('click', function () {})
+      $div.addEventListener('touchstart', function () {})
+      $div.addEventListener('touchmove', function () {})
+      $div.addEventListener('touchend', function () {})
+
+      // 3.修改内容
+      $div.innerHTML = ''
+      $div.innerText = ''
+
+      // 4.自定义属性 p18 p20
+      $div.setAttribute('', 0)
+      $div.getAttribute('')
+      $div.dataset('')
+
+      // 5.父子节点
+      $div.parentNode
+      $div.childNodes
+      $div.children
+      $div.firstChild
+      $div.lastChild
+      $div.lastElementChild
+      $div.firstElementChild
+
+      // 6.兄弟节点 p23
+      $div.nextSibling //包含文本等其他节点
+      $div.previousSibling
+      $div.nextElementSibling
+      $div.previousElementSibling
+
+      // 7.创建节点
+      $div.innerHTML = '' // 使用字符串拼接效率最低 , 数组效率最高
+      document.createElement('') // 效率比比 innerHTML略低一些
+
+      // 8.删除节点
+      $div.removeChild
+
+      // 9.克隆节点
+      $div.cloneNode()
+      $div.cloneNode(true) //深拷贝，拷贝 里面的内容
+
+      // 10.事件对象
+      $div.addEventListener('click', function (e) {
+        e.target // 当前点击的对象
+        e.currentTarget // 相当于this
+        e.type
+        e.preventDefault()
+      })
+
+      // 11.window 常见对象
+      window.onload = function () {}
+      window.addEventListener('load', () => {})
+      window.addEventListener('DOMContentLoaded', function () {})
+      window.addEventListener('resize', () => {})
+
+      // 12.计时器
+      let timer1 = setInterval(() => {}, 1000)
+      let timer1 = setTimeout(() => {}, 1000)
+
+      // 13.location
+      location.assign('') //跳转
+      location.replace('') //覆盖
+      location.reload() //刷新
+
+      // 14.history
+      history.back()
+      history.forward()
+      history.go(1)
+
+      // 15.navigator
+      navigator //浏览器信息
+
+      // 16.只读属性
+      $div.offsetHeight
+      $div.offsetWidth
+      $div.offsetLeft
+      $div.offsetTop
+      $div.offsetParent
+
+      $div.clientHeight
+      $div.clientWidth
+      $div.clientLeft
+      $div.clientTop
+
+      $div.scrollHeight
+      $div.scrollWidth
+      $div.scrollLeft
+      $div.scrollTop
+
+      // 17.立即执行函数
+      ;(function (a) {
+        console.log('第一种方法  参数：', a)
+      })(1)
+      ;(function sum(a, b) {
+        console.log('第二种方法 参数相加：', a + b)
+      })(1, 2)
+    </script>
+  </body>
+</html>
