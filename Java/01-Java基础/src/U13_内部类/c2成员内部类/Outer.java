@@ -1,0 +1,24 @@
+package U13_内部类.c2成员内部类;
+
+public class Outer {
+    private int num = 10;
+//    非 常用写法
+//    public class Inner {
+//        public void show() {
+//            System.out.println(num);
+//        }
+//    }
+
+    private class Inner {
+        public void show() {
+            System.out.println(num);
+        }
+    }
+
+    public void method() {
+        Inner i = new Inner();
+        i.show();
+    }
+
+
+}
