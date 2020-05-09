@@ -12,7 +12,7 @@ public class CopyFolderDemo {
 
         // 创建目的地目录的file对象
         File destFolder = new File(
-                "./src/U17_文件/c3_字符流/c4_综合实例/c2_单级文件夹复制/Copy"
+                "./src/U17_文件/c3_字符流/c4_综合实例/c2_单级文件夹复制/Copy", srcFolderName
         );
 
         if (!destFolder.exists()) {
