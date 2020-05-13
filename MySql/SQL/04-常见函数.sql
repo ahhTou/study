@@ -66,8 +66,119 @@ SELECT RPAD('ahhTou',10,'*') AS output;
 SELECT REPLACE('ProahhTouPro','Pro','Pro你妈呢，傻狗') AS out_put;
 
 
-SHOW VARIABLES LIKE '%char%' # 2.数学函数
+SHOW VARIABLES LIKE '%char%' ;
+
+
+
+# 2.数学函数
+
+# 1.round 四舍五入
+SELECT ROUND(1.45);
+SELECT ROUND(1.453,1);
+
+# 2.ceil 向上取整
+SELECT CEIL(1.02);
+
+# 3.floor 向下取整
+SELECT CEIL(1.02);
+
+# 4.truncate 截断
+SELECT TRUNCATE(1.59999,1);
+
+# 5.mod 取余 mod(a,b) a-a/b*b
+SELECT MOD(10,-3);
+
+
+
 # 3.日期函数
+# now 返回当前系统时间 + 时间
+SELECT NOW();
+
+# curdata 返回当前系统日期，不包含时间
+SELECT CURDATE();
+
+# curtime 返回当前时间 ，不包含日期
+SELECT CURTIME();
+
+# 可以获取指定的部分，年、月、日、小时、分钟、秒
+SELECT YEAR(NOW());
+SELECT YEAR('1999-1-1');
+
+SELECT YEAR(hiredate) AS 年 FROM employees;
+
+SELECT MONTH(NOW()) 月;
+SELECT MONTHNAME(NOW()) 月;
+
+
+#str_to_data 讲指定的格式转化成日期
+
+SELECT STR_TO_DATE('1998-3-2','%Y-%c-%d') AS out_put;
+
+# 查询入职日期为1992-4-3员工日期
+SELECT * FROM employees WHERE hiredate = '1992-4-3';
+SELECT * FROM employees WHERE hiredate = STR_TO_DATE('4-3 1992', '%c-%d %Y');
+
+#date_format 将日期转换成字符串
+SELECT DATE_FORMAT(NOW(),'%y年%月%日') AS out_put;
+
+#查询有奖金的员工名和入职日期（xx月/xx日 xx年）
+SELECT last_name, DATE_FORMAT(hiredate, '%m月/%d日 %Y年') AS 入职日期
+FROM employees
+WHERE commission_pct IS NOT NULL;
+
+
+
 # 4.其他函数【补充】
+# 查看数据库版本
+SELECT VERSION();
+# 查看当前数据库
+SELECT DATABASE();
+# 查看用户
+SELECT USER();
+
 # 5.流程控制函数【补充】
+# 1. if 函数 ：if else 的效果
+SELECT IF(10>5, '大','小');
+
+SELECT last_name,commission_pct, IF(commission_pct IS NULL,'没奖金，呵呵', '有奖金，嘻嘻') AS 备注
+FROM employees;
+
+# 2 . case 函数的使用一：类似switch case
+
+/*案例 查询员工的工资要求
+部门号=30; 显示的工资为1.1倍
+部门号=40; 显示的工资为1.2倍
+部门号=50; 显示的工资为1.3倍
+其他部门，显示的工资为原来的
+*/
+SELECT salary AS 原始工资,department_id,
+CASE department_id
+WHEN 30 THEN salary*1.1
+WHEN 40 THEN salary*1.2
+WHEN 50 THEN salary*1.3
+ELSE salary
+END AS 新工资
+FROM employees;
+
+# 2 . case 函数的使用二：类似多重if
+
+# 案例：查询员工的工资情况
+/*
+如果工资>20000,显示A级别
+如果工资>15000,显示B级别
+如果工资>10000,显示C级别
+否者 显示D级别
+*/
+
+SELECT salary,
+CASE
+WHEN salary>20000 THEN 'A'
+WHEN salary>15000 THEN 'B'
+WHEN salary>10000 THEN 'c'
+ELSE 'D'
+END AS 工资级别
+FROM employees;
+
+
+
  
