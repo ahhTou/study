@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--创建约束-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--    把对象的创建交给spring来管理-->
+    <!--spring对bean的管理细节
+        1.创建bean的三种方式
+        2.bean对象的作用范围
+        3.bean对象的生命周期
+    -->
+
+    <!--创建bean的三种方式-->
+    <!--第一种，使用默认的构造函数创建
+            在spring的配置文件中使用bean标签，配以id和class属性和标签之后
+            采用的就是默认构造函数创建bean对象，此时如果类中没有默认构造函数
+            则对象无法创建
+    -->
+    <bean
+            id="accountService"
+            class="U4_Bean.impl.AccountServiceImpl"
+    />
+
+    <!--第二种方式，使用普通工厂中的方法创建对象
+       （使用某个类中的方法创建对象，并存入spring容器）
+       相当于：实例化一个工厂，然后调用
+     -->
+    <bean id="instanceFactory" class="U4_Bean.factory.InstanceFactory"/>
+
+    <bean id="accountService2" factory-bean="instanceFactory"
+          factory-method="getAccountService"/>
+
+    <!--第三种方式 使用工厂中的静态方法创建对象
+                （使用某个类中的静态方法创建对象，并存入spring容器）
+         相当于：因为是静态方法，所以无需调用
+     -->
+    <bean id="accountService3" class="U4_Bean.factory.StaticFactory"
+          factory-method="getAccountService"
+          scope="prototype"
+    />
+
+    <!-- bean的作用范围
+     bean标签的scope作用范围
+        作用：用于指定bean的作用范围
+        取值：
+            singleton:单例的（默认）
+            prototype:多例的
+            request:作用于web应用的请求范围
+            session:作用web应用的会话返回
+            global-session:
+                            作用于集群环境的会话范围（全局会话范围）
+                            当不是集群范围时，他就是session
+     -->
+
+
+    <!--bean的生命周期
+        单例对象
+            出生：当容器创建对象时出生
+            活着：容器还在，对象就活着
+            死亡：容器销毁
+            总结：单例对象的生命周期和容器相同
+        多例对象
+            出生：当我们使用spring框架为我们创建对象时
+            活着：对象只要是在使用过程中就一直存活
+            死亡：当对象长时间不用，且没有别的对象引用是，由java垃圾回收器回收
+            总结：和普通对象生命周期类似
+     -->
+
+    <bean id="accountService4" class="U4_Bean.factory.StaticFactory"
+          factory-method="getAccountService"
+          scope="prototype"
+          init-method="init"
+          destroy-method="destroy"
+    />
+
+</beans>

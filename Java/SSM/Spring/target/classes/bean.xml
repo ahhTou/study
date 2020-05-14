@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--创建约束-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--    把对象的创建交给spring来管理-->
+    <!--    id 唯一标识-->
+    <!--    class 权限名-->
+    <bean id="accountService" class="U3_KonwSpring.impl.AccountServiceImpl"></bean>
+
+    <bean id="accountDao" class="U3_KonwSpring.impl.AccountDaoImpl"></bean>
+</beans>
