@@ -356,8 +356,239 @@ xml
 
 #### Spring中IOC的常用注解
 
+##### 准备
+
+> 需要在bean.xml中撇子
+
+xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--        告知spring创建容器时，要扫描的包
+            配置所需要的标签不是在beans的约束中，而是一个名为
+            context名称空间和约束中
+        -->
+    <context:component-scan base-package="U6_IOC">
+
+    </context:component-scan>
+</beans>
+```
+
+##### 用户创建对象的注解
+
+| 注解        | 作用                             | 属性                     |
+| ----------- | -------------------------------- | ------------------------ |
+| @Component  | 用于把当前类对象存入spring容器中 | value 用于指定bean 的 id |
+| @Controller | 同上，一般用于表现层             |                          |
+| @Service    | 同上，一般用于业务层             |                          |
+| @Repository | 同上，一般用于持久层             |                          |
+
+> 以上注解他们的作用和属性和Component是一模一样的
+>
+>  * 他们三个是Spring框架为我们体用明确的三层使用
+>  * 使我们三层对象更加清晰
+
+实例
+
+```java
+@Component(value = "accountService")
+public class AccountServiceImpl implements IAccountService {
+}
+
+@Repository("accountDao")
+public class AccountDaoImpl implements IAccountDao {
+}
+```
+
+##### 用于注入数据的注解
+
+| 注解       | 作用                                                         | 属性                                                         |
+| ---------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| @Autowired | 自动按照类型注入。 <br /> 1. 只要容器中唯一有一个bean对象类型和要注入的变量类型匹配,就可以注入成功 <br />2. 如果ioc容器中没有任何bean的类型和要注入的变量类型匹配，则报错 *<br />3. 如果有多个类型匹配时，会先按照类型匹配，再按照变量名匹配 |                                                              |
+| @Qualifier | 在按照类中注入的基础之上再按照名称注入。它在给类成员注入时不能单独使用。 但是在给方法参数注入时可 | value :用于注入bean的id *<br />必须和Autowired配合           |
+| @Resource  | 直接按照bean的id注入，可以独立使用                           | name：用于指定bean的id                                       |
+| @Value     | 作用：用于注入基本类型和String类型的数据                     | * value：用于指定数据的值，他可以使用Spring 中 的SpEl(Spring中的el表达式) <br />*SpEl的表达式：${表达式} |
+
+实例
+
+```java
+	@Autowired
+	@Qualifier("accountDao1")
+	private IAccountDao accountDao;
+
+// 效果相同
+
+    @Resource(name = "accountDao1")
+    private IAccountDao accountDao;
+```
+
+##### 用于改变作用范围
+
+> 他们的作用集合bean标签中的scope属性实现的功能是一样的
+
+实例
+
+```java
+@Component(value = "accountService")
+@Scope("prototype")
+public class AccountServiceImpl implements IAccountService {
+}
+```
+
+##### 和生命周期有关
+
+> 他们的作用和bean标签中使用的init-method和destroy-method的作用是一样的
+
+| @PreConstruct | @PreDestroy        |
+| ------------- | ------------------ |
+| 指定销毁方法  | 用于指定初始化方法 |
+
+实例
+
+```java
+@PostConstruct
+public void init() {
+    System.out.println("初始化");
+}
+
+@PreDestroy
+public void destroy() {
+    System.out.println("销毁");
+}
+```
+
 #### 案例中使用xml和注解方式实现单表的CRUD操作
 
+> 参照 U8_demo_IOC 包下 
+
 #### 改造基于注解的IOC的案例,使用纯注解的方式实现
+
+> 参照 U9_to_solve_U8_xml 下
+
+##### 准备
+
+> 创建一个类 如`SpringConfiguration`
+
+```java
+@Configuration
+@ComponentScan("U9_to_solve_U8_xml")
+@Import(JdbcConfig.class)
+@PropertySource("classpath:jdbcConfig.properties")
+public class SpringConfiguration {
+}
+```
+
+修改获得容器的方式,从xml改为class引入
+
+```java
+	ApplicationContext ac = new ClassPathXmlApplicationContext("U9_bean.xml");
+	
+	ApplicationContext ac = new
+            AnnotationConfigApplicationContext(SpringConfiguration.class);
+	//	AnnotationConfigApplicationContext 可以传入多个config类文件
+```
+
+##### 全部注解
+
+| 注解            | 作用                                              | 属性                                                         | 细节                                                         |
+| --------------- | ------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| @Configuration  | 指定当前类是一个配置类                            |                                                              | 配置类作为AnnotationConfigApplicationContext对象创建参数时，该注解可以不写 |
+| @ComponentScan  | 通过注解指定spring在创建容器是要扫描的包          | value 和 basePackages作用是一样的                            |                                                              |
+| @Bean           | 用于把当前方法的返回值作为bean对象存入ioc的容器中 | name:用于指定bean的id，默认值，当前方法的名称                | 细节当我们使用注解配置方法是，如果有参数，spring框架回去容器中查找有用的bean对象， 查找方式和Autowired注解的作用是一样的 |
+| @Import         | 用于导入其他的配置类                              | value 用于指定其他配置类的字节码                             | 当我们使用Import的注解后，有Import注解的类就是父配置类，而导入的都是子配置类 |
+| @PropertySource | 用于指定properties文件的位置                      | value:指定文件的名称和路径<br />关键字：classpath标识类路径下 |                                                              |
+
+##### 替代扫描
+
+| 场景 | 写法                                                    |
+| ---- | ------------------------------------------------------- |
+| 单个 | @ComponentScan(basePackages = "package1")               |
+| 多个 | @ComponentScan(basePackages = {"package1", "package2"}) |
+| 简写 | @ComponentScan("package1")                              |
+
+##### 替代注入
+
+> 函数中有参数，Spirng会根据参数名自动注入
+
+xml
+
+```xml
+<!--    配置QueryRunner-->
+<bean id="runner" class="org.apache.commons.dbutils.QueryRunner" scope="prototype">
+    <!--        注入数据源-->
+    <constructor-arg name="ds" ref="dataSource"/>
+</bean>
+
+<!--    配置数据源-->
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+    <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/eesy?serverTimezone=GMT%2B8"/>
+    <property name="user" value="root"/>
+    <property name="password" value="123"/>
+</bean>
+```
+
+class
+
+```java
+@Bean(name = "runner")
+@Scope("prototype")
+public QueryRunner createQueryRunner(DataSource dataSource) {
+    return new QueryRunner(dataSource);
+}
+
+@Bean(name = "dataSource")
+public DataSource createDataSource() {
+    ComboPooledDataSource ds = new ComboPooledDataSource();
+    try {
+        ds.setDriverClass(driver);
+        ds.setJdbcUrl(url);
+        ds.setUser(username);
+        ds.setPassword(password);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ds;
+}
+```
+
+##### 导入其他配置类
+
+```java
+@Import(JdbcConfig.class)
+```
+
+导入配置文件
+
+主配置类
+
+```java
+@PropertySource("classpath:jdbcConfig.properties")
+```
+
+使用中
+
+```java
+@Value("${jdbc,driver}")
+private String driver;
+
+@Value("${jdbc.url}")
+private String url;
+
+@Value("${jdbc.username}")
+private String username;
+
+@Value("${jdbc.password}")
+private String password;
+```
 
 #### spring 和 Junit的整合

@@ -1,7 +1,5 @@
 package U6_IOC.ui;
-
-import U4_Bean.impl.IAccountService;
-import U6_IOC.dao.IAccountDao;
+import U6_IOC.dao.IAccountService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Client {
@@ -12,9 +10,9 @@ public class Client {
                 "U6_bean.xml"
         );
         IAccountService as1 = (IAccountService) ac.getBean("accountService");
-        as1.saveAccount();
-
-        IAccountDao adao = (IAccountDao) ac.getBean("accountDao");
-        System.out.println(adao);
+        IAccountService as2 = (IAccountService) ac.getBean("accountService");
+//        as.saveAccount();
+        System.out.println(as1 == as2);
+        ac.close();
     }
 }
