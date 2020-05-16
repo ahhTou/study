@@ -592,3 +592,226 @@ private String password;
 ```
 
 #### spring 和 Junit的整合
+
+##### 准备
+
+pom.xml
+
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+</dependency>
+```
+
+##### 说明
+
+> Spring整合junit的配置
+> 1.导入spring整合junit的jar包（坐标）
+> 2.使用Junit提供的一个注解把原有的注解，替换成Spring提供的
+
+
+> **当我们使用spring 5.x版本的时候，要求junit的jar包必须是4.12及以上**
+
+##### 注解
+
+| @Runwith                                                     | @ContextConfiguration                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 告知spring运行期，spring和ioc创建是基于xml还是注解，并说明位置 | locations：指定xml文件的位置，加上classpath关键字，标识在该类下 |
+|                                                              | classes：指定注解类所在的位置                                |
+
+```java
+// 基于ioc
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringConfiguration.class)
+    @Autowired
+    private final IAccountService as = null;
+```
+
+##### 替代
+
+```java
+ApplicationContext ac = new
+        AnnotationConfigApplicationContext(SpringConfiguration.class);
+IAccountService as = ac.getBean(
+        "accountService",
+        IAccountService.class
+);
+```
+
+```java
+@Autowired
+private final IAccountService as = null;
+```
+
+### AOP
+
+#### 完善案例
+
+> 参照 U10_to_improve_U7 
+>
+> 添加 转账功能
+
+#### 分析案例问题
+
+> 多条Sql语句创建多个连接，导致数据不安全
+>
+> 使用SQL事务管理，导致代码冗余
+>
+> 解决办法：动态代理
+
+#### 回顾之前讲过的一个技术：动态代理
+
+> 动态代理
+>
+> 特点：字节码随用随创建，随用随加载
+>
+> 作用：不修改源码上的基础上对方法增强
+
+|                    | 基于接口的动态代理              | 基于子类接口的动态代理 |
+| ------------------ | ------------------------------- | ---------------------- |
+| 来源               | JDK官网                         | 第三方cglib库          |
+| 涉及的类           | Proxy                           | Enhancer               |
+| 如何创建代理对象   | 使用Proxy类中的newProxyInstance | 使用Enhancer中的create |
+| 创建代理对象的要求 | 被代理类不能是最终类            | 被代理类不能是最终类   |
+
+#####  基于接口的动态代理
+
+参数
+
+| 类名              | 描述               | 作用                                                         |
+| ----------------- | ------------------ | ------------------------------------------------------------ |
+| ClassLoader       | 类加载器           | 用于加载代理对象字节码。和被代理对象使用相同的类加载器。固定写法 |
+| Class[]           | 字节码数组         | 用于让代理对象和被代理对象有相同的方法。固定写法             |
+| InvocationHandler | 用于提供增强的代码 | 他是让我们如何鞋代理。我们一般都是写一个该类的实现类 *      通常都是匿名内部类 *      此接口的实现类都是谁用谁写 |
+
+| InvocationHandler的参数 | 描述                         |
+| ----------------------- | ---------------------------- |
+| Object proxy            | 代理对象的引用               |
+| Method method           | 当前执行的方法               |
+| Object[] args           | 当前执行方法所需的参数       |
+| return                  | 和当前代理对象有相同的返回值 |
+
+实例
+
+```java
+// 1.创建被代理对象实例
+final Producer producer = new Producer();
+
+// 2.创建代理对象
+IProducer proxyProducer = (IProducer) Proxy.newProxyInstance(
+    
+    // ClassLoader
+    producer.getClass().getClassLoader(),
+    // Class[]
+    producer.getClass().getInterfaces(),
+    
+    // InvocationHandler
+        new InvocationHandler() {
+            /**
+             * 作用，被代理对象的所有接口方法都会经过该方法
+             * @param proxy     代理对象的引用
+             * @param method    当前执行的方法
+             * @param args      当前执行方法所需的参数
+             * @return 和当前代理对象有相同的返回值
+             * @throws Throwable
+             */
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                // 提供增强的代码
+                Object returnValue = null;
+                // 1.获取方法的执行参数
+                Float money = (Float) args[0];
+                // 2.判断当前方法是不是销售
+                if ("saleProduct".equals(method.getName())) {
+                    returnValue = method.invoke(producer, money*0.8f);
+                }
+                return returnValue;
+            }
+        }
+);
+
+// 3.使用代理方法
+proxyProducer.saleProduct(10000f);
+```
+
+##### 基于子类接口的动态代理
+
+参数
+
+| 类名     | 描述               | 作用                                                         |
+| -------- | ------------------ | ------------------------------------------------------------ |
+| Class    | 字节码             | 指定被代理对象的字节码                                       |
+| Callback | 用于提供增强的代码 | 他是让我们如何鞋代理。我们一般都是写一个该类的实现类，通常都是匿名内部类，此接口的实现类都是谁用谁写，我们一般写的都是该接口的子接口实现类MethodInterceptor |
+
+| InvocationHandler的参数 | 描述                   |
+| ----------------------- | ---------------------- |
+| Object proxy            | 代理对象的引用         |
+| Method method           | 当前执行的方法         |
+| Object[] args           | 当前执行方法所需的参数 |
+| MethodProxy methodProxy | 当前执行的代理对象     |
+
+实例
+
+```java
+final Producer producer = new Producer();
+		// 1.创建被代理子类的实例
+        final Producer producer = new Producer();
+
+		// 2.创建代理
+        Producer cglibProducer =  (Producer) Enhancer.create(
+                producer.getClass(),
+                new MethodInterceptor() {
+                    /**
+                     * 执行被代理对象的任何方法都会经过该方法
+                     * @param proxy
+                     * @param method
+                     * @param args
+                     * 以上参数和基于接口的动态代理中的invoke方法的参数是一样的
+                     * @param methodProxy 当前执行的代理对象
+                     * @return
+                     * @throws Throwable
+                     */
+                    @Override
+                   public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+                        // 提供增强的代码
+                        Object returnValue = null;
+                        // 1.获取方法的执行参数
+                        Float money = (Float) args[0];
+                        // 2.判断当前方法是不是销售
+                        if ("saleProduct".equals(method.getName())) {
+                            returnValue = method.invoke(producer, money*0.8f);
+                        }
+                        return returnValue;
+                    }
+                }
+
+        );
+		
+		// 3.使用
+        cglibProducer.saleProduct(12000f);
+```
+
+#### 动态代理的一个实现方式
+
+pom.xml
+
+```xml
+<dependency>
+    <groupId>cglib</groupId>
+    <artifactId>cglib</artifactId>
+    <version>2.1_3</version>
+</dependency>
+```
+
+
+
+#### 解决案例中的问题
+
+#### AOP的概念
+
+#### Spring中的AOP相关术语
+
+#### Spring中基于XML的注解和AOP配置
+
