@@ -809,9 +809,200 @@ pom.xml
 
 #### 解决案例中的问题
 
+> 使用动态代理
+
 #### AOP的概念
 
 #### Spring中的AOP相关术语
 
 #### Spring中基于XML的注解和AOP配置
 
+##### 基本配置
+
+xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+</beans>
+```
+
+pom.xml
+
+```xml
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.7.4</version>
+</dependency>
+```
+
+
+
+##### 基本结构
+
+```xml
+<!-- 配置AOP -->
+<aop:config>
+    
+    <!-- 配置切面表达式 -->
+    <aop:pointcut id="pt1" expression="execution(*  U12_AOP.service.impl.*.*(..))"/>
+    
+    <!-- 配置切面 -->
+    <aop:aspect id="logAdvice" ref="logger">
+    
+        <!-- 配置通知类 -->
+        <aop:before method="beforePrintLog" pointcut-ref="pt1"/>
+        <aop:after-returning method="afterReturnPrintLog" pointcut-ref="pt1"/>
+        <aop:after-throwing method="afterThrowingPrintLog" pointcut-ref="pt1"/>
+        <aop:after method="afterPrintLog" pointcut-ref="pt1"/>
+    
+    </aop:aspect>
+    
+</aop:config>
+```
+
+##### 切入点表达式
+
+| 属性   | 内容                                            |
+| ------ | ----------------------------------------------- |
+| 关键字 | execution(表达式)                               |
+| 表达式 | 访问修饰符   返回值     包名.包名...类名.方法名 |
+
+```
+标准的表达式方法写法:
+    public void U12_AOP.service.impl.IAccountServiceImpl.saveAccount()
+    访问修饰符可以省略
+        void U12_AOP.service.impl.IAccountServiceImpl.saveAccount()
+    返回值可以试用通配符，表示返回任意值
+        * U12_AOP.service.impl.IAccountServiceImpl.saveAccount()
+    包名可以试用通配符，表示任意包,但是有几级包就要几个星
+        * *.*.*.IAccountServiceImpl.saveAccount()
+    包名可以试用..表示当前包以及其子包
+        * *..IAccountServiceImpl.saveAccount()
+    类名和方法名都可以试用星来表示
+        * *..*.saveAccount()
+        * *..*.*()
+    参数列表
+        可以直接写数据类型
+        * *..*.*(int)
+            基本类型直接写名称          -> int
+            引用类新写包名.类名的方式     -> java.lang.String
+        可以试用通配符表示任意类型，但必须有参数
+        * *..*.*(*)
+        可以试用..表示有无参数均可,有参数可以是任意类型
+        * *..*.*(..)
+全通配写法：
+    * *..*.*(..)
+
+实际开发中切入点表达式的通常写法：
+    切到业务类下的所有方法
+    *  U12_AOP.service.impl.*.*(..)
+```
+
+##### 常用标签
+
+| 标签                | 作用             | 属性                                                         |
+| ------------------- | ---------------- | ------------------------------------------------------------ |
+| aop:config          | 配置AOP          | 包含多个 aop:aspect                                          |
+| aop:aspect          | 配置切面         | 包含以下所有<br />id属性：给切面一个提供一个唯一标识 <br />ref属性：指定通知类bean的ID |
+| aop:pointcut        | 配置切入点表达式 | id：唯一标识符<br />expression：指定表达式的内容             |
+| aop:before          | 前置通知         | method、pointcut、pointcut-ref                               |
+| aop:after-returning | 后置通知         | method、pointcut、pointcut-ref                               |
+| aop:after-throwing  | 异常通知         | method、pointcut、pointcut-ref                               |
+| aop:after           | 最终通知         | method、pointcut、pointcut-ref                               |
+| aop:around          | 环绕通知         | method、pointcut、pointcut-ref                               |
+
+
+
+##### 标签属性
+
+###### aop:aspect
+
+| id                         | ref                |
+| -------------------------- | ------------------ |
+| 给切面一个提供一个唯一标识 | 指定通知类bean的ID |
+
+```xml
+<!-- 通知bean类 -->
+<bean id="logger" class="U12_AOP.utils.logger">
+
+<aop:config>
+    <aop:aspect id="logAdvice" ref="logger">
+    </aop:aspect>
+</aop:config>
+```
+
+
+
+###### aop:pointcut
+
+| id                   | expression       |
+| -------------------- | ---------------- |
+| 指定表达式的唯一标识 | 指定表达式的内容 |
+
+```xml
+<aop:pointcut id="pt1" expression="execution(*  U12_AOP.service.impl.*.*(..))"/>
+```
+
+>             此标签写在as:aspect标签只能当前切面使用
+>             它还可以写在aop:aspect外面，此时就变成了所有切面可用
+
+###### 通知类
+
+| method       | pointcut         | pointcut-ref         |
+| ------------ | ---------------- | -------------------- |
+| 提供方法名称 | 提供切入点表达式 | 提供aop:pointcut的id |
+
+```xml
+<!-- 讲切入点表达式写在内部 -->
+<aop:before method="beforePrintLog" pointcut="execution(* *..*.*(..))"/>
+
+<!-- 讲切入点表达式写在外部部 -->
+<aop:before method="beforePrintLog" pointcut-ref="pt1"/>
+<aop:pointcut id="pt1" expression="execution(*  U12_AOP.service.impl.*.*(..))"/>
+
+```
+
+##### 环绕通知
+
+> spring中的环绕通知：它是spring框架为我们]提供的一种可以在代码中手动控制增强方法何时使用的方式
+
+| 使用接口            | 使用接口的方法 |
+| ------------------- | -------------- |
+| ProceedingJoinPoint | proceed()      |
+
+logger
+
+```java
+public Object aroundPrintLog(ProceedingJoinPoint pjb) {
+    Object reValue = null;
+    
+    try {
+        Object[] args = pjb.getArgs();
+        System.out.println("-> 前置通知");
+        
+        // 方法
+        reValue = pjb.proceed(args);
+
+        System.out.println("-> 后置通知");
+        return reValue;
+    } catch (Throwable throwable) {
+        System.out.println("-> 异常通知");
+        throw new RuntimeException(throwable);
+
+    } finally {
+        System.out.println("-> 最终通知");
+    }
+}
+```
+
+```xml
+<aop:around method="aroundPrintLog" pointcut-ref="pt1" />
+```
