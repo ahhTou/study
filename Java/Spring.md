@@ -647,13 +647,15 @@ private final IAccountService as = null;
 
 ### AOP
 
-#### 完善案例
+#### 引子
+
+##### 完善案例
 
 > 参照 U10_to_improve_U7 
 >
 > 添加 转账功能
 
-#### 分析案例问题
+##### 分析案例问题
 
 > 多条Sql语句创建多个连接，导致数据不安全
 >
@@ -661,7 +663,7 @@ private final IAccountService as = null;
 >
 > 解决办法：动态代理
 
-#### 回顾之前讲过的一个技术：动态代理
+##### 回顾之前讲过的一个技术：动态代理
 
 > 动态代理
 >
@@ -793,7 +795,7 @@ final Producer producer = new Producer();
         cglibProducer.saleProduct(12000f);
 ```
 
-#### 动态代理的一个实现方式
+##### 动态代理的一个实现方式
 
 pom.xml
 
@@ -807,17 +809,11 @@ pom.xml
 
 
 
-#### 解决案例中的问题
+##### 解决案例中的问题
 
 > 使用动态代理
 
-#### AOP的概念
-
-#### Spring中的AOP相关术语
-
-#### Spring中基于XML的注解和AOP配置
-
-##### 基本配置
+#### AOP的基本配置
 
 xml
 
@@ -843,7 +839,7 @@ pom.xml
 </dependency>
 ```
 
-
+#### Spring中基于XML的注解
 
 ##### 基本结构
 
@@ -919,8 +915,6 @@ pom.xml
 | aop:after           | 最终通知         | method、pointcut、pointcut-ref                               |
 | aop:around          | 环绕通知         | method、pointcut、pointcut-ref                               |
 
-
-
 ##### 标签属性
 
 ###### aop:aspect
@@ -938,8 +932,6 @@ pom.xml
     </aop:aspect>
 </aop:config>
 ```
-
-
 
 ###### aop:pointcut
 
@@ -1005,4 +997,408 @@ public Object aroundPrintLog(ProceedingJoinPoint pjb) {
 
 ```xml
 <aop:around method="aroundPrintLog" pointcut-ref="pt1" />
+```
+
+#### 基于注解
+
+##### 非完全注解
+
+###### 准备
+
+xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 配置spring创建容器是要扫描的包 -->
+    <context:component-scan base-package="U13_Annotation_AOP"/>
+
+    <!-- 配置Spring开启注解AOP的支持 -->
+    <aop:aspectj-autoproxy/>
+
+</beans>
+```
+
+##### 切面注释
+
+###### 声明切面
+
+```java
+@Component("logger")
+@Aspect //标识当前类是一个切面类
+public class logger {
+}
+```
+
+###### 声明一个切入点表达式
+
+```java
+@Pointcut("execution(*  U13_Annotation_AOP.service.impl.*.*(..))")
+private void pt1(){
+}
+```
+
+###### 通知注解
+
+| 通知类型 | 注解                |
+| -------- | ------------------- |
+| 前置通知 | @Before("")         |
+| 后置通知 | @AfterReturning("") |
+| 异常通知 | @AfterThrowing("")  |
+| 最终通知 | @After("")          |
+| 环绕通知 | Around("")          |
+
+###### 实例
+
+```java
+@Component("logger")
+@Aspect //标识当前类是一个切面类
+public class logger {
+	
+    // 声明一个切入点表达式
+    @Pointcut("execution(*  U13_Annotation_AOP.service.impl.*.*(..))")
+    private void pt1(){
+    }
+    
+    // 前置通知
+    @Before("pt1()")
+    public void beforePrintLog() {
+        System.out.println("-> 前置通知");
+    }
+    
+    // 环绕通知
+        @Around("pt1()")
+    public Object aroundPrintLog(ProceedingJoinPoint pjb) {
+        Object reValue = null;
+        try {
+
+
+            Object[] args = pjb.getArgs();
+            System.out.println("--> 前置通知");
+            // 方法
+            reValue = pjb.proceed(args);
+            System.out.println("--> 后置通知");
+            return reValue;
+        } catch (Throwable throwable) {
+            System.out.println("--> 异常通知");
+
+
+            throw new RuntimeException(throwable);
+
+        } finally {
+            System.out.println("--> 最终通知");
+
+        }
+
+    }
+}
+```
+
+##### 完全注解
+
+###### 新建一个SpringConfiguration.class
+
+```java
+@Configuration 														//声明是个配置类
+@ComponentScan(basePackages = "U13_Annotation_AOP")					//配置要扫描的包
+@EnableAspectJAutoProxy												//开启AOP
+public class SpringConfiguration {
+}
+```
+
+###### 获取容器
+
+```java
+ApplicationContext ac = new
+        AnnotationConfigApplicationContext(SpringConfiguration.class);
+
+IAccountService as = (IAccountService) ac.getBean("accountService");
+
+as.saveAccount();
+```
+
+------
+
+### JdbcTemplate
+
+#### Sping中的JdbcTemplate
+
+> 作用：他是用于和数据库交互，实现对标的CRUD操作
+
+pom.xml
+
+```xml
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.7.4</version>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>5.0.2.RELEASE</version>
+</dependency>
+```
+
+
+
+
+
+
+
+### Spring中事务管理器
+
+#### 基于XML的约束
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--创建约束-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+</beans>
+```
+
+#### 基于注解的约束
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+</beans>
+```
+
+#### 依赖
+
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.20</version>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>5.0.2.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.7.4</version>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>5.0.2.RELEASE</version>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-tx</artifactId>
+    <version>5.0.2.RELEASE</version>
+</dependency>
+```
+
+#### 基于XML的事务管理器配置
+
+##### 步骤
+
+```
+1、配置事务管理器
+2、配置事务的通知
+    此时需要导入事务的约束 tx名称空间和约束，同时也需要aop的
+    使用tx:advice 表桥配置事务通知
+        属性：
+            id ：给事务管理器，起一个唯一标识
+            transaction-manager ：给事务通知提供一个事务管理器引用
+3、配置AOP中的通用切入点表达式
+4、建立事务通知和切入点表达式的对应关系
+5、配置事务的属性
+    是在事务的通知 tx:advice 标签的内部
+```
+
+##### 基本
+
+###### 标签
+
+```xml
+    <!-- 配置dataSource -->
+	<bean id="dateSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/eesy?serverTimezone=GMT%2B8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123"/>
+    </bean>	
+
+	<!-- 配置事务管理-->
+	<bean id="transactionManager" 				class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dateSource" />
+	</bean>
+
+
+ 	<!-- 配置事务管理的通知-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+	<!-- 配置aop -->
+    <aop:config>
+        <!-- 配置 切入点表达式 -->
+        <aop:pointcut id="pt1" expression="execution(* package.service.impl.*.*(..))"/>
+        <!-- 建立切入点表达式和事务通知的对应关系 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt1"/>
+    </aop:config>
+```
+
+##### 配置事务管理
+
+> 标准写法
+
+```xml
+<bean 
+        id="transactionManager" 
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+>
+    <property name="dataSource" ref="dateSource" />
+</bean>
+```
+
+##### 配置管理的通知
+
+> 此时需要导入事务的约束 tx名称空间和约束，同时也需要aop的
+
+###### \<tx:advice>
+
+| 属性                | 作用                             |
+| ------------------- | -------------------------------- |
+| id                  | 给事务管理器通知，起一个唯一标识 |
+| transaction-manager | 给事务通知提供一个事务管理器引用 |
+
+###### \<tx:attributes>
+
+> 配置通知的属性
+
+###### \<tx:method>
+
+> 指定一个方法的通知 name为方法名，后面接管理事务的属性
+>
+> name可以试用通配表达式
+
+```xml
+<tx:method name="*" propagation="REQUIRED" read-only="false"/>
+<tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+```
+
+###### 管理事务的属性
+
+| 属性            | 作用                     | 值                                                           |
+| --------------- | ------------------------ | ------------------------------------------------------------ |
+| isolation       | 用于指定事务的隔离级别   | 用于指定事务的隔离级别，默认是DEFAULT,默认使用收据库默认隔离级别 |
+| propagation     | 用于指定事务的传播行为。 | 用于指定事务是否只读。只有查询方法才能设置为true。默认为false，标识读写 |
+| read-only       | 用于指定事务是否只读。   | 用于指定事务是否只读。只有查询方法才能设置为true。默认为false，标识读写 |
+| timeout         | 用于指定事务的超出时间。 | 默认是-1,表示永不超时。如果指定了数值以秒为单位              |
+| rollback-for    | 用于指定一个回滚异常     | 没有默认值。表示任何异帘都回滚。                             |
+| no-rollback-for | 用于指定一个不回滚异常   | 没有默认值。表示任何异帘都回滚。                             |
+
+```xml
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+        <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+        <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+    </tx:attributes>
+</tx:advice>
+```
+
+
+
+
+
+#### 基于注解的事务管理器配置
+
+##### 在切片中配置
+
+> 缺点不能使用通配符
+
+###### 全局
+
+```java
+@Transactional // 默认
+
+@Transactional(propagation = Propagation.SUPPORTS,readOnly = true) //指定
+public class IAccountServiceImpl implements IAccountService {
+
+}
+```
+
+###### 指定方法
+
+```java
+@Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+@Override
+public void transfer(String sourceName, String targetName, Float money) {
+}
+```
+
+##### 无XML
+
+> JdbcConfig
+
+> SpringConfiguration
+
+```java
+@Configuration														
+@ComponentScan("U18_Annotation_tx_Plus")							// 扫描包
+@Import({JdbcConfig.class,TransactionConfig.class})					// 外部配置	
+@PropertySource("classpath:JdbcConfig.properties")					// jdbc配置
+@EnableTransactionManagement 										// 开启事务支持
+public class SpringConfiguration {
+
+}
+```
+
+> TransactionConfig 创建事务管理器
+
+```java
+public class TransactionConfig {
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager createTransactionManager(DataSource dataSource){
+        return new DataSourceTransactionManager(dataSource);
+    }
+}
 ```

@@ -13,7 +13,6 @@ public class logger {
 
     @Pointcut("execution(*  U13_Annotation_AOP.service.impl.*.*(..))")
     private void pt1(){
-
     }
 
     /**
