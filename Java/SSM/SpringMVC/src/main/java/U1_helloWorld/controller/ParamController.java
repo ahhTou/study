@@ -1,6 +1,7 @@
 package U1_helloWorld.controller;
 
 import U1_helloWorld.domain.Account;
+import U1_helloWorld.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,6 +30,13 @@ public class ParamController {
     public String saveAccount(Account account){
         System.out.println("执行了....");
         System.out.println(account);
+        return "success";
+    }
+
+    @RequestMapping("/saveUser")
+    public String saveUser(User user){
+        System.out.println("执行了....");
+        System.out.println(user);
         return "success";
     }
 
