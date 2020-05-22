@@ -14,7 +14,9 @@
     <h3>入门程序成功了</h3>
 
 <%--${requestScope}--%>
-    ${msg}
+    day1: ${msg}
 ${ sessionScope }
+<br/>
+day2:${user.username}
 </body>
 </html>

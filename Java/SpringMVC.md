@@ -369,3 +369,348 @@ public void showUser(String name, Map<String, User> map) {
 > 属性:
 > value:用于指定存入的属性名称
 > type:用于指定存入的数据类型。
+
+## Day2
+
+### 响应数据和结果视图
+
+#### 返回值分类
+
+##### String类型
+
+> 跳转到 返回值的字符串 上
+
+```java
+@RequestMapping("/testString")
+public String testString(){
+    System.out.println("testString执行了");
+    return "success";
+}
+```
+
+##### Void类型
+
+> 默认 跳转到 @RequestMapping中的映射地址 或者 调用servlet原生api手动跳转
+
+```java
+@RequestMapping("/testVoid")
+public void testVoid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    System.out.println("testVoid执行了");
+    // 1.跳转
+    request.getRequestDispatcher("/WEB-INF/pages/success.jsp").forward(request, response);
+    
+    // 2.重定向
+	response.sendRedirect(request.getContextPath() + "/day2_index.jsp");
+    
+    // 3.直接进行相应
+            // 设置中文乱码
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+
+        // 直接会进行相应
+        response.getWriter().print("hello偷偷");
+
+   
+}
+```
+
+##### ModelAndView
+
+```java
+@RequestMapping("/testModelAndView")
+public ModelAndView testModelAndView(Model model){
+
+    ModelAndView mv = new ModelAndView();
+
+    System.out.println("testString执行了");
+    User user = new User();
+    user.setAge(30);
+    user.setPassword("123");
+    user.setUsername("ahhTou");
+
+    mv.addObject("user", user);
+
+    // 设置跳转
+    mv.setViewName("success");
+
+    return mv;
+}
+```
+
+#### 框架提供的转发和重定向
+
+```java
+@RequestMapping("/testForwardOrRedirect")
+public String testForwardOrRedirect(){
+    System.out.println("testForwardOrRedirect执行了");
+
+    // 请求转发
+    return "forward:/WEB-INF/pages/success.jsp";
+
+    // 重定向
+    return "redirect:/day2_index.jsp";
+}
+```
+
+#### ResponseBody相应json
+
+##### 依赖
+
+```xml
+<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+  <version>2.9.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-core</artifactId>
+  <version>2.9.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-annotations</artifactId>
+  <version>2.9.0</version>
+</dependency>
+```
+
+##### 过滤静态资源
+
+SpringMVC.xml
+
+```xml
+<!-- 前端控制器,那些资源不拦截 -->
+<mvc:resources mapping="/js/**" location="/js/**"/>
+```
+
+前端
+
+```javascript
+$(function () {
+    $("#btn").click(function () {
+        // alert("hello btn")
+        $.ajax({
+            // 编写json格式，设置属性和值
+            url:"day2/user/testAjax",
+            contentType:"application/json;charset=UTF-8",
+            data:'{"username":"ahhTou", "password":"123", "age":"20"}',
+            dataType:"json",
+            type:"post",
+            success:function (data) {
+                console.log(data.username)
+                console.log(data.password)
+                console.log(data.age)
+            }
+
+        })
+    });
+})
+```
+
+后端
+
+```java
+@RequestMapping("/testAjax")
+		// 自动转json					//json自动转对象
+public @ResponseBody User testAjax(@RequestBody User user){
+    System.out.println("Ajax....");
+    // 客户端发送ajax的请求，传的是json字符串，后端吧json字符串封装到user中
+    System.out.println(user);
+    // 做响应，模拟查询数据库
+    user.setUsername("ahhTouPro");
+    user.setAge(40);
+    // 最响应
+    return user;
+}
+```
+
+
+
+### 文件上传
+
+#### 前提
+
+>A form 表单的enctype取值必须是: multipart/form-data (默认值是:application/x-www- form-urlencoded)
+>enctype:是表单请求正文的类型
+>
+>B method属性取值必须是Post
+>
+>C提供一个文件选择域<input type="file" />
+
+#### 传统方式上传
+
+##### 依赖
+
+```xml
+<dependency>
+  <groupId>commons-fileupload</groupId>
+  <artifactId>commons-fileupload</artifactId>
+  <version>1.3.1</version>
+</dependency>
+
+<dependency>
+  <groupId>commons-io</groupId>
+  <artifactId>commons-io</artifactId>
+  <version>2.4</version>
+</dependency>
+```
+
+##### 前端
+
+```jsp
+<h3>文件上传</h3>
+<form
+        action="day2_2/user/fileUpload1"
+        method="post"
+        enctype="multipart/form-data"
+>
+选择文件：<input type="file" name="upload"><br/>
+    <input type="submit" value="上传">
+</form>
+```
+
+##### 后端
+
+```java
+@RequestMapping("/fileUpload1")
+public  String fileUpload1(HttpServletRequest request) throws Exception {
+    System.out.println("文件上传...");
+
+    // 使用fileupload组件完成文件上传
+    // 上传的位置
+    String path = request
+            .getSession()
+            .getServletContext()
+            .getRealPath("/uploads/");
+    // 判断你该路径是否存在
+    File file = new File(path);
+    if (!file.exists()){
+        boolean mkdirs = file.mkdirs();
+        System.out.println("文件创建是否成功 ->" + mkdirs);
+    }
+
+    //解析request对象，获取上传文件想
+    DiskFileItemFactory factory = new DiskFileItemFactory();
+    factory.setRepository(file);
+    ServletFileUpload upload = new ServletFileUpload(factory);
+
+    // 解析request
+    List<FileItem> fileItems = upload.parseRequest(request);
+    // 遍历
+    fileItems.forEach(fileItem -> {
+        // 进行判断，当前item对象是否为上传文件项
+        if(fileItem.isFormField()){
+            //说明普通表单项
+            System.out.println("非文件项");
+        }else {
+            // 说明为上传文件项
+            // 获取上传文件的名称
+            String filename = fileItem.getName();
+            // 把文件名称设置为唯一值，uuid
+            String uuid = UUID.randomUUID().toString();
+            filename = uuid + '_' + filename;
+
+            // 完成文件上传
+            try {
+                System.out.println("找到文件项，开始写入...");
+                fileItem.write(new File(
+                        path,
+                        filename
+                ));
+                System.out.println("上传路径为 -> " + path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // 删除临时文件
+            fileItem.delete();
+
+        }
+    });
+```
+
+#### Spring框架
+
+> 表单name 必须 和 文件上传项 名字一样
+
+##### 配置文件解析器
+
+SpringMVC.xml
+
+```xml
+<!--配置文件解析器-->
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!-- 文件大小限制 -->
+    <property name="maxUploadSize" value="10485760"/>
+    <!-- 编码 -->
+    <property name="defaultEncoding" value="utf-8"/>
+</bean>
+```
+
+##### 前端
+
+```jsp
+<h3>Spring上传</h3>
+<form
+        action="day2_2/user/fileUpload2"
+        method="post"
+        enctype="multipart/form-data"
+>
+选择文件：<input type="file" name="upload2"><br/>
+    <input type="submit" value="上传">
+</form>
+```
+
+##### 后端
+
+```java
+@RequestMapping("/fileUpload2")
+public String fileUpload2(HttpServletRequest request, MultipartFile upload2) throws Exception {
+    System.out.println("SpringMVC文件上传...");
+
+    // 使用fileupload组件完成文件上传
+    // 上传的位置
+    String path = request
+            .getSession()
+            .getServletContext()
+            .getRealPath("/uploads/");
+    // 判断你该路径是否存在
+    File file = new File(path);
+    if (!file.exists()) {
+        boolean mkdirs = file.mkdirs();
+        System.out.println("文件创建是否成功 ->" + mkdirs);
+    }
+
+    // 获取上传文件的名称
+    String filename = upload2.getOriginalFilename();
+    String uuid = UUID.randomUUID().toString();
+    filename = uuid + '_' + filename;
+
+    // 完成文件上传
+    upload2.transferTo(new File(path,filename));
+
+    return "success";
+}
+```
+
+#### 跨服务器上传
+
+##### 依赖
+
+```xml
+<dependency>
+  <groupId>com.sun.jersey</groupId>
+  <artifactId>jersey-core</artifactId>
+  <version>1.18.1</version>
+</dependency>
+
+<dependency>
+  <groupId>com.sun.jersey</groupId>
+  <artifactId>jersey-client</artifactId>
+  <version>1.18.1</version>
+</dependency>
+```
+
+##### 解决只读配置
