@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="U1_helloWorld.dao.EmployeeMapper">
+    <!--
+    namespace:命名空间 -> 指定为接口
+    id:唯一标识
+    resultType:返回值类型（可以封装成对象）
+    #{id},从传递过来的参数中取出id
+
+    -->
+    <select id="getEmpById" resultType="emp">
+    select * from tab1_employee where id = #{id}
+  </select>
+</mapper>
