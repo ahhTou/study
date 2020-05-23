@@ -11,7 +11,7 @@
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- 开启注解扫描 -->
-    <context:component-scan base-package="U1_helloWorld, U2, U2_2_fileUpload"/>
+    <context:component-scan base-package="U1_helloWorld, U2, U2_2_fileUpload, U2_3_Exception, U2_4_interceptor"/>
 
     <!-- 视图解析对象 -->
     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -39,6 +39,22 @@
         <!-- 编码 -->
         <property name="defaultEncoding" value="utf-8"/>
     </bean>
+
+    <!-- 配置异常处理器 -->
+    <bean id="sysExceptionResolver" class="U2_3_Exception.exception.SysExceptionResolver"/>
+
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <!-- 配置拦截器 -->
+        <mvc:interceptor>
+            <!-- 要拦截的具体方法 -->
+            <mvc:mapping path="/day2_4/**"/>
+            <!-- 不要拦截的方法 -->
+<!--            <mvc:exclude-mapping path=""/>-->
+            <!-- 配置拦截器对象 -->
+            <bean class="U2_4_interceptor.interceptor.MyInterceptor1"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 开启SpringMVC框架注解支持 -->
     <mvc:annotation-driven conversion-service="conversionService"/>

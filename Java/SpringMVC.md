@@ -714,3 +714,189 @@ public String fileUpload2(HttpServletRequest request, MultipartFile upload2) thr
 ```
 
 ##### 解决只读配置
+
+```xml
+<init-param>
+    <param-name>readonly</param-name>
+    <param-value>false</param-value>
+</init-param>
+```
+
+##### 前端
+
+```java
+<h3>跨服务器上传</h3>
+<form
+        action="day2_2/user/fileUpload3"
+        method="post"
+        enctype="multipart/form-data"
+>
+选择文件：<input type="file" name="upload3"><br/>
+    <input type="submit" value="上传">
+</form>
+```
+
+##### 后端
+
+```java
+/**
+ * 跨服务器文件上传
+ *
+ * @para
+ * @return
+ * @throws Exception
+ */
+@RequestMapping("/fileUpload3")
+public String fileUpload3(MultipartFile upload3) throws Exception {
+    System.out.println("跨服务器文件上传...");
+
+    // 定义上传文件服务器路径
+    String path = "http://localhost:9090/uploads/";
+
+
+    // 获取上传文件的名称
+    String filename = upload3.getOriginalFilename();
+    String uuid = UUID.randomUUID().toString();
+    filename = uuid + '_' + filename;
+
+
+    // 创建客服端对象
+    Client client = Client.create();
+
+    // 和图片服务器进行连接
+    WebResource webResource = client.resource(path + filename);
+
+    // 上传文件
+    webResource.put(upload3.getBytes());
+
+
+    return "success";
+}
+```
+
+### 异常处理
+
+##### 配置异常处理器
+
+SpringMVC.xml
+
+```xml
+<!-- 配置异常处理器 -->
+<bean id="sysExceptionResolver" class="U2_3_Exception.exception.SysExceptionResolver"/>
+```
+
+定义自定义异常
+
+>  U2_3_Exception.exception.SysException
+
+```java
+public class SysException  extends Exception{
+    private  String message;
+
+    public SysException(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
+```
+
+异常处理器
+
+> U2_3_Exception.exception.SysExceptionResolver
+
+```java
+public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
+    // 获取异常对象
+    SysException exception = null;
+    if (e instanceof SysException){
+        exception= (SysException)e;
+    }else {
+        e = new SysException("系统异常");
+    }
+    // 创建ModelAndView
+    ModelAndView mv = new ModelAndView();
+    mv.addObject("errorMsg",e.getMessage());
+    mv.setViewName("error");
+    return mv;
+}
+```
+
+### 拦截器
+
+配置拦截器 SpringMVC.xml
+
+```xml
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <!-- 配置拦截器 -->
+        <mvc:interceptor>
+            <!-- 要拦截的具体方法 -->
+            <mvc:mapping path="/day2_4/**"/>
+            <!-- 不要拦截的方法 -->
+<!--            <mvc:exclude-mapping path=""/>-->
+            <!-- 配置拦截器对象 -->
+            <bean class="U2_4_interceptor.interceptor.MyInterceptor1"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+```
+
+拦截器
+
+```java
+public class MyInterceptor1 implements HandlerInterceptor {
+
+
+
+    @Override
+    /**
+     * 预处理，controller方法执行前
+     * return true 放行，执行下一个拦截器，如果没有执行controller中的方法
+     * return false 不放行
+     *
+     */
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("拦截器执行了");
+//        request.getRequestDispatcher("/WEB_INF/pages/error.jsp")
+//                .forward(request, response);
+        return true;
+    }
+
+    /**
+     * 后处理，controller方法执行后，success.jsp执行前
+
+     * @param request
+     * @param response
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
+     */
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        System.out.println("后拦截器执行了");
+
+    }
+
+
+    /**
+     * success.jsp 页面执行后，该方法会执行
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        System.out.println("afterCompletion拦截器执行了");
+    }
+
+
+}
+```

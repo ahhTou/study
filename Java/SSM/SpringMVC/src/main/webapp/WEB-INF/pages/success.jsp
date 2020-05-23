@@ -18,5 +18,7 @@
 ${ sessionScope }
 <br/>
 day2:${user.username}
+
+U2_4:<% System.out.println("success.jsp执行了"); %>
 </body>
 </html>
