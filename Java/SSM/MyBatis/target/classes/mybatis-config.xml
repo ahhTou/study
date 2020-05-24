@@ -36,9 +36,36 @@
             name:指定包名（为当前包以及下面所有的后代包的每一个类都起一个默认别名(类名小写，
         -->
         <package name="U1_helloWorld.bean"/>
+        <package name="U2_Mapper.bean"/>
     </typeAliases>
 
-    <environments default="development">
+    <!--
+        4.environments环境们，mybatis可以配置多种环境
+                            通过default指定使用环境。切换环境
+            -> environment：配置一个具体的环境信息
+                两个标签：
+                    id代表当前环境的唯一标识
+                    
+                transactionManager: 事务管理器(开发时主要用Spring)
+                    -> type:事务管理器类型(JDBC | MANAGED)
+                            自定义事务管理器，实现TransactionFactory.
+                            type指定全类型
+                dataSource:数据源 ;
+                    -> type: 数据源类型（UNPOOLED | POOLED | JNDI ）
+                        自定义数据源： 实现dataSourceFactory接口。type是全类名
+
+
+        -->
+    <environments default="test">
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
@@ -50,8 +77,53 @@
         </environment>
     </environments>
 
+    <!-- 5.dataBaseIdProvider : 支持多数据厂商的：
+          type="DB_VENDOR" ：
+          作用就是得到数据库厂商标识(驱动getDataProductName())
+          ：mybatis就能根据数据库厂商标识
+          MySQL, Oracle, SQL Server
+
+          然后到sql映射文件中select标签去写
+    -->
+    <databaseIdProvider type="DB_VENDOR">
+        <!-- 为不同和数据库厂商起别名 -->
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+    </databaseIdProvider>
+
+
+
     <!-- 将我们写好的sql映射文件一定要注册到全局配置文件中（mybatis-config.xml）-->
+    <!-- 6.mappers：将sql映射注册到全局配置中 -->
     <mappers>
-        <mapper resource="U1/EmployeeMapper.xml"/>
+        <!-- mapper：注册一个sql映射
+
+                注册配置文件
+                -> resource : 引用类路径下的sql映射文件
+                    -> U1/EmployeeMapper.xml
+                -> url: 引用网络路径或者磁盘路径下的sql映射文件
+                    file:///var//mappers/AuthorMapper.xml"
+
+                注册接口
+                -> class: 引用（注册）接口
+                        1、有sq1映射文件，映射文件名必须和接口同名，并且放在与接口同一目录下;
+                        2、没有sq1映射文件，所有的sq1都是利用注解写在接口上
+                        推荐:
+                        比较重要的，复杂的Dao接口我们来写sq1映射文件
+                        不重要，简单的Dao接口为了开发快速可以使用注解;
+
+
+
+         -->
+        <!-- U1 -->
+<!--        <mapper resource="U1/EmployeeMapper.xml"/>-->
+<!--        <mapper class="U1_helloWorld.dao.EmployeeMapper"/>-->
+<!--        <mapper class="U1_helloWorld.dao.EmployeeMapperAnnotation"/>-->
+
+        <!-- 批量注册 -->
+<!--        <package name="U1_helloWorld.dao"/>-->
+
+        <!-- U2 -->
+        <mapper resource="U2/EmployeeMapper.xml"/>
     </mappers>
 </configuration>

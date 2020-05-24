@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="U2_Mapper.dao.EmployeeMapper">
+
+    <select id="getEmpByMap" resultType="emp2">
+        select *
+        from tab1_employee
+        where id = #{id} and last_name = #{lastName}
+    </select>
+
+    <select id="getEmpByIdAndLastName" resultType="emp2">
+        select *
+        from tab1_employee
+        where id = #{id} and last_name = #{lastName}
+    </select>
+
+
+
+    <select id="getEmpById" resultType="emp2" databaseId="mysql">
+        select *
+        from tab1_employee
+        where id = #{id}
+    </select>
+
+    <!-- parameterType 可以省略
+        mysql自增主键，自增主键的获取，mybatis也是利用statement.getGeneratedKeys()
+        useGeneratedKeys="true" : 使用自增主键获取主键值的策略
+        keyProperty:指定对应的主键属性，也就是mybatis之后，把这个值封装javaBean哪个属性
+    -->
+    <insert
+            id="addEmp"
+            parameterType="emp2"
+            useGeneratedKeys="true"
+            keyProperty="id"
+    >
+        insert into tab1_employee(last_name, gender, email)
+        values (#{lastName}, #{gender}, #{email})
+    </insert>
+
+    <update id="updateEmp">
+        update tab1_employee
+        set last_name=#{lastName},
+            email=#{email},
+            gender=#{gender}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteEmpById">
+        delete from tab1_employee where id=#{id}
+    </delete>
+</mapper>

@@ -199,7 +199,7 @@ public void test01() throws IOException {
 >    sq1映射文件:保存了每一个sq1语句的映射信息:
 >                   将sq1抽取出来。
 
-## 全局配置文件
+## 全局配置文件基础
 
 #### properties
 
@@ -295,3 +295,361 @@ EmployeeMapper.xml SQL语句映射文件
 public class Employee {
 }
 ```
+
+#### environments
+
+> environments环境们，mybatis可以配置多种环境
+>
+> 通过default指定使用环境切换环境
+
+##### environment
+
+> 配置一个具体的环境信息
+>                 两个标签：
+>                     id代表当前环境的唯一标识
+
+######  transactionManager:
+
+> 事务管理器(开发时主要用Spring)
+>                     -> type:事务管理器类型(JDBC | MANAGED)
+>                             自定义事务管理器，实现TransactionFactory.
+>                             type指定全类型
+
+######   dataSource
+
+> 数据源 ;
+>                     -> type: 数据源类型（UNPOOLED | POOLED | JNDI ）
+>                         自定义数据源： 实现dataSourceFactory接口。type是全类名
+
+##### 示例
+
+```xml
+<environments default="test">
+    <environment id="test">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </dataSource>
+    </environment>
+    <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </dataSource>
+    </environment>
+</environments>
+```
+
+#### dataBaseIdProvider
+
+> 支持多数据厂商的： 
+> type="DB_VENDOR" ：
+> 作用就是得到数据库厂商标识(驱动getDataProductName())
+> mybatis就能根据数据库厂商标识
+> MySQL, Oracle, SQL Server
+
+mybatis-config.xml
+
+```xml
+<databaseIdProvider type="DB_VENDOR">
+    <!-- 为不同和数据库厂商起别名 -->
+    <property name="MySQL" value="mysql"/>
+    <property name="Oracle" value="oracle"/>
+</databaseIdProvider>
+```
+
+EmployeeMapper.xml
+
+```xml
+  <select id="getEmpById" resultType="emp" databaseId="mysql">
+  select * from tab1_employee where id = #{id}
+</select>
+```
+
+#### mappers
+
+> 配置多个mapper
+
+##### mapper
+
+> 注册一个sql映射
+
+##### 通用配置
+
+> resource : 引用类路径下的sql映射文件
+>     		-> U1/EmployeeMapper.xml
+> url： 引用网络路径或者磁盘路径下的sql映射文件
+>    		-> file:///var//mappers/AuthorMapper.xml
+
+mybatis-config.xml
+
+```xml
+<mapper resource="U1/EmployeeMapper.xml"/>
+```
+
+##### 使用接口
+
+> 需要将 sq1映射文件，映射文件名必须和接口同名，并且放在与接口同一目录下;
+
+mybatis-config.xml
+
+```xml
+<mapper class="U1_helloWorld.dao.EmployeeMapper"/>
+```
+
+##### 使用注解
+
+> mybatis-config.xml
+
+```xml
+<mapper class="U1_helloWorld.dao.EmployeeMapperAnnotation"/>
+```
+
+```java
+public interface EmployeeMapperAnnotation {
+
+    @Select("select * from tab1_employee where id = #{id}")
+    Employee getEmpById(Integer id);
+}
+```
+
+##### 批量注册
+
+>  mybatis-config.xml
+
+```xml
+<package name="U1_helloWorld.dao"/>
+```
+
+## 增删查改
+
+>注意：
+>
+>1. session需要手动提交【openSession(true);可以自动提交】
+>2. 返回值直接在接口中定义
+
+在映射文件中配置
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="U2_Mapper.dao.EmployeeMapper">
+
+    <select id="getEmpById" resultType="emp2" databaseId="mysql">
+        select *
+        from tab1_employee
+        where id = #{id}
+    </select>
+
+    <!-- parameterType 可以省略 -->
+    <insert id="addEmp" parameterType="emp2">
+        insert into tab1_employee(last_name, gender, email)
+        values (#{lastName}, #{gender}, #{email})
+    </insert>
+
+    <update id="updateEmp">
+        update tab1_employee
+        set last_name=#{lastName},
+            email=#{email},
+            gender=#{gender}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteEmpById">
+        delete from tab1_employee where id=#{id}
+    </delete>
+</mapper>
+```
+
+接口
+
+```java
+public interface EmployeeMapper {
+
+    Employee getEmpById(Integer id);
+
+    void addEmp(Employee employee);
+
+    boolean updateEmp(Employee employee);
+
+    void deleteEmpById(Integer id);
+
+
+}
+```
+
+方法
+
+```java
+public void testAdd() throws IOException {
+    SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+
+    SqlSession openSession = sqlSessionFactory.openSession();
+
+
+    try {
+        EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+
+        Employee employee = new Employee(null, "ahhTouProMax", "男", "12223@qq.com");
+        Employee employeeToUpdate = new Employee(14, "ahhTouProMaxPlus", "男", "12223@qq.com");
+
+        mapper.addEmp(employee);
+
+        mapper.deleteEmpById(1);
+
+        boolean b = mapper.updateEmp(employeeToUpdate);
+
+        System.out.println("更新员工"
+                +employeeToUpdate.getId() + "更新 "+b + "了");
+        // 手动提交
+        openSession.commit();
+    } finally {
+        openSession.close();
+        System.out.println("--END--");
+    }
+}
+```
+
+## insert得到自增主键的值
+
+>  mysql自增主键，自增主键的获取，mybatis也是利用statement.getGeneratedKeys()
+>
+>  ​	useGeneratedKeys="true" : 使用自增主键获取主键值的策略
+>  ​	**keyProperty**:指定对应的主键属性，也就是mybatis之后，把这个值封装javaBean哪个属性
+
+```xml
+<insert
+        id="addEmp"
+        parameterType="emp2"
+        useGeneratedKeys="true"
+        keyProperty="id"
+>
+    insert into tab1_employee(last_name, gender, email)
+    values (#{lastName}, #{gender}, #{email})
+</insert>
+```
+
+```java
+            
+
+	Employee employee = new Employee(null, 
+                                 "ahhTouProMax", "男", "12223@qq.com");
+	// insert
+	mapper.addEmp(employee);
+	// 可以得到id值
+	System.out.println(employee.getId());
+```
+
+## MyBatis参数处理
+
+#### 单个参数
+
+> mybatis 不会做特殊处理，
+>
+> #{参数名}：取出参数值
+
+#### 多个参数
+
+mybatis会做特殊处理
+
+​		多个参数会被封装成一个map
+
+​		key: param1...paramN,或者参数索引也可以
+
+​		value：传入的参数值
+
+#{}就是从map中获取指定的key值
+
+命名参数，明确指定封装参数时的map的key
+
+#### 直接使用param
+
+```xml
+<select id="getEmpByIdAndLastName" resultType="emp2">
+    select *
+    from tab1_employee
+    where id = #{param1} and last_name = #{param2}
+</select>
+```
+
+#### 使用注解
+
+###### 接口
+
+```java
+Employee getEmpByIdAndLastName(@Param("id") Integer id, @Param("lastName") String lastName);
+```
+
+###### 映射文件
+
+```xml
+<select id="getEmpByIdAndLastName" resultType="emp2">
+    select *
+    from tab1_employee
+    where id = #{id} and last_name = #{lastName}
+</select>
+```
+
+#### POJO
+
+如果多个参数正好是我们业务逻辑的数据模型，我们就可以直接传入pojo; 
+#{属性名}:取出传入的pojo的属性值
+
+#### MAP
+
+接口
+
+```xml
+Employee getEmpByMap(Map<String, Object> map);
+```
+
+映射
+
+```
+<select id="getEmpByMap" resultType="emp2">
+    select *
+    from tab1_employee
+    where id = #{id} and last_name = #{lastName}
+</select>
+```
+
+测试
+
+```java
+Map<String, Object> map = new HashMap<String, Object>();
+map.put("id", 16);
+map.put("lastName","ahhTouProMax");
+
+System.out.println( mapper.getEmpByMap(map));
+```
+
+#### TO
+
+#### 思考
+
+``` java
+
+public Employee getEmp(@Param("id")Integer id,String lastName );
+// #{id 或者 param1}
+// #{ param2 }
+
+public Emp1oyee getEmp(Integer id, @Param("e")Employee emp);
+// #{param1}
+// #{ param2.lastName 或者e.lastName }
+
+public Employee getEmpById(List<Integer> ids);
+// 取出第一个id的值: 
+// #{list[0]}
+```
+
+如果是Collection (List、Set)类型或者是数组，也会特殊处理。也是把传入的list或者数组封装在map中。
+key: Collection (collection), key(list), 数组(array)
+

@@ -10,7 +10,7 @@
     #{id},从传递过来的参数中取出id
 
     -->
-    <select id="getEmpById" resultType="emp">
+    <select id="getEmpById" resultType="emp" databaseId="mysql">
     select * from tab1_employee where id = #{id}
   </select>
 </mapper>

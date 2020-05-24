@@ -4,5 +4,5 @@ import U1_helloWorld.bean.Employee;
 
 public interface EmployeeMapper {
 
-    public Employee getEmpById(Integer id);
+    Employee getEmpById(Integer id);
 }
