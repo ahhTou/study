@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="U2_Mapper.dao.EmployeeMapperPlus">
+    <!-- 自定义javaBean封装规则
+            type:自定义规则的Java类型
+            id：唯一id方便引用
+     -->
+    <resultMap type="U2_Mapper.bean.Employee" id="MyEmp">
+        <!--指定主键列的封装规则
+        id定义主键会底层有优化
+            column 指定那一列
+            property 对应javaBean的属性
+         -->
+        <id column="id" property="id"/>
+        <!-- 定义普通列封装规则 -->
+        <result column="last_name" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，我们只有写resultMap就把全部映射规则都写上 -->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+
+    <!-- resultMap:自定义结果集映射规则，和resultType只能二选一 -->
+    <select id="getEmpById" resultMap="MyEmp">
+        select *
+        from tab1_employee
+        where id = #{id}
+    </select>
+
+    <!--
+        场景1
+        查询Employee的同时查询员工对应的部门
+        Employee===Department
+        一个员工有与之对应的部门信息;
+
+
+     -->
+</mapper>

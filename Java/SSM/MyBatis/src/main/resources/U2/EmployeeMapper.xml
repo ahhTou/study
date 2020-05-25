@@ -4,18 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="U2_Mapper.dao.EmployeeMapper">
 
+    <select id="getEmpByLastNameLikeReturnMap"  resultType="emp2">
+        select *
+        from tab1_employee
+        where last_name like concat('%', #{lastName}, '%')
+    </select>
+
+    <select id="getEmpByIdReturnMap" resultType="map">
+        select *
+        from tab1_employee
+        where id = #{id}
+    </select>
+
+    <!-- resultType 如果返回的是一个集合，要写集合中元素 的 类型 -->
+    <select id="getEmpByLastNameLike" resultType="emp2">
+        select *
+        from tab1_employee
+        where last_name like concat('%', #{lastName}, '%')
+    </select>
+
     <select id="getEmpByMap" resultType="emp2">
         select *
         from tab1_employee
-        where id = #{id} and last_name = #{lastName}
+        where id = #{id}
+          and last_name = #{lastName}
     </select>
 
     <select id="getEmpByIdAndLastName" resultType="emp2">
         select *
         from tab1_employee
-        where id = #{id} and last_name = #{lastName}
+        where id = #{id}
+          and last_name = #{lastName}
     </select>
-
 
 
     <select id="getEmpById" resultType="emp2" databaseId="mysql">
@@ -44,10 +64,12 @@
         set last_name=#{lastName},
             email=#{email},
             gender=#{gender}
-        where id=#{id}
+        where id = #{id}
     </update>
 
     <delete id="deleteEmpById">
-        delete from tab1_employee where id=#{id}
+        delete
+        from tab1_employee
+        where id = #{id}
     </delete>
 </mapper>

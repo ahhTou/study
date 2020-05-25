@@ -653,3 +653,161 @@ public Employee getEmpById(List<Integer> ids);
 如果是Collection (List、Set)类型或者是数组，也会特殊处理。也是把传入的list或者数组封装在map中。
 key: Collection (collection), key(list), 数组(array)
 
+#### ${} 和 #{}的区别
+
+#{} :是以预编译的形式，将参数设置到sq1语句中; PreparedStatement;防止sql注入
+${ } :取出的值直接拼装在sq1语句中;会有安全问题;
+大多情况下，我们去参数的值都应该去使用#{ };
+原生jdbc不支持占位符的地方我们就可以使用${ }进行取值
+比如分表;按照年份分表拆分
+select * from ${year}_ salary where XXX;
+select * from tbl_ employee order by ${f_ name} ${}|
+
+> #{}更安全，但不支持字符串拼接
+
+> ${}支持字符串拼接，但是不安全
+
+#### #{}更丰富的用法
+
+规定参数的一些规则:
+javaType、jdbcType、mode (存储过程)、numericScale、
+resultMap、typeHandler、 jdbcTypeName、 expression (未来准备支持的功能) ;
+
+> 解决Oracle不支持null的方式【Oracle不支持默认的OTHER】
+>
+> #{name, jdbcType=NULL}
+>
+> 或者在全局配置文件中配置
+>
+> ```xml
+> <configuration>
+> 	...
+> 	<settings>
+> 	...
+>     ...
+>    		 <setting name="jdbcTypeForNull" value="NULL"/>
+> 	</settings>
+> </configuration>
+> ```
+
+#### 返回值为List
+
+接口
+
+```java
+List<Employee> getEmpByLastNameLike(String lastName);
+```
+
+映射
+
+>  resultType 如果返回的是一个集合，要写集合中元素 的 类型 
+
+```xml
+<select id="getEmpByLastNameLike" resultType="emp2">
+    select * from tab1_employee where last_name like concat('%',#{lastName},'%')
+</select>
+```
+
+测试
+
+```java
+List<Employee> a = mapper.getEmpByLastNameLike("%a%");
+
+for (Employee employee : a){
+    System.out.println(employee);
+}
+```
+
+#### 返回值为Map
+
+##### 单条，key为列名称，value为值
+
+接口
+
+```java
+// 返回一条记录的map，key是列名，值就是对应的值
+Map<String, Object> getEmpByIdReturnMap(Integer id);
+```
+
+映射
+
+> 封装为map
+
+```xml
+<select id="getEmpByIdReturnMap" resultType="map">
+    select *
+    from tab1_employee
+    where id = #{id}
+</select>
+```
+
+测试
+
+```java
+Map<String, Object> map = mapper.getEmpByIdReturnMap(13);
+System.out.println(map);
+```
+
+
+
+##### 多条，key为单项记录的主键， value为javaBean对象
+
+接口
+
+> 注解@MapKey 告诉mybatis封装这个map的时候使用哪个属性作为map的key
+
+```java
+// 多条记录封装一个map: Map< Integer , Employee> :键匙这条记录的主键，值是记录封装后的JavaBean
+@MapKey("id") //告诉mybatis封装这个map的时候使用哪个属性作为map的key
+Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);
+```
+
+映射
+
+>
+
+```xml
+<select id="getEmpByLastNameLikeReturnMap" resultType="emp2">
+    select *
+    from tab1_employee
+    where last_name like concat('%', #{lastName}, '%')
+</select>
+```
+
+测试
+
+```java
+Map<Integer, Employee> a = mapper.getEmpByLastNameLikeReturnMap("a");
+System.out.println(a);
+```
+
+##### ReslutMap自定义返回类型
+
+> 自定义结果集映射规则，和resultType只能二选一
+
+ReslutMap
+
+> type:自定义规则的Java类型
+>  id：唯一id方便引用
+>
+> <id>主键 ：id定义主键会底层有优化
+>
+> <result>非主键 ： column 指定那一列，property 对应javaBean的属性
+
+
+
+```xml
+    <resultMap type="U2_Mapper.bean.Employee" id="MyEmp">
+        <!--指定主键列的封装规则
+        id定义主键会底层有优化
+            column 指定那一列
+            property 对应javaBean的属性
+         -->
+        <id column="id" property="id"/>
+        <!-- 定义普通列封装规则 -->
+        <result column="last_name" property="lastName"/>
+        <!-- 其他不指定的列会自动封装，我们只有写resultMap就把全部映射规则都写上 -->
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+```

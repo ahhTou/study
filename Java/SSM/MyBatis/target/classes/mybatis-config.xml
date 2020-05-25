@@ -20,6 +20,7 @@
     <settings>
         <!-- 数据库为a_column时 自动 映射到javaBean中的aColumn  -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
 
     <!-- 3.typeAliases别名处理器 可以为我们的java类型起别名
@@ -125,5 +126,6 @@
 
         <!-- U2 -->
         <mapper resource="U2/EmployeeMapper.xml"/>
+        <mapper resource="U2/EmployeeMapperPlus.xml"/>
     </mappers>
 </configuration>
