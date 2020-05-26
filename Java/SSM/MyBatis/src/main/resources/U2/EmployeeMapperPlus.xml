@@ -7,7 +7,7 @@
             type:自定义规则的Java类型
             id：唯一id方便引用
      -->
-    <resultMap type="U2_Mapper.bean.Employee" id="MyEmp">
+    <resultMap type="U2_Mapper.bean.Employee" id="MySimpleEmp">
         <!--指定主键列的封装规则
         id定义主键会底层有优化
             column 指定那一列
@@ -22,7 +22,7 @@
     </resultMap>
 
     <!-- resultMap:自定义结果集映射规则，和resultType只能二选一 -->
-    <select id="getEmpById" resultMap="MyEmp">
+    <select id="getEmpById" resultMap="MyEmpDis">
         select *
         from tab1_employee
         where id = #{id}
@@ -33,7 +33,129 @@
         查询Employee的同时查询员工对应的部门
         Employee===Department
         一个员工有与之对应的部门信息;
+     -->
 
+    <!--
+        联合查询 -> 级联属性封装结果集
+    -->
+    <resultMap id="MyDifEmp" type="U2_Mapper.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="did" property="dept.id"/>
+        <result column="dept_name" property="dept.departmentName"/>
+    </resultMap>
+    <!-- association 可以指定联合的javaBean对象
+        property = "dept" 指定哪个属性是联合的对象
+        javaType ：指定这个属性对象的类型【不能省略】
+     -->
+    <resultMap id="MyDifEmpPro" type="U2_Mapper.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+
+        <association property="dept" javaType="U2_Mapper.bean.Department">
+            <id column="did" property="id"/>
+            <result column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+    <select id="getEmpAndDept" resultMap="MyDifEmpPro">
+        SELECT e.id          AS id,
+               e.last_name   AS Last_name,
+               e.`gender`    AS gender,
+               e.`d_id`      AS d_id,
+               d.`id`        AS did,
+               d.`dept_name` AS dept_name
+        FROM tab1_employee AS e,
+             tb1_dept d
+        WHERE e.d_id = d.id
+          AND e.id = 13
+    </select>
+
+    
+    <!-- 使用association进行分布查询
+            1.先按照员工id查询员工信息
+            2.根据查询鱼啊弄信息中的d_id值去部门表查出部门信息
+            3.部门设置到员工中
+     -->
+    
+    <resultMap id="MyEmpByStep" type="U2_Mapper.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <!-- association定义关联对象的封装规则
+                select：表名当前属性是调用select指定的方法查出的结果
+                column：指定哪一列的值传给这个对象
+
+                流程：使用select指定的方法（传入column）查出对象并封装给property指定的属性
+         -->
+        <association
+                property="dept"
+                select="U2_Mapper.dao.DepartmentMapper.getDeptByID"
+                column="d_id"
+        />
+    </resultMap>
+    
+    
+    <select id="getEmpByIdStep" resultMap="MyEmpByStep">
+        select * from tab1_employee where id=#{id}
+    </select>
+
+
+    <!-- 可以使用延迟加载
+            Employee => Dept:
+                我们每次查询Employee对象的时候，都将一起查询出来。
+                部门信息在我们使用的时候再去查询;
+                分段查询的基础之上加上两个配置:
+    <setting name="lazyLoadingEnable" value="true"/>
+    <setting name="aggressiveLazyLoading" value="false"/>
+
+    -->
+
+
+    <!--
+    场景二
+        查询部门的时候，将部门对应的所有员工信息也查询出来:注释在DepartmentMapper.xml
+    -->
+
+    <!-- 按照部门id查询所有员工 -->
+    <select id="getEmpSDeptId" resultType="U2_Mapper.bean.Employee">
+        select * from tab1_employee where d_id = #{id}
+    </select>
+
+    <!-- discriminator鉴别器
+            鉴别器：mybatis可以试用discriminator判断某列的值，然后根据某列的值，改变封装行为
+            封装Employee：
+                如果查出的是女生 就把部门信息查询出来，否者不查询
+                如果是男生，把last_name这一列的值赋值给email
 
      -->
+    <resultMap id="MyEmpDis" type="U2_Mapper.bean.Employee">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <!-- column指定判断的列
+            javaType 列值对应的java类型
+         -->
+        <discriminator javaType="string" column="gender">
+            <!-- 女生 resultType:指定封装的结果类型,不能缺少 -->
+            <case value="0" resultType="U2_Mapper.bean.Employee">
+                <association
+                        property="dept"
+                        select="U2_Mapper.dao.DepartmentMapper.getDeptByID"
+                        column="d_id"
+                />
+            </case>
+            <!--如果是男生，把last_name这一列的值赋值给email -->
+            <case value="1" resultType="U2_Mapper.bean.Employee">
+                <id column="id" property="id"/>
+                <result column="last_name" property="lastName" />
+                <result column="last_name" property="email" />
+                <result column="gender" property="gender" />
+            </case>
+        </discriminator>
+    </resultMap>
+
 </mapper>

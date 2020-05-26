@@ -66,13 +66,24 @@ public class Employee {
         this.gender = gender;
     }
 
-    @Override
+/*    @Override
     public String toString() {
         return "Employee{" +
                 "id ->" + id +
                 ", lastName ->'" + lastName + '\'' +
                 ", gender ->'" + gender + '\'' +
                 ", email ->'" + email + '\'' +
+                '}';
+    }*/
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", dept=" + dept +
                 '}';
     }
 }

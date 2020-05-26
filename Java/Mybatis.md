@@ -1,4 +1,4 @@
-# MyBatis
+#### MyBatis
 
 ## 准备
 
@@ -781,7 +781,7 @@ Map<Integer, Employee> a = mapper.getEmpByLastNameLikeReturnMap("a");
 System.out.println(a);
 ```
 
-##### ReslutMap自定义返回类型
+#### ReslutMap自定义返回类型
 
 > 自定义结果集映射规则，和resultType只能二选一
 
@@ -794,7 +794,21 @@ ReslutMap
 >
 > <result>非主键 ： column 指定那一列，property 对应javaBean的属性
 
+##### 简单类型
 
+类
+
+```java
+private Integer id;
+
+private String lastName;
+
+private String gender;
+
+private String email;
+```
+
+映射
 
 ```xml
     <resultMap type="U2_Mapper.bean.Employee" id="MyEmp">
@@ -810,4 +824,338 @@ ReslutMap
         <result column="email" property="email"/>
         <result column="gender" property="gender"/>
     </resultMap>
+
+    <select id="getEmpById" resultMap="MyEmp">
+        select *
+        from tab1_employee
+        where id = #{id}
+    </select>
+```
+
+##### 复杂类型
+
+Employee类
+
+```java
+private Integer id;
+
+private String lastName;
+
+private String gender;
+
+private String email;
+
+private Department dept;
+```
+
+Department类
+
+```java
+private Integer id;
+private String departmentName;
+```
+
+映射
+
+```xml
+<resultMap id="MyDifEmp" type="U2_Mapper.bean.Employee">
+    <id column="id" property="id"/>
+    <result column="last_name" property="lastName" />
+    <result column="gender" property="gender" />
+    <result column="did" property="dept.id" />
+    <result column="dept_name" property="dept.departmentName" />
+</resultMap>
+<select id="getEmpAndDept" resultMap="MyDifEmp">
+    SELECT e.id          AS id,
+           e.last_name   AS Last_name,
+           e.`gender`    AS gender,
+           e.`d_id`      AS d_id,
+           d.`id`        AS did,
+           d.`dept_name` AS dept_name
+    FROM tab1_employee AS e,
+         tb1_dept d
+    WHERE e.d_id = d.id
+      AND e.id = 13
+</select>
+```
+
+##### 复杂类型使用association
+
+其他同复杂类型，映射如下
+
+>association 可以指定联合的javaBean对象
+
+> property = "dept" 指定哪个属性是联合的对象
+> javaType ：指定这个属性对象的类型【不能省略】
+
+```xml
+<resultMap id="MyDifEmpPro" type="U2_Mapper.bean.Employee">
+    <id column="id" property="id"/>
+    <result column="last_name" property="lastName" />
+    <result column="gender" property="gender" />
+
+    <association property="dept" javaType="U2_Mapper.bean.Department">
+        <id column="did" property="id" />
+        <result column="dept_name" property="departmentName" />
+    </association>
+</resultMap>
+```
+
+##### 使用association分布查询
+
+> 新建一个映射和接口
+
+接口 DepartmentMapper
+
+```java
+public interface DepartmentMapper {
+    Department getDeptByID(Integer id);
+}
+```
+
+映射 DepartmentMapper.xml
+
+```xml
+<mapper namespace="U2_Mapper.dao.DepartmentMapper">
+    <select id="getDeptByID" resultType="U2_Mapper.bean.Department">
+        select id, dept_name as departmentName
+        from tb1_dept
+        where id=#{id}
+    </select>
+</mapper>
+```
+
+> 使用 association调用新建的接口和映射
+>
+> 使用association进行分布查询
+>         1.先按照员工id查询员工信息
+>         2.根据查询鱼啊弄信息中的d_id值去部门表查出部门信息
+>         3.部门设置到员工中
+>
+> association定义关联对象的封装规则
+>             select：表名当前属性是调用select指定的方法查出的结果
+>             column：指定哪一列的值传给这个对象
+>
+> ​            流程：使用select指定的方法（传入column）查出对象并封装给property指定的属性
+
+```xml
+<resultMap id="MyEmpByStep" type="U2_Mapper.bean.Employee">
+    <id column="id" property="id"/>
+    <result column="last_name" property="lastName" />
+    <result column="email" property="email" />
+    <result column="gender" property="gender" />
+    <association
+            property="dept"
+            select="U2_Mapper.dao.DepartmentMapper.getDeptByID"
+            column="d_id"
+    />
+</resultMap>
+    
+<select id="getEmpByIdStep" resultMap="MyEmpByStep">
+    select * from tab1_employee where id=#{id}
+</select>
+```
+
+#####  association的懒加载特性
+
+可以使用延迟加载
+            Employee => Dept:
+                我们每次查询Employee对象的时候，都将一起查询出来。
+                部门信息在我们使用的时候再去查询;
+                分段查询的基础之上加上两个配置:
+
+全局设置
+
+```xml
+<settings>
+    ...
+    ...
+    <!-- 懒加载 -->
+	<setting name="lazyLoadingEnabled" value="true"/>
+    <!-- 轻度懒加载 -->
+	<setting name="aggressiveLazyLoading" value="false"/>
+</settings>	
+```
+
+##### collection定义关联集合封装规则
+
+> 目的：查询到部门信息，并包含所有该部门的员工
+
+department类
+
+```java
+private Integer id;
+private String departmentName;
+private List<Employee> empS;
+```
+
+接口
+
+```java
+Department getDeptByIdPlus(Integer id);
+```
+
+映射
+
+```xml
+<!-- collection嵌套结果集的方式 定义关联的集合类型的元素封装规则封装对象  -->
+<resultMap id="MyDept" type="U2_Mapper.bean.Department">
+    <id column="did" property="id"/>
+    <result column="dept_name" property="departmentName"/>
+    <!--
+        collection定义关联集合类型的属性封装规则
+        ofType:指定集合里元素的类型
+    -->
+    <collection property="empS" ofType="U2_Mapper.bean.Employee">
+        <!-- 定义这个集合中 元素中的封装规则-->
+        <id column="eid" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+    </collection>
+</resultMap>
+
+<select id="getDeptByIdPlus" resultMap="MyDept">
+    select d.id        did,
+           d.dept_name dept_name,
+           e.id        eid,
+           e.last_name last_name,
+           e.email     email,
+           e.gender    gender
+    from tb1_dept d
+             left join tab1_employee e on d.id = e.d_id
+    where d.id = #{id}
+</select>
+```
+
+##### 使用collection分布查询
+
+###### 先写一个按工号查询的映射
+
+Employee的接口
+
+```java
+List<Employee> getEmpSDeptId(Integer deptId);
+```
+
+Employee映射
+
+```xml
+<!-- 按照部门id查询所有员工 -->
+<select id="getEmpSDeptId" resultType="U2_Mapper.bean.Employee">
+    select * from tab1_employee where d_id = #{id}
+</select>
+```
+
+###### 在Department中继续编写
+
+DepartmentMapper
+
+```java
+Department getDeptByIdStep(Integer id);
+```
+
+DepartmentMapper.xml
+
+> column=“” 来传递参数
+
+```java
+<!-- 分步查询 -->
+<resultMap id="MyDeptStep" type="U2_Mapper.bean.Department">
+    <id column="id" property="id"/>
+    <id column="dept_name" property="departmentName"/>
+    <collection
+            property="empS"
+            select="U2_Mapper.dao.EmployeeMapperPlus.getEmpSDeptId"
+            column="id"
+    >
+    </collection>
+
+</resultMap>
+<select id="getDeptByIdStep" resultMap="MyDeptStep">
+    select id, dept_name as departmentName
+    from tb1_dept
+    where id = #{id}
+</select>
+```
+
+##### 补充：分布多列值的传递&fetchType
+
+###### 分布多列值的传递
+
+>  将多列的值封装map传递;
+>  column="{key1=column1, key2=column2}"
+
+举例，如上面
+
+```xml
+ column="id"
+```
+
+可以改为 id为值，对应的参数为键
+
+```xml
+column="{deptId=id}"
+```
+
+##### fetchType
+
+> 在 association 和  collection标签中添加 可以改变是否为延迟加载，而不用修改全局
+
+| fetchType属性 | 作用 |
+| ------------- | ---- |
+| lazy          | 延迟 |
+| eager         | 立即 |
+
+#### discriminator 鉴别器
+
+>  鉴别器：mybatis可以试用discriminator判断某列的值，然后根据某列的值，改变封装行为
+
+##### 要求
+
+   封装Employee：
+            如果查出的是女生 就把部门信息查询出来，否者不查询
+            如果是男生，把last_name这一列的值赋值给email
+
+##### 定义resultMap 和 方法映射
+
+```xml
+<select id="getEmpById" resultMap="MyEmpDis">
+    select *
+    from tab1_employee
+    where id = #{id}
+</select>
+
+<resultMap id="MyEmpDis" type="U2_Mapper.bean.Employee">
+    <id column="id" property="id"/>
+    <result column="last_name" property="lastName" />
+    <result column="email" property="email" />
+    <result column="gender" property="gender" />
+    <!-- column指定判断的列
+        javaType 列值对应的java类型
+     -->
+    <discriminator javaType="string" column="gender">
+        <!-- 女生 resultType:指定封装的结果类型,不能缺少 -->
+        <case value="0" resultType="U2_Mapper.bean.Employee">
+            <association
+                    property="dept"
+                    select="U2_Mapper.dao.DepartmentMapper.getDeptByID"
+                    column="d_id"
+            />
+        </case>
+        <!--如果是男生，把last_name这一列的值赋值给email -->
+        <case value="1" resultType="U2_Mapper.bean.Employee">
+            <id column="id" property="id"/>
+            <result column="last_name" property="lastName" />
+            <result column="last_name" property="email" />
+            <result column="gender" property="gender" />
+        </case>
+    </discriminator>
+</resultMap>
+```
+
+映射
+
+```xml
+
 ```

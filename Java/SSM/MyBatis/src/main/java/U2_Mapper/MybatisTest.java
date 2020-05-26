@@ -1,6 +1,7 @@
 package U2_Mapper;
 
 import U2_Mapper.bean.Employee;
+import U2_Mapper.dao.DepartmentMapper;
 import U2_Mapper.dao.EmployeeMapper;
 import U2_Mapper.dao.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
@@ -150,7 +151,30 @@ public class MybatisTest {
         try {
 
             EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+//            System.out.println(mapper.getEmpById(13));
+
+//            System.out.println(mapper.getEmpAndDept(13));
+
+//            System.out.println(mapper.getEmpByIdStep(13));
+
             System.out.println(mapper.getEmpById(13));
+        } finally {
+            openSession.commit();
+        }
+    }
+
+    @Test
+    public void test06() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+
+        try {
+            DepartmentMapper mapper = openSession.getMapper(DepartmentMapper.class);
+/*            System.out.println(mapper.getDeptByIdPlus(1));
+            System.out.println(mapper.getDeptByIdPlus(1).getEmpS());*/
+
+/*            System.out.println(mapper.getDeptByIdStep(1));
+            System.out.println(mapper.getDeptByIdStep(1).getEmpS());*/
 
         } finally {
             openSession.commit();

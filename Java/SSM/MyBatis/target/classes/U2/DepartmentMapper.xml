@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="U2_Mapper.dao.DepartmentMapper">
+    <select id="getDeptByID" resultType="U2_Mapper.bean.Department">
+        select id, dept_name as departmentName
+        from tb1_dept
+        where id = #{id}
+    </select>
+
+
+    <!-- collection嵌套结果集的方式 定义关联的集合类型的元素封装规则封装对象  -->
+    <resultMap id="MyDept" type="U2_Mapper.bean.Department">
+        <id column="did" property="id"/>
+        <result column="dept_name" property="departmentName"/>
+        <!--
+            collection定义关联集合类型的属性封装规则
+            ofType:指定集合里元素的类型
+        -->
+        <collection property="empS" ofType="U2_Mapper.bean.Employee">
+            <!-- 定义这个集合中 元素中的封装规则-->
+            <id column="eid" property="id"/>
+            <result column="last_name" property="lastName"/>
+            <result column="email" property="email"/>
+            <result column="gender" property="gender"/>
+        </collection>
+    </resultMap>
+
+    <select id="getDeptByIdPlus" resultMap="MyDept">
+        select d.id        did,
+               d.dept_name dept_name,
+               e.id        eid,
+               e.last_name last_name,
+               e.email     email,
+               e.gender    gender
+        from tb1_dept d
+                 left join tab1_employee e on d.id = e.d_id
+        where d.id = #{id}
+    </select>
+
+
+    <!-- 分步查询 -->
+    <resultMap id="MyDeptStep" type="U2_Mapper.bean.Department">
+        <id column="id" property="id"/>
+        <id column="dept_name" property="departmentName"/>
+        <collection
+                property="empS"
+                select="U2_Mapper.dao.EmployeeMapperPlus.getEmpSDeptId"
+                column="id"
+        >
+        </collection>
+
+    </resultMap>
+    <select id="getDeptByIdStep" resultMap="MyDeptStep">
+        select id, dept_name as departmentName
+        from tb1_dept
+        where id = #{id}
+    </select>
+
+    <!--扩展:多列的值传递过去:
+            将多列的值封装map传递;
+            column="{key1=column1, key2=column2}
+
+            fetchType="lazy"
+                    -lazy ：延迟
+                    -eager：立即
+
+            "
+-->
+
+
+</mapper>
