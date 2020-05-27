@@ -43,6 +43,7 @@
         -->
         <package name="U1_helloWorld.bean"/>
         <package name="U2_Mapper.bean"/>
+        <package name="U3_DynamicSQL"/>
     </typeAliases>
 
     <!--
@@ -133,5 +134,8 @@
         <mapper resource="U2/EmployeeMapper.xml"/>
         <mapper resource="U2/EmployeeMapperPlus.xml"/>
         <mapper resource="U2/DepartmentMapper.xml"/>
+
+        <!-- U3 -->
+        <mapper resource="U3/EmployeeMapperDynamicSQL.xml"/>
     </mappers>
 </configuration>

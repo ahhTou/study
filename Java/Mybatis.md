@@ -1154,8 +1154,281 @@ column="{deptId=id}"
 </resultMap>
 ```
 
-映射
+## 动态SQL
+
+### if
+
+> 判断表达式 （OGNL）会进行字符串和数字的转换判断
+
+> 会出现字符串拼接问题 可以使用 where 1=1解决
 
 ```xml
+<select id="getEmpSByConditionIf" resultType="emp3">
+    select * from tab1_employee
+    where 1=1
+    <if test="id!=null">
+        and id=#{id}
+    </if>
+    <if test="lastName!=null and lastName!=&quot;&quot;">
+        and last_name like concat('%',#{lastName},'%')
+    </if>
+    <if test="email!=null &amp;&amp; email!=&quot;&quot;">
+        and email=#{email}
+    </if>
+    <if test="gender==0 or gender==1">
+        and gender=#{gender}
+    </if>
+</select>
+```
 
+### where封装查询条件
+
+> 解决字符串拼接问题，比1=1更为合理，但是and必须放到语句前
+
+```xml
+<select id="getEmpSByConditionIf" resultType="emp3">
+    select * from tab1_employee
+    <where>
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="lastName!=null and lastName!=&quot;&quot;">
+            and last_name like concat('%',#{lastName},'%')
+        </if>
+        <if test="email!=null &amp;&amp; email!=&quot;&quot;">
+            and email=#{email}
+        </if>
+        <if test="gender==0 or gender==1">
+            and gender=#{gender}
+        </if>
+    </where>
+</select>
+```
+
+### trim
+
+> 使用并不多
+
+| 属性             | 名称     |                                       |
+| ---------------- | -------- | ------------------------------------- |
+| prefix           | 前缀     | prefix 给拼串后的整个字符型加一个前缀 |
+| prefixOverrides  | 前缀覆盖 | 去掉整个字符串前面多余的字符          |
+| shuffix          | 后缀     | 给拼串后的整个字符串加一个后缀        |
+| shuffixOverrides | 后缀覆盖 | 去掉整个字符串后面对于的字符          |
+
+> 查询条件只有email不为空
+
+```xml
+<trim prefix="where" suffixOverrides="and">
+    <if test="id!=null">
+        and id=#{id}
+    </if>
+    <if test="lastName!=null and lastName!=&quot;&quot;">
+        and last_name like concat('%',#{lastName},'%')
+    </if>
+    <if test="email!=null &amp;&amp; email!=&quot;&quot;">
+        email=#{email} and
+    </if>
+    <!--ognl会进行字符串和数字的转换判断 "0"==0 -->
+    <if test="gender==0 or gender==1">
+        and gender=#{gender}
+    </if>
+</trim>
+```
+
+### choose
+
+> 某个choose匹配到后后面的都不执行，而都没有匹配到时，执行otherwise
+
+```xml
+<select id="getEmpSByConditionChoose" resultType="emp3">
+    select * from tab1_employee
+    <where>
+        <!-- 如果带了id就用id查，如果带了lastName就用lastName查 -->
+        <choose>
+            <when test="id!=null">
+                id=#{id}
+            </when>
+            <when test="lastName!=null">
+                last_name like concat('%',#{lastName},'%')
+            </when>
+            <when test="email!=null">
+                email = #{email}
+            </when>
+            <otherwise>
+                gender = 0
+            </otherwise>
+        </choose>
+    </where>
+</select>
+```
+
+### set封装修改条件
+
+#### 常规
+
+> 必须三个值都具备
+
+```xml
+<update id="updateEmp2">
+    update tab1_employee
+    set last_name=#{lastName},
+        email=#{email},
+        gender=#{gender}
+    where id = #{id}
+</update>
+```
+
+#### set标签
+
+> 有哪个值，更新哪个，但是set标签内不能有 ' , '
+
+```xml
+<update id="updateEmpSet">
+    update tab1_employee
+    set
+    <if test="lastName!=null">
+        last_name=#{lastName}
+    </if>
+    <if test="email!=null">
+        email=#{email}
+    </if>
+    <if test="gender!=null">
+        gender=#{gender}
+    </if>
+    where id=#{id}
+</update>
+```
+
+#### trim优化
+
+> 可以去除尾的，号
+
+```xml
+<update id="updateEmpTrimSet">
+    update tab1_employee
+    <trim prefix="set" suffixOverrides=",">
+        <if test="lastName!=null">
+            last_name=#{lastName},
+        </if>
+        <if test="email!=null">
+            email=#{email},
+        </if>
+        <if test="gender!=null">
+            gender=#{gender},
+        </if>
+    </trim>
+    where id=#{id}
+</update>
+```
+
+### foreach
+
+#### 通过遍历添加条件
+
+> 使用 list 、map的时候collection的值要为list、map
+
+##### 属性
+
+| 属性       |                                                              |
+| ---------- | ------------------------------------------------------------ |
+| collection | 定要遍历的集合     list类型的参数会特殊处理封装到map中，map的key叫list |
+| item       | 将当前遍历出的元素赋值给当前遍历出的元素                     |
+| separator  | 每个元素之间的分隔符                                         |
+| open       | 遍历出所有结果拼接一个 开始的字符                            |
+| close      | 遍历出所有结果拼接一个 开始的字符                            |
+| index      | 索引。遍历list的时候是索引，遍历map的时候indnx表示的就是map的key，item就是map的值 |
+
+##### 使用
+
+```xml
+<select id="getEmpSByConditionForeach" resultType="emp3">
+    select * from tab1_employee where id in(
+        <foreach
+            collection="listPro"
+            item="item_id"
+            separator=","
+    >
+        #{item_id}
+    </foreach>
+    )
+</select>
+```
+
+sql语句
+
+```sql
+ select * from tab1_employee where id in(1, 2, 3)
+```
+
+使用open和close可以优化代码
+
+```xml
+<select id="getEmpSByConditionForeach" resultType="emp3">
+    select * from tab1_employee where id in
+    <foreach
+            collection="listPro"
+            item="item_id"
+            separator=","
+            open="("
+            close=")"
+    >
+        #{item_id}
+    </foreach>
+</select>
+```
+
+#### 批量插入
+
+方式1 推荐
+
+```xml
+<insert id="addEmpS">
+    insert into tab1_employee(last_name, gender, email, d_id)
+    values
+    <foreach collection="empS" item="emp" separator=",">
+        (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
+    </foreach>
+
+</insert>
+```
+
+方式2
+
+```xml
+<insert id="addEmpS">
+    <foreach collection="empS" item="emp" separator=";">
+        insert into tab1_employee(last_name, gender, email, d_id)
+        values (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
+    </foreach>
+</insert>
+```
+
+#### 内置参数
+
+> _parameter: 代表整个参数
+>        单个参数: . parameter就是这个参数
+>        多个参数:参数会被封装为一个map;_ _parameter就是代表这 个map
+
+场景：用来判断也没有参数
+
+```xml
+select * from tab1_employee
+<if test="_parameter!=null" >
+    where id=#{id}
+</if>
+```
+
+
+> _databaseId :如果配置了databaseIdProvider标签。
+>         _databaseId且代末当前数据库的别文Oracle
+场景: 用来判断是哪个数据库
+
+```xml
+<if test="_databaseId=='mysql'" >
+    select * from tab1_employee
+</if>
+<if test="_databaseId=='oracle'">
+    select * from tb1_dept
+</if>
 ```

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="U3_DynamicSQL.dao.EmployeeMapperDynamicSQL">
+    <!--
+           - if
+           - choose (when, otherwise)
+           - trim (where, set )
+           - foreach
+     -->
+    <!-- 查询员工, 要求携带了哪个字段查询条件就带上这个字段的值 -->
+
+    <select id="getEmpSByConditionIf" resultType="emp3">
+        select * from tab1_employee
+        <!--
+        test:判断表达式 （OGNL） c:if
+                遇见特殊字符去写转义字符：
+                & = &amp;
+                " = &quot;
+
+        SQL语句错误，解决办法
+        1.  1=1 if and if and
+        2.  使用 where 每个if中and写在语句前
+
+        -->
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="lastName!=null and lastName!=&quot;&quot;">
+                and last_name like concat('%',#{lastName},'%')
+            </if>
+            <if test="email!=null &amp;&amp; email!=&quot;&quot;">
+                and email=#{email}
+            </if>
+            <!--ognl会进行字符串和数字的转换判断 "0"==0 -->
+            <if test="gender==0 or gender==1">
+                and gender=#{gender}
+            </if>
+        </where>
+    </select>
+
+    <select id="getEmpSByConditionTrim" resultType="emp3">
+        select * from tab1_employee
+        <!--
+            后面多出的and 或者 or where标签不能解决
+            prefix="" 前缀 trim标签中整个字符串 拼串 后的结果
+                        prefix 给拼串后的整个字符型加一个前缀
+             prefixOverrides="" ：
+                        前缀覆盖：去掉整个字符串前面多余的字符
+            shuffix="" 后缀
+                        shuffix 给拼串后的整个字符串加一个后缀
+             shuffixOverrides="" :
+                        后缀覆盖：去掉整个字符串后面对于的字符
+
+
+        -->
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="lastName!=null and lastName!=&quot;&quot;">
+                and last_name like concat('%',#{lastName},'%')
+            </if>
+            <if test="email!=null &amp;&amp; email!=&quot;&quot;">
+                email=#{email} and
+            </if>
+            <!--ognl会进行字符串和数字的转换判断 "0"==0 -->
+            <if test="gender==0 or gender==1">
+                and gender=#{gender}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getEmpSByConditionChoose" resultType="emp3">
+        select * from tab1_employee
+        <where>
+            <!-- 如果带了id就用id查，如果带了lastName就用lastName查 -->
+            <choose>
+                <when test="id!=null">
+                    id=#{id}
+                </when>
+                <when test="lastName!=null">
+                    last_name like concat('%',#{lastName},'%')
+                </when>
+                <when test="email!=null">
+                    email = #{email}
+                </when>
+                <otherwise>
+                    gender = 0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateEmp2">
+        update tab1_employee
+        set last_name=#{lastName},
+            email=#{email},
+            gender=#{gender}
+        where id = #{id}
+    </update>
+    <update id="updateEmpSet">
+        update tab1_employee
+        set
+        <if test="lastName!=null">
+            last_name=#{lastName}
+        </if>
+        <if test="email!=null">
+            email=#{email}
+        </if>
+        <if test="gender!=null">
+            gender=#{gender}
+        </if>
+        where id=#{id}
+    </update>
+
+
+    <update id="updateEmpTrimSet">
+        update tab1_employee
+        <trim prefix="set" suffixOverrides=",">
+            <if test="lastName!=null">
+                last_name=#{lastName},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <select id="getEmpSByConditionForeach" resultType="emp3">
+        select * from tab1_employee where id in
+        <!--
+            collection 指定要遍历的集合
+                list类型的参数会特殊处理封装到map中，map的key叫list
+            item : 将当前遍历出的元素赋值给当前遍历出的元素
+            separator: 每个元素之间的分隔符
+            open: 遍历出所有结果拼接一个 开始的字符
+            close: 遍历出所有结果拼接一个 开始的字符
+            index: 索引。遍历list的时候是索引
+                        遍历map的时候indnx表示的就是map的key，item就是map的值
+
+            #{变量名}就能取出变量的值，也就是当前遍历的元素
+        -->
+        <foreach
+                collection="listPro"
+                item="item_id"
+                separator=","
+                open="("
+                close=")"
+        >
+            #{item_id}
+        </foreach>
+    </select>
+
+    <!-- 批量保存 -->
+<!--    <insert id="addEmpS">
+        insert into tab1_employee(last_name, gender, email, d_id)
+        values
+        <foreach collection="empS" item="emp" separator=",">
+            (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
+        </foreach>
+
+    </insert>-->
+
+    <insert id="addEmpS">
+        <foreach collection="empS" item="emp" separator=";">
+            insert into tab1_employee(last_name, gender, email, d_id)
+            values (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
+        </foreach>
+    </insert>
+
+    <!-- 两个内置参数
+        不只是方法传递过来的参数可以被用来判断，取值。
+        。。
+        mybatis默认还有两个内置参数:
+        _parameter: 代表整个参数
+                单个参数: . parameter就是这个参数
+                多个参数:参数会被封装为一个map;_ _parameter就是代表这 个map
+        _databaseId :如果配置了databaseIdProvider标签。
+                _databaseId且代末当前数据库的别文Oracle
+    -->
+
+    <select id="getEmpSTestInnerParam" resultType="emp3">
+        select * from tab1_employee
+        <if test="_parameter!=null" >
+            where id=#{id}
+        </if>
+<!--        <if test="_databaseId=='mysql'" >
+            select * from tab1_employee
+        </if>
+        <if test="_databaseId=='oracle'">
+            select * from tb1_dept
+        </if>-->
+    </select>
+
+</mapper>
