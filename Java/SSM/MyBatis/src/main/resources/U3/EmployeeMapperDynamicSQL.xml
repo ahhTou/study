@@ -159,14 +159,14 @@
     </select>
 
     <!-- 批量保存 -->
-<!--    <insert id="addEmpS">
-        insert into tab1_employee(last_name, gender, email, d_id)
-        values
-        <foreach collection="empS" item="emp" separator=",">
-            (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
-        </foreach>
+    <!--    <insert id="addEmpS">
+            insert into tab1_employee(last_name, gender, email, d_id)
+            values
+            <foreach collection="empS" item="emp" separator=",">
+                (#{emp.lastName},#{emp.gender},#{emp.email},#{emp.dept.id})
+            </foreach>
 
-    </insert>-->
+        </insert>-->
 
     <insert id="addEmpS">
         <foreach collection="empS" item="emp" separator=";">
@@ -187,16 +187,28 @@
     -->
 
     <select id="getEmpSTestInnerParam" resultType="emp3">
-        select * from tab1_employee
-        <if test="_parameter!=null" >
-            where id=#{id}
+        <!-- bind:可以将OGNL表达式的值绑定到一一个变量中，方便后来引用这个变量的值 -->
+        <bind name="_lastName" value="'%'+lastName+'%'"/>
+        <if test="_databaseId=='mysql'">
+            <!-- 引入外部sql -->
+            <include refid="insertColumn" >
+                <property name="testProp" value="'a'"/>
+            </include>
+<!--            <if test="_parameter!=null">
+                &lt;!&ndash;where id=concat('%',#{id},'%') &ndash;&gt;
+                where last_name like #{_lastName}
+            </if>-->
         </if>
-<!--        <if test="_databaseId=='mysql'" >
-            select * from tab1_employee
-        </if>
-        <if test="_databaseId=='oracle'">
-            select * from tb1_dept
-        </if>-->
     </select>
+
+    <!-- 抽取可重用的sql片段。方便后面引用
+        1. SQL抽取：经常要查询的列名，或者插入用的列名出来方便引用
+        2. include来引用已经抽取了的sql语句
+        3. include还可以自定义写property，sql标签内部就能使用自定义属性
+                取值的正确方式${prop}，不用#{}
+     -->
+    <sql id="insertColumn">
+        select * from tab1_employee where last_name like concat('%',${testProp},'%')
+    </sql>
 
 </mapper>

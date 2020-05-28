@@ -61,7 +61,11 @@ public class MybatisTest {
 
         mapper.addEmpS(employees);*/
 
-        System.out.println(mapper.getEmpSTestInnerParam(employee));
+        Employee employee1 = new Employee();
+        employee1.setLastName("a");
+
+
+        System.out.println(mapper.getEmpSTestInnerParam(employee1));
 
 
         openSession.commit();

@@ -1432,3 +1432,115 @@ select * from tab1_employee
     select * from tb1_dept
 </if>
 ```
+
+### bind
+
+> 可以将OGNL表达式的值绑定到一一个变量中，方便后来引用这个变量的值 
+
+```xml
+    <select id="getEmpSTestInnerParam" resultType="emp3">
+        <bind name="_lastName" value="'%'+lastName+'%'"/>
+        select * from tab1_employee where last_name like #{_lastName}
+    </select>
+```
+
+### Sql和include抽取重复语句
+
+>  抽取可重用的sql片段。方便后面引用
+>            1. SQL抽取：经常要查询的列名，或者插入用的列名出来方便引用
+>         2. include来引用已经抽取了的sql语句
+>            3. include还可以自定义写property，sql标签内部就能使用自定义属性
+>   取值的正确方式${prop}，不用#{}
+
+```xml
+    <select id="getEmpSTestInnerParam" resultType="emp3">
+        <if test="_databaseId=='mysql'">
+            <!-- 引入外部sql -->
+            <include refid="insertColumn" >
+                <property name="testProp" value="'a'"/>
+            </include>
+        </if>
+    </select>
+    <sql id="insertColumn">
+        select * from tab1_employee where last_name like concat('%',${testProp},'%')
+    </sql>
+```
+
+## 缓存
+
+### 一级缓存
+
+```
+* 一级缓存：（本地缓存）：sqlSession级别的缓存。一 级缓存是一 直开启的
+*      与数据库同一次会话期间查询到的数据会放在本地缓存中。
+*      以后如果需要获取相同的数据，直接从缓存中拿，没必要再去查询数据库;
+*
+*      一级缓存失效情况(没有使用到当前一-级缓存的情况，效果就是，还需要再向数据库发出查询)
+*              1、sqlSession不同
+*              2、sqlSession相同，查询条件不同
+*              3、sqlSession相同，两次查询之间执行了增删改操作(这次增删改可能对当前数据有影响)
+*              4、sqlSession相同,手动清空缓存 openSession.clearCache();
+```
+
+### 二级缓存
+
+> 一级缓存的session关闭后,才会缓存到二级缓存中
+
+#### 描述
+
+> 基于namespace级别的缓存,一个namespace对应一个二级缓存
+
+###### 工作机制
+
+1. 一个会话，查询一条数据，这个数据就会被放在当前会话的一级缓存中;
+2. 如果会话关闭; - -级缓存中的数据会被保存到二级缓存中;新的会话查询信息，就可以参照二级缓存
+3. sqlSession  ===    EmployeeMapper==> Employee
+                    				DepartmentMapper=== >Department
+   				 				不同namespace查出的数据会放在自己对应的缓存中(map)
+
+#### 使用
+
+1. 开启全局二级缓存：<setting name="cacheEnabled" value="true"/>
+
+   ```xml
+   <settings>
+   	...
+       ...
+       <setting name="cacheEnabled" value="true"/>
+   </settings>
+   ```
+
+2. 去mapper.xml中配置使用二级缓存    <cache></cache>
+
+   ```xml
+   <mapper namespace="U4_Cache.dao.EmployeeMapper">
+       <cache eviction="FIFO" flushInterval="60000" readOnly="true" size="1024" >
+       </cache>
+       ...
+       ...
+   </mapper>
+   ```
+
+   ​	
+
+   | 属性名称                  | 简述                                                         |
+   | ------------------------- | ------------------------------------------------------------ |
+   | eviction缓存的回收策略    | ● LRU -最近最少使用的:移除最长时间不被使用的对象。 <br />● FIFO -先进先出:按对象进入缓存的顺序来移除它们。<br />● SOFT -软引用:移除基于垃圾回收器状态和软引用规则的对象。<br />● WEAK -弱引用:更积极地移除基于垃圾收集器状态和弱引用规则的对象。 <br />● 默认的是LRU。 |
+   | flushInterval缓存刷新间隔 | 缓存多长时间清空一次， 默认不清空，设置-个毫秒值             |
+   | read0nly是否只读          | true:只读; <br />mybatis认为所有 从缓存中获取数据的操作都是只读操作，不会修改数据。         <br />mybatis为了加快获取速度，直接就会将数据在缓存中的引用交给用户。不安全，速度快 <br />false:非只读: mybatis觉得获取的数据可能会被修改。         <br />mybatis会利用序列化&反序列的技术克隆一份新的数据给你。 安全，速度慢 |
+   | size                      | 指定自定义缓存的大小                                         |
+   | type                      | 指定自定义缓存的全类名                                       |
+
+   
+
+3. 我们POJO需要事先序列化接口
+
+   ```java
+   public class Department  implements Serializable {
+       ...
+       ...
+   }
+   ```
+
+
+

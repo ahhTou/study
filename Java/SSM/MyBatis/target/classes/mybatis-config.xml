@@ -26,6 +26,9 @@
         <setting name="lazyLoadingEnabled" value="true"/>
         <!-- 轻度懒加载 -->
         <setting name="aggressiveLazyLoading" value="false"/>
+
+        <!-- 开启全局二级缓存配置 -->
+        <setting name="cacheEnabled" value="true"/>
     </settings>
 
     <!-- 3.typeAliases别名处理器 可以为我们的java类型起别名
@@ -43,7 +46,8 @@
         -->
         <package name="U1_helloWorld.bean"/>
         <package name="U2_Mapper.bean"/>
-        <package name="U3_DynamicSQL"/>
+        <package name="U3_DynamicSQL.bean"/>
+        <package name="U4_Cache.bean"/>
     </typeAliases>
 
     <!--
@@ -137,5 +141,8 @@
 
         <!-- U3 -->
         <mapper resource="U3/EmployeeMapperDynamicSQL.xml"/>
+
+        <!-- U4 -->
+        <mapper resource="U4/EmployeeMapper.xml"/>
     </mappers>
 </configuration>
