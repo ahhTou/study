@@ -29,6 +29,9 @@
 
         <!-- 开启全局二级缓存配置 -->
         <setting name="cacheEnabled" value="true"/>
+
+        <!-- 禁用一级缓存 -->
+        <setting name="localCacheScope" value="STATEMENT"/>
     </settings>
 
     <!-- 3.typeAliases别名处理器 可以为我们的java类型起别名

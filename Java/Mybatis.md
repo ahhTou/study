@@ -1496,11 +1496,19 @@ select * from tab1_employee
 2. 如果会话关闭; - -级缓存中的数据会被保存到二级缓存中;新的会话查询信息，就可以参照二级缓存
 3. sqlSession  ===    EmployeeMapper==> Employee
                     				DepartmentMapper=== >Department
-   				 				不同namespace查出的数据会放在自己对应的缓存中(map)
+      				 				不同namespace查出的数据会放在自己对应的缓存中(map)
+
+######   效果
+
+数据会从二级缓存中获取I
+查出的数据都会被默认先放在一级缓存中 。
+只有会话提交或者关闭以后，- 级缓存中的数据才会转移到二级缓存中
 
 #### 使用
 
 1. 开启全局二级缓存：<setting name="cacheEnabled" value="true"/>
+
+   > 值为false时，一级缓存无法关闭
 
    ```xml
    <settings>
@@ -1509,6 +1517,8 @@ select * from tab1_employee
        <setting name="cacheEnabled" value="true"/>
    </settings>
    ```
+
+   
 
 2. 去mapper.xml中配置使用二级缓存    <cache></cache>
 
@@ -1544,3 +1554,104 @@ select * from tab1_employee
 
 
 
+### 和缓存有关的设置/属性
+
+###### 在全局设置中关闭缓存
+
+> 仅关闭二级缓存
+
+```xml
+<settings>
+	...
+    ...
+    <setting name="cacheEnabled" value="false"/>
+</settings>
+```
+
+###### 在mapper中关闭缓存
+
+> 仅关闭二级缓存
+
+```xml
+<select id="getEmpByLastNameLike" resultType="emp4" useCache="false">
+    select * from tab1_employee
+</select>
+```
+
+###### mapper中每个操作清空缓存
+
+> 查询操作默认是false，其他标签是true，一级二级缓存都会被清空
+
+```xml
+<select id="getEmpByMap" resultType="emp4" flushCache="true">
+    select * from tab1_employee
+</select>
+```
+
+###### 会话中清除
+
+> 仅清空一级缓存
+
+```java
+sqlSession.claerCahe();
+```
+
+###### 本地缓存作用域
+
+```xml
+<setting name="localCacheScope" value="STATEMENT"/>
+```
+
+### 缓存顺序
+
+> 先找 二级 再找 一级
+
+### 引用缓存
+
+> 在其他mapper文件中使用<cache-ref namespace=""/>可以和该命名空间使用同一个缓存
+
+EmployeeMapper.xml
+
+```xml
+<mapper namespace="U4_Cache.dao.EmployeeMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+</mapper>
+```
+
+DepartmentMapper.xml
+
+```xml
+<mapper namespace="U4_Cache.dao.DepartmentMapper">
+    <!-- 引用缓存 -->
+    <cache-ref namespace="U4_Cache.dao.EmployeeMapper"/>
+</mapper>
+```
+
+### 整合ehcache
+
+###### 依赖
+
+```xml
+<dependency>
+    <groupId>net.sf.ehcache</groupId>
+    <artifactId>ehcache-core</artifactId>
+    <version>2.6.11</version>
+</dependency>
+
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>1.7.25</version>
+</dependency>
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-log4j12</artifactId>
+    <version>1.7.25</version>
+</dependency>
+
+<dependency>
+    <groupId>org.mybatis.caches</groupId>
+    <artifactId>mybatis-ehcache</artifactId>
+    <version>1.2.1</version>
+</dependency>
+```

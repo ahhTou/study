@@ -3,9 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="U4_Cache.dao.EmployeeMapper">
-    <cache eviction="FIFO" flushInterval="60000" readOnly="true" size="1024" >
 
-    </cache>
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!-- 原生 -->
+<!--    <cache eviction="FIFO" flushInterval="60000" readOnly="true" size="1024" >
+
+    </cache>-->
     <!--
         eviction 缓存的回收策略策略
             ● LRU -最近最少使用的:移除最长时间不被使用的对象。
@@ -42,13 +45,13 @@
     </select>
 
     <!-- resultType 如果返回的是一个集合，要写集合中元素 的 类型 -->
-    <select id="getEmpByLastNameLike" resultType="emp4">
+    <select id="getEmpByLastNameLike" resultType="emp4" useCache="false">
         select *
         from tab1_employee
         where last_name like concat('%', #{lastName}, '%')
     </select>
 
-    <select id="getEmpByMap" resultType="emp4">
+    <select id="getEmpByMap" resultType="emp4" flushCache="true">
         select *
         from tab1_employee
         where id = #{id}
@@ -63,7 +66,7 @@
     </select>
 
 
-    <select id="getEmpById" resultType="emp4" databaseId="mysql">
+    <select id="getEmpById" resultType="emp4" useCache="true">
         select *
         from tab1_employee
         where id = #{id}
