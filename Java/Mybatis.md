@@ -1,3 +1,73 @@
+```
+<dependencies>
+  <!--mybatis-->
+  <dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis-spring</artifactId>
+    <version>2.0.4</version>
+  </dependency>
+  <dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.4.1</version>
+  </dependency>
+  <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.20</version>
+  </dependency>
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+    <scope>compile</scope>
+  </dependency>
+  <!--c3p0 连接池 -->
+  <dependency>
+    <groupId>c3p0</groupId>
+    <artifactId>c3p0</artifactId>
+    <version>0.9.1.2</version>
+  </dependency>
+
+  <dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.7.4</version>
+  </dependency>
+
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>5.0.2.RELEASE</version>
+  </dependency>
+
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-tx</artifactId>
+    <version>5.0.2.RELEASE</version>
+  </dependency>
+
+  <!--spring-mvc-->
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>5.0.2.RELEASE</version>
+  </dependency>
+
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+    <version>5.0.2.RELEASE</version>
+  </dependency>
+
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>5.0.2.RELEASE</version>
+  </dependency>
+</dependencies>
+```
+
 #### MyBatis
 
 ## 准备
@@ -1496,7 +1566,7 @@ select * from tab1_employee
 2. 如果会话关闭; - -级缓存中的数据会被保存到二级缓存中;新的会话查询信息，就可以参照二级缓存
 3. sqlSession  ===    EmployeeMapper==> Employee
                     				DepartmentMapper=== >Department
-      				 				不同namespace查出的数据会放在自己对应的缓存中(map)
+                        				 				不同namespace查出的数据会放在自己对应的缓存中(map)
 
 ######   效果
 
@@ -1655,3 +1725,209 @@ DepartmentMapper.xml
     <version>1.2.1</version>
 </dependency>
 ```
+
+## Spring整合
+
+##### 依赖
+
+```xml
+  <dependencies>
+    <!--mybatis-->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>2.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.20</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>compile</scope>
+    </dependency>
+    <!--c3p0 连接池 -->
+    <dependency>
+      <groupId>c3p0</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.7.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>5.0.2.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>5.0.2.RELEASE</version>
+    </dependency>
+
+    <!--spring-mvc-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.0.2.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>5.0.2.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.0.2.RELEASE</version>
+    </dependency>
+  </dependencies>
+```
+
+## 逆向工程
+
+### 依赖
+
+```xml
+<dependency>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator</artifactId>
+    <version>1.4.0</version>
+</dependency>
+```
+
+and
+
+```xml
+<dependency>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-maven-plugin</artifactId>
+    <version>1.4.0</version>
+</dependency>
+```
+
+### 创建文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mybatis?serverTimezone=GMT%2B8"
+                        userId="root"
+                        password="123">
+        </jdbcConnection>
+
+        <!-- java类型解析器 -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- javaModelGenerator 指定javaBean生成策略
+        targetPackage: 目标包名
+        targetProject: 目标工程
+        -->
+        <javaModelGenerator targetPackage="U5_MBG.bean" targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- sqlMapGenerator sql映射生成策略 -->
+        <sqlMapGenerator targetPackage="U5_MBG.dao"  targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- javaClientGenerator 指定mapper接口所在的位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="U5_MBG.dao"  targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 指定要逆向分析那些表, 根据这些表创建javaBean类型 -->
+        <table tableName="tab1_employee" domainObjectName="Employee"/>
+        <table tableName="tb1_dept" domainObjectName="Department"/>
+
+    </context>
+</generatorConfiguration>
+```
+
+### 生成
+
+```java
+    public void a() throws InterruptedException, SQLException, IOException, XMLParserException, InvalidConfigurationException {
+        List<String> warnings = new ArrayList<String>();
+        boolean overwrite = true;
+        File configFile = new File("src/mbg.xml");
+        ConfigurationParser cp = new ConfigurationParser(warnings);
+        Configuration config = cp.parseConfiguration(configFile);
+        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+        myBatisGenerator.generate(null);
+    }
+```
+
+### 简单查询
+
+```java
+List<Employee> employees = mapper.selectByExample(null);
+
+System.out.println(employees);
+```
+
+### 复杂查询
+
+> 查询员工名字中有e的，和员工姓名是1的 或者名字叫 ahhTouPro的
+
+```java
+		// 封装员工查询条件的example
+
+        EmployeeExample employeeExample = new EmployeeExample();
+        // 创建一个Criteria ，这个 Criteria就是拼装查询条件
+        EmployeeExample.Criteria criteria1 = employeeExample.createCriteria();
+
+        criteria1.andLastNameLike("%a%");
+        criteria1.andGenderEqualTo("1");
+
+        // 添加一个或者条件
+        EmployeeExample.Criteria criteria2 = employeeExample.createCriteria();
+        criteria2.andLastNameLike("%ahhTouPro%");
+
+        employeeExample.or(criteria2);
+
+        List<Employee> employees1 = mapper.selectByExample(employeeExample);
+
+        System.out.println(employees1);
+```
+
+## 原理
+
+1. 获取sqlSessionFactory对象:
+   	解析文件的每-个信息保存在Configuration中，返回包含Configuration的DefaultSqlSession
+   	注意: [MappedStatement] :代表一个增删改查的详细信息
+
+2. 获取sqlSession对象
+   返回一个DefaultSQlSession对象，包含Executor和Configuration;
+   这一步会创建Executor对象;
+3. 获取接口的代理对象(MapperProxy)
+4. 执行增删改查方法

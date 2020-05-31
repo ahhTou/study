@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/mybatis?serverTimezone=GMT%2B8"
+                        userId="root"
+                        password="123">
+        </jdbcConnection>
+
+        <!-- java类型解析器 -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- javaModelGenerator 指定javaBean生成策略
+        targetPackage: 目标包名
+        targetProject: 目标工程
+        -->
+        <javaModelGenerator targetPackage="U5_MBG.bean" targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- sqlMapGenerator sql映射生成策略 -->
+        <sqlMapGenerator targetPackage="U5_MBG.dao"  targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- javaClientGenerator 指定mapper接口所在的位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="U5_MBG.dao"  targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 指定要逆向分析那些表, 根据这些表创建javaBean类型 -->
+        <table tableName="tab1_employee" domainObjectName="Employee"/>
+        <table tableName="tb1_dept" domainObjectName="Department"/>
+
+    </context>
+</generatorConfiguration>

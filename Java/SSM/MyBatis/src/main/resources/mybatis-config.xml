@@ -51,6 +51,7 @@
         <package name="U2_Mapper.bean"/>
         <package name="U3_DynamicSQL.bean"/>
         <package name="U4_Cache.bean"/>
+        <package name="U5_MBG"/>
     </typeAliases>
 
     <!--
@@ -147,5 +148,11 @@
 
         <!-- U4 -->
         <mapper resource="U4/EmployeeMapper.xml"/>
+
+        <!-- u-->
+        <mapper resource="U5/DepartmentMapper.xml"/>
+        <mapper resource="U5/EmployeeMapper.xml"/>
+
+
     </mappers>
 </configuration>
