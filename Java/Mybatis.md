@@ -1924,10 +1924,15 @@ System.out.println(employees);
 
 1. 获取sqlSessionFactory对象:
    	解析文件的每-个信息保存在Configuration中，返回包含Configuration的DefaultSqlSession
-   	注意: [MappedStatement] :代表一个增删改查的详细信息
+      	注意: [MappedStatement] :代表一个增删改查的详细信息
 
 2. 获取sqlSession对象
    返回一个DefaultSQlSession对象，包含Executor和Configuration;
    这一步会创建Executor对象;
+   
 3. 获取接口的代理对象(MapperProxy)
+
+    getMapper,使用MapperProxyF actory创建一个MapperProxy的代理对象
+    代理对象里面包含了，DefaultSqlSession (Executor)
+
 4. 执行增删改查方法

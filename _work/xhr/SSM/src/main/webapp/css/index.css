@@ -1,0 +1,188 @@
+html,
+body {
+  height: 100%;
+}
+* {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+body {
+  background-color: rgb(248, 248, 248);
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/bg1.jpg');
+}
+#wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+}
+#sidebar {
+  backdrop-filter: blur(15px);
+  width: 300px;
+  height: 100%;
+  box-shadow: 10px 0px 40px rgba(100, 100, 100, 0.5);
+  box-sizing: border-box;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#profilePhoto {
+  width: 60%;
+  margin-top: 30px;
+  border-radius: 30px;
+}
+#username {
+  font-size: 30px;
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+.options {
+  height: 10%;
+  width: 100%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  /* background-color: black; */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s;
+}
+.options:hover {
+  box-shadow: 0px 0px 5px rgba(100, 100, 100, 0.5) inset;
+}
+.ahhTou {
+  font-size: 5px;
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+#content {
+  margin-left: 300px;
+  padding: 30px;
+  width: 100%;
+  color: white;
+}
+#bannerWrapper {
+  height: 35%;
+}
+#bannerContent {
+  box-shadow: 10px 10px 40px rgba(100, 100, 100, 0.5);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  width: 40%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bannerContent li {
+  height: 60%;
+  width: 20%;
+  margin: 30px;
+  /* background-color: black; */
+  box-shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
+  border-radius: 5px;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  background-size: contain;
+  background-position: center;
+  transition: all 1s;
+}
+#bannerContent li:hover {
+  transform: scale(1.2);
+}
+#bannerContent li span {
+  position: absolute;
+  bottom: -15%;
+}
+#listWrapper {
+  height: 60%;
+}
+.contentTitle {
+  text-shadow: 10px 10px 40px rgba(100, 100, 100, 0.5);
+  margin: 10px;
+  font-size: 30px;
+  color: white;
+}
+
+#tableWrapper {
+  box-shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  height: 450px;
+  width: 40%;
+  /* overflow: hidden; */
+}
+table {
+  width: 100%;
+}
+thead th {
+  height: 50px;
+}
+tbody tr:nth-child(2n + 1) {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.3);
+  height: 40px;
+  text-align: center;
+  transition: all 1s;
+}
+tbody tr:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: black;
+  height: 40px;
+  transition: all 1s;
+  text-align: center;
+}
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
+}
+#btnWrapper {
+  width: 40%;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#btnWrapper .btn {
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 100px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 10px;
+  cursor: pointer;
+}
+#btnWrapper #pages .page{
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}

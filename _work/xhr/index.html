@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>管理界面</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link href="./lib/index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="sidebar">
+        <img id="profilePhoto" src="./img/ProfilePhoto.jpg" />
+        <div id="username">Galaxy</div>
+        <div class="options">影片档案</div>
+        <div class="options">站位</div>
+        <div class="options">站位</div>
+        <div class="options">退出</div>
+        <div class="ahhTou">
+          <div>@偷偷呼吸的死肥宅</div>
+          <div>By ahhTou</div>
+        </div>
+      </div>
+      <div id="content">
+        <div id="bannerWrapper">
+          <div class="contentTitle">我的最爱</div>
+          <ul id="bannerContent">
+            <li
+              style="
+                background-image: url(./img/like/1.jpg);
+                background-size: cover;
+              "
+            >
+              <span>天气之子</span>
+            </li>
+            <li
+              style="
+                background-image: url(./img/like/2.jpg);
+                background-size: cover;
+              "
+            >
+              <span>你的名字</span>
+            </li>
+            <li
+              style="
+                background-image: url(./img/like/3.jpg);
+                background-size: cover;
+              "
+            >
+              <span>拯救大兵瑞恩</span>
+            </li>
+          </ul>
+        </div>
+        <div id="listWrapper">
+          <div class="contentTitle">我的想看</div>
+          <div id="tableWrapper">
+            <table cellspacing="0">
+              <thead>
+                <tr>
+                  <th>电影名称</th>
+                  <th>电影类型</th>
+                  <th>我的评分</th>
+                  <th>添加时间</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>天气之子</td>
+                  <td>动画</td>
+                  <td>9</td>
+                  <td>2019.6.6</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="btnWrpper">
+            <div class="btn" id="BackPage">上一页</div>
+            <ul id="pages">
+              <li class="page">1</li>
+            </ul>
+            <div class="btn" id="BackPage">下一页</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.onload = function () {
+        checkLogin()
+
+        $.ajax({
+          // 编写json格式，设置属性和值
+          url:
+            'http://localhost:8080/SSM_war_exploded/getUserBaseDataByUsername',
+          contentType: 'application/json;charset=UTF-8',
+          // data: '{"username":"ahhTou", "password":"123", "age":"20"}',
+          data: 'root',
+          dataType: 'json',
+          type: 'post',
+          success: function (data) {
+            console.log(data)
+          },
+        })
+      }
+
+      function checkLogin() {
+        let isLogin = true
+        if (!isLogin) {
+          alert('您没有登录，将跳转登录界面')
+          window.location.href = './account/login.html'
+        }
+      }
+    </script>
+  </body>
+</html>
