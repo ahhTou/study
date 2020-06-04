@@ -9,12 +9,4 @@
         from user
         where username = #{username}
     </select>
-
-
-    <select id="checkLoginByUsernameAndPassword" resultType="com.xhr.bean.UserBaseData">
-        select nickname
-        from user
-        where username = #{username}
-          and password = #{password}
-    </select>
 </mapper>

@@ -32,8 +32,7 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/checkLoginByUsernameAndPassword"/>
+            <mvc:mapping path="/user/**"/>
             <bean class="com.xhr.authorizedInterceptor.AuthorizedInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

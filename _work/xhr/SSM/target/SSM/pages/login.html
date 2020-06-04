@@ -3,71 +3,10 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>电影收藏夹</title>
-    <style>
-        body {
-            background-image: url('../img/bg1.jpg');
-            background-size: cover;
-        }
-
-        #wrap {
-            width: 100%;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        #title {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            color: white;
-            font-size: 50px;
-        }
-
-        #form {
-            backdrop-filter: blur(30px);
-            border-radius: 10px;
-            width: 450px;
-            /* height: 400px; */
-            height: 350px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
-        }
-
-        input {
-            padding: 0px 5px 0px 5px;
-            font-size: 18px;
-            width: 350px;
-            height: 50px;
-            margin: 15px;
-        }
-
-        input[type='button'] {
-            transition: all 0.4s;
-            color: black;
-            background-color: white;
-            border: none;
-        }
-
-        input[type='button']:hover {
-            color: white;
-            background-color: rgba(99, 172, 231, 0.9);
-            border: none;
-        }
-
-        input {
-            border-radius: 3px;
-            border: none;
-            outline: none;
-        }
-    </style>
+    <title>登录</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <style>@import url(../css/login.css);</style>
 </head>
 <body>
 <div id="wrap">
@@ -78,63 +17,7 @@
         <div><input id="submit" type="button" value="进入管理界面"/></div>
     </form>
 </div>
-<script>
-    let $submit = document.getElementById('submit')
-    let $iUser = document.getElementById('iUser')
-    let $iPass = document.getElementById('iPass')
-
-    let username_now = null
-    let password_now = null
-
-    window.onload = function () {
-        $submit.addEventListener('click', function (e) {
-            e.preventDefault()
-            login()
-        })
-    }
-
-    function login() {
-        username_now = $iUser.value
-        password_now = $iPass.value
-        getLoginStatus(username_now, password_now)
-    }
-
-    function loginToError() {
-        alert('密码错误')
-    }
-
-    function loginToSuccess() {
-        window.location.href = '../index.html'
-        window.localStorage.setItem("isLogin", "true")
-    }
-
-    function getLoginStatus(username_check, password_check) {
-        let _status
-        let msg = {
-            "username": username_check,
-            "password": password_check
-        }
-        try {
-            $.ajax({
-                // 编写json格式，设置属性和值
-                url: 'http://localhost:8080/SSM_war_exploded/checkLoginByUsernameAndPassword',
-                contentType: 'application/json;charset=UTF-8',
-                data: JSON.stringify(msg),
-                dataType: 'json',
-                type: 'post',
-                success: function (data) {
-                    console.log("返回结果是：" + typeof data)
-                    _status = data
-                    if (_status === true) loginToSuccess()
-                    if (_status === false) loginToError()
-                }
-            })
-        } catch (e) {
-            loginToError()
-        }
-
-
-    }
+<script src="../js/login.js" type="module">
 </script>
 </body>
 </html>
