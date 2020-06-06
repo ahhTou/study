@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 数据库为a_column时 自动 映射到javaBean中的aColumn  -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <!-- 懒加载 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- 轻度懒加载 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- 开启全局二级缓存配置 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 禁用一级缓存 -->
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+
+</configuration>

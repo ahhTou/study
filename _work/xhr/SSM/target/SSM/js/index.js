@@ -393,7 +393,6 @@ function addEventListeners() {
         delCookie()
     })
 
-
     $btn_del.addEventListener('click', () => {
         if (currentSelectTable != null && currentSelectTable !== '') {
             SetBtnStyle.setBtnDelStyle(false)

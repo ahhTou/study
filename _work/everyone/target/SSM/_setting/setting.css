@@ -1,0 +1,115 @@
+/* 背景图片 直接替代img里的图片即可 */
+body {
+    background-image: url('../img/bg1.jpg');
+}
+
+/*=============登录页===============*/
+/*   登录字体颜色 和 按钮*/
+.settingForLogin input[type='button'] {
+    /* 按钮背景色 */
+    background-color: rgba(99, 172, 231, 0.9);
+    /* 字体颜色 */
+    color: white;
+}
+
+/* 登录框样式 */
+.settingForLogin #form {
+    /* 背景色 */
+    background-color: rgba(255, 255, 255, .9);
+}
+
+/* 标题颜色和字体大小 */
+.settingForLogin #title {
+    color: white;
+    font-size: 50px;
+}
+
+/*=============主页================*/
+
+/* 侧边栏头像 直接更换img里的 ProfilePhoto.jpg 就行*/
+.settingForIndex #profilePhoto {
+    /*宽度占侧边栏的百分之多少*/
+    width: 60%;
+    /* 圆角 */
+    border-radius: 30px;
+    /*边框*/
+    border: 1px black solid;
+}
+
+/* 侧边栏 宽度 和 背景（可以自己修改为图片） */
+.settingForIndex #sidebar {
+    width: 300px;
+    /* 单色 */
+    background: rgba(255,255,255,.9);
+
+    /* 图片 把图片放到img文件下，并且把图片名字放到后面 */
+    /*background: image("img/图片名字");*/
+}
+
+/* 侧边栏昵称的字体大小和颜色 */
+.settingForIndex #username {
+    font-size: 30px;
+    color: black;
+}
+
+/* 侧边栏退出按钮字体颜色 */
+.settingForIndex .options {
+    color: black;
+}
+
+/* 我的最爱和我的看过 颜色 和 字体大小 */
+.settingForIndex .contentTitle {
+    color: black;
+    font-size: 30px;
+}
+
+/* 我的最爱框背景颜色 */
+.settingForIndex #bannerContent {
+    /* 字体颜色 */
+    color: black;
+
+    /* 背景颜色 单色 */
+    background: rgba(255,255,255,.9);
+
+    /* 图片 把图片放到img文件下，并且把图片名字放到后面 */
+    /*background: image("img/图片名字");*/
+}
+
+/* 我的看过背景颜色 */
+.settingForIndex #tableWrapper {
+    /* 字体颜色 */
+    color: black;
+
+    /* 背景颜色 单色 */
+    background: rgba(255,255,255,.9);
+
+    /* 图片 把图片放到img文件下，并且把图片名字放到后面 */
+    /*background: image("img/图片名字");*/
+}
+
+/* 表格字体颜色 */
+thead th, tbody tr {
+    height: 50px;
+    color: black;
+}
+
+/* 分页按钮 */
+.settingForIndex #btnWrapper .btn {
+    /* 背景颜色 */
+    background: rgba(255,255,255,.9);
+
+    /* 字体颜色 */
+    color: black;
+}
+/* 编辑按钮 */
+.settingForIndex .editBtn {
+    /* 背景颜色 */
+    background: rgba(255,255,255,.9);
+
+    /* 字体颜色 */
+    color: black;
+}
+
+
+
+

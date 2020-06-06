@@ -21,16 +21,20 @@
         </transition>
 
         <transition name="fade">
-            <h1 id="title" :style="titleColor" v-if="!changeToSidBar">{{title}}</h1>
+            <div id="title" v-if="!changeToSidBar"><h3>{{title}}</h3>
+                <div>{{loginMsg}}</div>
+            </div>
         </transition>
         <div id="changeWrapper" class="loginStyle">
             <transition name="fade">
                 <div id="content" v-if="!isSidBar">
                     <form id="form">
                         <label for="iUser"><input id="iUser" type="text" placeholder="管理员账户"
+                                                  value="123"
                                                   v-model="username"/></label>
 
                         <label for="iPass"><input id="iPass" type="password" placeholder="管理员密码"
+                                                  value="123"
                                                   v-model="password"/></label>
 
                         <div><input id="submit" @click.prevent="clickToLogin" type="button" value="进入管理界面"/></div>
@@ -43,13 +47,14 @@
             <transition name="fade">
                 <div id="sideBar">
                     <img id="profilePhoto" src="../assets/img/ProfilePhoto.jpg"/>
-                    <div id="username">未登录</div>
+                    <div id="username">{{userBasicData.nickname}}</div>
                     <div class="options">影片档案</div>
                     <div class="options">站位</div>
                     <div class="options">站位</div>
                     <div class="options exit" id="exit" @click="toExitLogin">退出</div>
                     <div class="ahhTou" @click="toOpenMyDemoMsg">
                         <div>@偷偷呼吸的死肥宅</div>
+                        <div>当前登录: {{ userBasicData.username }}</div>
                         <div>By ahhTou</div>
                     </div>
                 </div>
@@ -60,6 +65,8 @@
 
 <script>
     import LoadingAnimation from "../components/LoadingAnimation.vue"
+    import api_login_authorized from "../network/authorized"
+    import {getBasicUserData} from "../network/userData"
 
     export default {
         name: "Heart",
@@ -68,66 +75,148 @@
         },
         data() {
             return {
+                userBasicData: {
+                    username: null,
+                    nickname: "未登录",
+                },
+
+                username: null,
+                password: null,
+
+                loginMsg: ' ',
+
                 changeToSidBar: false,
                 isSidBar: false,
                 title: "追番列表",
-                username: null,
-                password: null,
+
+
                 start_LA: false,
-                titleColor: "color : white;",
                 openMyDemoMsg: false,
             }
         },
         methods: {
             clickToLogin() {
-                this.$router.push('/login')
+                this.toLoginByRouter()
             },
+
             toLoginByRouter() {
+                let $changeWrapper = document.getElementById("changeWrapper");
                 let $form = document.getElementById("content")
-                $form.style.transition = "all .3s"
-                $form.style.transform = "translateX(-450px)"
+                let isLogin = window.localStorage.getItem("isLogin")
+                if (isLogin === false || isLogin === "false") {
+                    console.log("发送了登录请求")
 
-                this.changeToSidBar = true
+                    $form.style.transition = "all .3s"
+                    $form.style.transform = "translateX(-450px)"
+                    this.changeToSidBar = false
+                    this.start_LA = true
 
-                this.start_LA = true
-
-                let isLogin;
-
-                new Promise((resolve, reject) => {
-                    let _this = this
-                    setTimeout(function () {
-                        if (_this.$store.state.isLogin) {
-                            resolve()
-                        } else {
-                            reject()
-                        }
+                    setTimeout(() => {
+                        console.log("发送了登录请求")
+                        this.loginService()
                     }, 1000)
 
-                }).then(data => {
-                    this.$store.state.isLogin = true
-                    if (this.$route.path !== '/') {
-                        this.$router.push("/")
-                    }
-                    this.start_LA = false
-                    let $changeWrapper = document.getElementById("changeWrapper");
-                    $changeWrapper.className = 'sidebarStyle'
-                    this.isSidBar = true
+                } else if (isLogin === true || isLogin === "true") {
 
-                }, err => {
+                    $changeWrapper.style.transition = 'all 0s'
+                    $changeWrapper.className = 'sidebarStyle'
+                    $changeWrapper.style.transition = ''
+                    this.changeToSidBar = true
+                    this.isSidBar = true
                     this.$store.state.isLogin = true
-                    this.$router.push("/login")
-                    this.start_LA = false
-                    $form.style.transform = "translateX(0px)"
-                    this.changeToSidBar = false
-                    this.title = "密码错误"
-                    this.titleColor = "color: indianred;"
-                })
+
+                    this.getUserBasicDataService();
+                }
+
 
             },
             toExitLogin() {
+                console.log("退出了登录")
+
+                let $changeWrapper = document.getElementById("changeWrapper");
+                $changeWrapper.className = 'loginStyle'
+
+                window.localStorage.setItem("token", "")
+                window.localStorage.setItem("isLogin", "false")
+
+                this.changeToSidBar = false
+                this.isSidBar = false
                 this.$store.state.isLogin = false
+
                 this.$router.push("/login")
             },
+
+            loginService() {
+                let $form = document.getElementById("content")
+                let $changeWrapper = document.getElementById("changeWrapper");
+
+                api_login_authorized(this.username, this.password).then(res => {
+                    window.localStorage.setItem("token", res.data)
+                    window.localStorage.setItem("isLogin", "true")
+
+                    this.$store.state.isLogin = true
+
+                    if (this.$route.path !== '/') {
+                        this.$router.push("/")
+                    }
+
+                    this.start_LA = false
+                    this.isSidBar = true
+
+
+                    this.loginMsg = ' '
+
+                    $changeWrapper.className = 'sidebarStyle'
+
+                    this.getUserBasicDataService()
+                }, err => {
+
+                    window.localStorage.setItem("token", "")
+                    window.localStorage.setItem("isLogin", "false")
+
+                    $form.style.transform = "translateX(0px)"
+
+                    let $changeWrapper = document.getElementById("changeWrapper");
+                    $changeWrapper.className = 'loginStyle'
+
+                    this.$store.state.isLogin = false
+
+                    if (this.$route.path !== "/login") {
+                        this.$router.push("/login")
+                    }
+
+                    this.start_LA = false
+                    this.changeToSidBar = false
+
+                    this.loginMsg = err
+                })
+            },
+
+            getUserBasicDataService() {
+                getBasicUserData().then(res => {
+
+                    window.localStorage.setItem("token", res.data.token)
+                    this.userBasicData.username = res.data.username
+                    this.userBasicData.nickname = res.data.nickname
+
+                }, err => {
+                    let $changeWrapper = document.getElementById("changeWrapper");
+                    $changeWrapper.className = 'loginStyle'
+
+                    window.localStorage.setItem("token", "")
+                    window.localStorage.setItem("isLogin", "false")
+
+                    this.changeToSidBar = false
+                    this.isSidBar = false
+                    this.$store.state.isLogin = false
+
+                    this.loginMsg = err
+
+                    this.$router.push("/login")
+                })
+            },
+
+
             toOpenMyDemoMsg() {
                 this.openMyDemoMsg = true
             },
@@ -139,14 +228,14 @@
             $route: {
                 handler: function (val, oldVal) {
                     let path = val.path
-                    if (path === '/login' && this.$store.state.isLogin) {
+                    let isLogin = window.localStorage.getItem("isLogin")
+/*                    if (path === '/login' && !isLogin) {
                         this.$router.push('/')
                     }
                     if (path !== '/login' && this.$store.state.isLogin) {
                         this.toLoginByRouter();
-                    }
+                    }*/
                 },
-                // 深度观察监听
                 deep: true
             }
         },
@@ -162,7 +251,7 @@
 
 
     #heartWrap {
-        @include flex;
+        @include flex();
         position: absolute;
         width: 100%;
         height: 100%;
@@ -173,16 +262,18 @@
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             color: white;
             font-size: 50px;
+
+            div {
+                margin: 20px 0 20px 0;
+                position: relative;
+                font-size: 20px;
+                color: indianred;
+            }
         }
 
         #changeWrapper {
             transition: all 1s;
-
-
             display: flex;
-            /*            justify-content: flex-start;
-                        align-items: flex-start;*/
-
             backdrop-filter: blur(30px);
             overflow: hidden;
 
