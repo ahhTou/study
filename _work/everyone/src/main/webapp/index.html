@@ -7,13 +7,13 @@
     <title>管理界面</title>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <style>
-        @import url(css/index.css);
+        @import url(./lib/css/index.css);
     </style>
 </head>
 <body>
 <div id="wrap" class="settingForIndex">
     <div id="sidebar">
-        <img id="profilePhoto" src="img/ProfilePhoto.jpg"/>
+        <img id="profilePhoto" src="./lib/img/ProfilePhoto.jpg"/>
         <div id="username">未登录</div>
         <div class="options">影片档案</div>
         <div class="options" id="exit">退出</div>
@@ -27,7 +27,7 @@
             <ul id="bannerContent">
                 <li
                         style="
-                background-image: url(./img/like/1.jpg);
+                background-image: url(./lib/img/like/1.jpg);
                 background-size: cover;
               "
                 >
@@ -35,7 +35,7 @@
                 </li>
                 <li
                         style="
-                background-image: url(./img/like/2.jpg);
+                background-image: url(./lib/img/like/2.jpg);
                 background-size: cover;
               "
                 >
@@ -43,7 +43,7 @@
                 </li>
                 <li
                         style="
-                background-image: url(./img/like/3.jpg);
+                background-image: url(./lib/img/like/3.jpg);
                 background-size: cover;
               "
                 >
@@ -56,7 +56,7 @@
                 <div class="contentTitle">我的看过</div>
                 <div id="tableWithBtnLine">
                     <div id="tableWrapper">
-                        <table>
+                        <table cellspacing="0">
                             <thead>
                             <tr>
                                 <th>电影名称</th>
@@ -91,7 +91,6 @@
         </div>
     </div>
 </div>
-<script src="js/index.js" type="module"></script>
-<script src="./js/index.js" type="module"></script>
+<script src="./lib/js/index.js" type="module"></script>
 </body>
 </html>

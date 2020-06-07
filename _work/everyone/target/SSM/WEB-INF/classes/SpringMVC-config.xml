@@ -13,7 +13,7 @@
 
     <!-- SpringMVC只是控制网站跳转逻辑 -->
     <!--只扫描控制器-->
-    <context:component-scan base-package="com.xhr" use-default-filters="false">
+    <context:component-scan base-package="com.xhr.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -26,13 +26,13 @@
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
     <mvc:resources mapping="/static/**" location="/WEB-INF/"/>
-    <mvc:resources location="/js/" mapping="/js/**"/>
-    <mvc:resources location="/css/" mapping="/css/**"/>
-    <mvc:resources location="/img/" mapping="/img/**"/>
+    <mvc:resources location="/lib/" mapping="/lib/**"/>
+    <mvc:resources location="/_setting/" mapping="/_setting/**"/>
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/user/**"/>
+            <mvc:mapping path="/user"/>
+            <mvc:mapping path="/list"/>
             <bean class="com.xhr.authorizedInterceptor.AuthorizedInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

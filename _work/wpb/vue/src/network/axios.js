@@ -17,7 +17,6 @@ export function request(config) {
         });
     instance.interceptors.response.use(
         response => {
-            // console.log(response.data)
             if (response.config.url === '/api/login/check') {
                 if (response.data === "null" || response.data === null || response.data === '') {
                     return Promise.reject("密码错误或者账户名错误")
@@ -31,7 +30,11 @@ export function request(config) {
             return response
         },
         error => {
-            return Promise.reject(error.response.status) // 返回接口返回的错误信息
+            if (error.response.status === 500) {
+                return Promise.reject("发送登录请求失败 err: 500")
+            } else {
+                return Promise.reject(error.response.status) // 返回接口返回的错误信息
+            }
         })
     return instance(config);
 }

@@ -51,12 +51,12 @@ public class LoginController {
     @RequestMapping("/check")
     public @ResponseBody
     Boolean checkLoginByUsernameAndPassword(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
-
-        System.out.println("\r\n> "+user.getUsername()+"请求登录");
+        System.out.println("\r\n> " + user.getUsername() + "请求登录");
         UserBaseData userBaseData = null;
         try {
             userBaseData = loginMapper.checkLoginByUsernameAndPassword(user.getUsername(), user.getPassword());
-        }catch (Exception e){
+        } catch (Exception e) {
+            System.out.println("> 查询出现异常");
             e.printStackTrace();
         }
         if (userBaseData != null) {
@@ -65,22 +65,33 @@ public class LoginController {
             session.setAttribute("username", user.getUsername());
             session.setAttribute("password", user.getPassword());
 
-            if (session.isNew()){
+            if (session.isNew()) {
                 System.out.println("> 新建了Session");
-            }else {
+            } else {
                 System.out.println("> 发现了旧的Session");
             }
             // 设置cookie
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("JSESSIONID")) {
-                    cookie.setValue(session.getId());
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                    System.out.println("> 新建了Cookie");
+            if (cookies!=null){
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("JSESSIONID")) {
+                        cookie.setValue(session.getId());
+                        cookie.setPath("/");
+                        cookie.setMaxAge(500);
+                        response.addCookie(cookie);
+                        System.out.println("> 新建了Cookie");
+                    }
                 }
+            }else {
+                System.out.println("> 没有发现cookie");
+                Cookie cookie = new Cookie("JSESSIONID", session.getId());
+                cookie.setValue(session.getId());
+                cookie.setPath("/");
+                cookie.setMaxAge(500);
+                response.addCookie(cookie);
+                System.out.println("> 新建了Cookie");
             }
+
             System.out.println("> 通过登录");
             return true;
         }

@@ -19,15 +19,14 @@
                 <a href="http://wpa.qq.com/msgrd?v=3&uin=1197977498&site=qq&menu=yes">QQ 1197977498</a>
             </div>
         </transition>
-
         <transition name="fade">
-            <div id="title" v-if="!changeToSidBar"><h3>{{title}}</h3>
+            <div id="title" v-if="!changeToSidBar&&!isSidBar&&isLoad"><h3>{{title}}</h3>
                 <div>{{loginMsg}}</div>
             </div>
         </transition>
-        <div id="changeWrapper" class="loginStyle">
+        <div id="changeWrapper">
             <transition name="fade">
-                <div id="content" v-if="!isSidBar">
+                <div id="content" v-show="!isSidBar&&isLoad">
                     <form id="form">
                         <label for="iUser"><input id="iUser" type="text" placeholder="管理员账户"
                                                   value="123"
@@ -45,8 +44,8 @@
                 </div>
             </transition>
             <transition name="fade">
-                <div id="sideBar">
-                    <img id="profilePhoto" src="../assets/img/ProfilePhoto.jpg"/>
+                <div id="sideBar" v-show="isSidBar&&isLoad">
+                    <img id="profilePhoto" src="../assets/img/ProfilePhoto.jpg" alt="图片加载失败"/>
                     <div id="username">{{userBasicData.nickname}}</div>
                     <div class="options">影片档案</div>
                     <div class="options">站位</div>
@@ -73,6 +72,14 @@
         components: {
             LoadingAnimation
         },
+        mounted() {
+            this.localLoginCheck().then(() => {
+                console.log("> 本地验证成功, 获取基本信息")
+                this.getUserBasicDataService()
+            }, () => {
+                console.log("> 本地验证失败, 返回登录页")
+            })
+        },
         data() {
             return {
                 userBasicData: {
@@ -85,8 +92,9 @@
 
                 loginMsg: ' ',
 
+                isLoad: false,
                 changeToSidBar: false,
-                isSidBar: false,
+                isSidBar: null,
                 title: "追番列表",
 
 
@@ -104,15 +112,12 @@
                 let $form = document.getElementById("content")
                 let isLogin = window.localStorage.getItem("isLogin")
                 if (isLogin === false || isLogin === "false") {
-                    console.log("发送了登录请求")
-
                     $form.style.transition = "all .3s"
                     $form.style.transform = "translateX(-450px)"
                     this.changeToSidBar = false
                     this.start_LA = true
 
                     setTimeout(() => {
-                        console.log("发送了登录请求")
                         this.loginService()
                     }, 1000)
 
@@ -147,6 +152,7 @@
             },
 
             loginService() {
+                console.log("> 进行远程登录验证")
                 let $form = document.getElementById("content")
                 let $changeWrapper = document.getElementById("changeWrapper");
 
@@ -194,7 +200,7 @@
 
             getUserBasicDataService() {
                 getBasicUserData().then(res => {
-
+                    console.log("> 得到了基础账户信息")
                     window.localStorage.setItem("token", res.data.token)
                     this.userBasicData.username = res.data.username
                     this.userBasicData.nickname = res.data.nickname
@@ -216,6 +222,23 @@
                 })
             },
 
+            localLoginCheck() {
+                return new Promise((resolve, reject) => {
+                    console.log("> 进行本地验证")
+                    let $changeWrapper = document.getElementById("changeWrapper");
+                    let _isLogin = window.localStorage.getItem("isLogin")
+                    this.isLoad = true
+                    if (_isLogin === "true" || _isLogin) {
+                        this.isSidBar = true
+                        $changeWrapper.className = 'sidebarStyle'
+                        resolve()
+                    } else {
+                        this.isSidBar = false
+                        $changeWrapper.className = 'loginStyle'
+                        reject()
+                    }
+                })
+            },
 
             toOpenMyDemoMsg() {
                 this.openMyDemoMsg = true
@@ -228,13 +251,10 @@
             $route: {
                 handler: function (val, oldVal) {
                     let path = val.path
-                    let isLogin = window.localStorage.getItem("isLogin")
-/*                    if (path === '/login' && !isLogin) {
+                    let _isLogin = window.localStorage.getItem("isLogin")
+                    if (path === '/login' && (_isLogin || isLogin !== "true")) {
                         this.$router.push('/')
                     }
-                    if (path !== '/login' && this.$store.state.isLogin) {
-                        this.toLoginByRouter();
-                    }*/
                 },
                 deep: true
             }

@@ -23,7 +23,7 @@ public class LoginController {
 
     @RequestMapping("/exit")
     @ResponseBody
-    public Boolean exitLogin(@RequestBody String key, HttpServletRequest request, HttpServletResponse response) {
+    public Boolean exitLogin(@RequestBody String key, HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("\n\r" + "> root用户退出请求");
         if (key.equals("del")) {
             System.out.println("> 收到一个正确的退出登录请求");
@@ -52,11 +52,11 @@ public class LoginController {
     public @ResponseBody
     Boolean checkLoginByUsernameAndPassword(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
 
-        System.out.println("\r\n> "+user.getUsername()+"请求登录");
+        System.out.println("\r\n> " + user.getUsername() + "请求登录");
         UserBaseData userBaseData = null;
         try {
             userBaseData = loginMapper.checkLoginByUsernameAndPassword(user.getUsername(), user.getPassword());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (userBaseData != null) {
@@ -65,9 +65,9 @@ public class LoginController {
             session.setAttribute("username", user.getUsername());
             session.setAttribute("password", user.getPassword());
 
-            if (session.isNew()){
+            if (session.isNew()) {
                 System.out.println("> 新建了Session");
-            }else {
+            } else {
                 System.out.println("> 发现了旧的Session");
             }
             // 设置cookie

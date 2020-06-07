@@ -1,6 +1,6 @@
 /* 背景图片 直接替代img里的图片即可 */
 body {
-    background-image: url('../img/bg1.jpg');
+    background-image: url('../lib/img/bg1.jpg');
 }
 
 /*=============登录页===============*/
@@ -108,6 +108,16 @@ thead th, tbody tr {
 
     /* 字体颜色 */
     color: black;
+}
+
+/* 表格颜色 */
+/* 单数行 */
+tbody tr:nth-child(2n + 1) {
+    background-color: rgb(212, 212, 212);
+}
+/* 双数行 */
+tbody tr:nth-child(2n) {
+    background-color: rgb(255, 255, 255);
 }
 
 

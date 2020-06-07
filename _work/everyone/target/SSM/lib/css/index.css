@@ -1,0 +1,295 @@
+@import "../../_setting/setting.css";
+
+html,
+body {
+    height: 100%;
+}
+
+button {
+    color: black;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+* {
+    outline: none;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+#wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+}
+
+#sidebar {
+    width: 300px;
+    height: 100%;
+    box-shadow: 10px 0 40px rgba(100, 100, 100, 0.5);
+    box-sizing: border-box;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profilePhoto {
+    margin-top: 30px;
+}
+
+#username {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.options {
+    height: 10%;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    /* background-color: black; */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s;
+}
+
+.options:hover {
+    border: 1px solid black;
+}
+
+.ahhTou {
+    font-size: 5px;
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    color: black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#content {
+    margin-left: 300px;
+    padding: 30px;
+    width: 100%;
+    color: white;
+}
+
+#bannerWrapper {
+    height: 330px;
+}
+
+#bannerContent {
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 625px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bannerContent li {
+    height: 150px;
+    width: 120px;
+    margin: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    background-size: contain;
+    background-position: center;
+}
+
+#bannerContent li:hover {
+    transform: scale(1.1);
+}
+
+#bannerContent li span {
+    position: absolute;
+    bottom: -15%;
+}
+
+#listWrapper {
+    height: 60%;
+    display: flex;
+}
+
+.contentTitle {
+    text-shadow: 10px 10px 40px rgba(100, 100, 100, 0.5);
+    margin: 10px;
+}
+
+#tableWrapper {
+    background-color: rgba(255, 255, 255, 0.2);
+    height: 450px;
+    width: 625px;
+    position: relative;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    overflow: hidden;
+}
+
+thead th {
+    height: 50px;
+}
+
+tbody tr{
+    box-sizing: border-box;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+
+#btnWrapper {
+    width: 625px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btnWrapper .btn {
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 100px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#btnWrapper #pages .page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+#tableWithBtnLine {
+    display: flex;
+}
+
+#editWrapper {
+    margin-left: 15px;
+    width: 65px;
+    height: 450px;
+    display: flex;
+    flex: 1;
+    justify-items: center;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.editBtn {
+    margin: 5px;
+    cursor: pointer;
+    width: 60px;
+    flex: 1;
+    font-size: 30px;
+}
+
+
+#editAdd {
+    position: relative;
+    z-index: 0;
+}
+
+#editDel {
+    position: relative;
+    z-index: 0;
+}
+
+.editBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.editBtn input {
+    width: 100px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px black solid;
+
+}
+
+#editAdd button {
+    cursor: pointer;
+    color: black;
+}
+
+#editAdd button:hover {
+    color: white;
+
+}
+
+#editEdit button {
+    color: black;
+
+}
+
+#editEdit button:hover {
+    color: white;
+
+}
+
+#editDel button:hover {
+    color: black;
+}
+
+#editDel button {
+    cursor: pointer;
+    color: white;
+}
+
+#editDel:hover {
+    background-color: rgb(197, 56, 56);
+    color: white;
+}
+
+
+#tempYes #tempNo {
+    color: white;
+    cursor: pointer;
+    background: none;
+}
+
+
+#editEdit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#editEdit div {
+    font-size: 15px;
+    width: 20px;
+    word-wrap: normal;
+    text-align: center;
+}

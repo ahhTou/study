@@ -9,9 +9,6 @@
         components: {
             Heart
         },
-        created() {
-            console.log("???")
-        }
     }
 </script>
 
