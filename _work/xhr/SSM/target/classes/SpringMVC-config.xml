@@ -32,7 +32,8 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/user/**"/>
+            <mvc:mapping  path="/user/**"/>
+            <mvc:mapping path="/list/**"/>
             <bean class="com.xhr.authorizedInterceptor.AuthorizedInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

@@ -16,10 +16,5 @@
         <!-- 禁用一级缓存 -->
         <setting name="localCacheScope" value="STATEMENT"/>
     </settings>
-    <databaseIdProvider type="DB_VENDOR">
-        <!-- 为不同和数据库厂商起别名 -->
-        <property name="MySQL" value="mysql"/>
-        <property name="Oracle" value="oracle"/>
-    </databaseIdProvider>
 
 </configuration>

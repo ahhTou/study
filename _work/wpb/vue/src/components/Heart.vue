@@ -4,10 +4,10 @@
             <div v-if="openMyDemoMsg" class="myDemoMsg">
                 <button @click="closeMyDemoMsg">X</button>
                 <h3>前端</h3>
-                <a>基础:HTML,css,JavaScript</a><br/>
+                <a>基础:HTML,css(sass),JavaScript(es6)</a><br/>
                 <a>前端框架:Vue</a><br/><br/>
                 <h3>请求</h3>
-                <a>ajax的框架:axios</a><br/><br/>
+                <a>ajax（axios)</a><br/><br/>
                 <h3>登录验证</h3>
                 <a>Token</a><br/><br/>
                 <h3>后端</h3>
@@ -47,9 +47,8 @@
                 <div id="sideBar" v-show="isSidBar&&isLoad">
                     <img id="profilePhoto" src="../assets/img/ProfilePhoto.jpg" alt="图片加载失败"/>
                     <div id="username">{{userBasicData.nickname}}</div>
-                    <div class="options">影片档案</div>
-                    <div class="options">站位</div>
-                    <div class="options">站位</div>
+                    <div class="options">我的番剧</div>
+                    <div class="options">番剧库</div>
                     <div class="options exit" id="exit" @click="toExitLogin">退出</div>
                     <div class="ahhTou" @click="toOpenMyDemoMsg">
                         <div>@偷偷呼吸的死肥宅</div>
@@ -136,10 +135,12 @@
 
             },
             toExitLogin() {
-                console.log("退出了登录")
-
+                console.log("> 退出了登录")
                 let $changeWrapper = document.getElementById("changeWrapper");
                 $changeWrapper.className = 'loginStyle'
+
+                let $form = document.getElementById("content")
+                $form.style.transform = "translateX(0px)"
 
                 window.localStorage.setItem("token", "")
                 window.localStorage.setItem("isLogin", "false")
