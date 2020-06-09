@@ -9,13 +9,36 @@ const routes = [
         name: 'Manager',
         meta: {
             requireAuth: true,
+            title:"个人管理"
         },
         component: () => import('../views/Manager.vue')
     },
     {
         path: '/login',
         name: 'Login',
+        meta: {
+            title: "请登录"
+        },
         component: () => import('../views/Login.vue')
+    },
+    {
+        path: '/anime/*',
+        name: 'Anime',
+        meta: {
+            title: "全部动画"
+        },
+        component:() => import('../views/Anime')
+    },
+    {
+        path: '/myAnime',
+        name: 'MyAnime',
+        meta: {
+            title: "我的动画"
+        },
+    },
+    {
+        path: '*',
+        redirect: "/"
     }
 ]
 
@@ -26,13 +49,12 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth) {
-        console.log("需要登录")
-        next()
-    } else {
-        console.log("不需要登录")
+    document.title = to.meta.title;
+    if (to.path !== from.path){
+        console.log("执行了跳转")
         next()
     }
+
 })
 
 export default router

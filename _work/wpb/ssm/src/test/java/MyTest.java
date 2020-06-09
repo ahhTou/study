@@ -26,6 +26,12 @@ public class MyTest {
     @Autowired
     AnimeTypesMapper animeTypesMapper;
 
+
+    @Test
+    public void pages1(){
+        System.out.println(animeMapper.getHowMuchColumn());
+    }
+
     @Test
     public void testTypes1(){
 

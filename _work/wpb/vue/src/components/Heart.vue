@@ -47,8 +47,8 @@
                 <div id="sideBar" v-show="isSidBar&&isLoad">
                     <img id="profilePhoto" src="../assets/img/ProfilePhoto.jpg" alt="图片加载失败"/>
                     <div id="username">{{userBasicData.nickname}}</div>
-                    <div class="options">我的番剧</div>
-                    <div class="options">番剧库</div>
+                    <div class="options" @click="goTo('/myAnime')">我的番剧</div>
+                    <div class="options" @click="goTo('/anime')">番剧库</div>
                     <div class="options exit" id="exit" @click="toExitLogin">退出</div>
                     <div class="ahhTou" @click="toOpenMyDemoMsg">
                         <div>@偷偷呼吸的死肥宅</div>
@@ -247,6 +247,12 @@
             closeMyDemoMsg() {
                 this.openMyDemoMsg = false
             },
+            goTo(url) {
+                if (this.$route.path !== url) {
+                    console.log('跳转')
+                    this.$router.push(url)
+                }
+            }
         },
         watch: {
             $route: {

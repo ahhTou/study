@@ -28,11 +28,11 @@
     <mvc:resources mapping="/static/**" location="/WEB-INF/"/>
     <mvc:resources location="/image/" mapping="/image/**"/>
 
-    <mvc:interceptors>
+<!--    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/login/**"/>
             <bean class="com.ahhTou.interceptor.Authorized"/>
         </mvc:interceptor>
-    </mvc:interceptors>
+    </mvc:interceptors>-->
 </beans>
