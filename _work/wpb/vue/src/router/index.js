@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Anime from "../views/Anime";
 
 Vue.use(VueRouter)
 
@@ -9,8 +10,25 @@ const routes = [
         name: 'Manager',
         meta: {
             requireAuth: true,
-            title:"个人管理"
+            title: "个人管理"
         },
+        children: [
+            {
+                path: '/anime/*',
+                name: 'Anime',
+                meta: {
+                    title: "全部动画"
+                },
+                component: Anime
+            },
+            {
+                path: '/myAnime',
+                name: 'MyAnime',
+                meta: {
+                    title: "我的动画"
+                },
+            },
+        ],
         component: () => import('../views/Manager.vue')
     },
     {
@@ -20,21 +38,6 @@ const routes = [
             title: "请登录"
         },
         component: () => import('../views/Login.vue')
-    },
-    {
-        path: '/anime/*',
-        name: 'Anime',
-        meta: {
-            title: "全部动画"
-        },
-        component:() => import('../views/Anime')
-    },
-    {
-        path: '/myAnime',
-        name: 'MyAnime',
-        meta: {
-            title: "我的动画"
-        },
     },
     {
         path: '*',
@@ -50,7 +53,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
-    if (to.path !== from.path){
+    if (to.path !== from.path) {
         console.log("执行了跳转")
         next()
     }

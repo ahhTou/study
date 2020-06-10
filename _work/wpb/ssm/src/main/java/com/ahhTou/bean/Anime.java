@@ -1,10 +1,12 @@
 package com.ahhTou.bean;
 
 
+
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class Anime {
+public class Anime implements Serializable {
 
     private Integer id;
 

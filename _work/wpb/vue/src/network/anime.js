@@ -7,3 +7,18 @@ export function getHowMuchPages() {
     })
 
 }
+
+export function getOnePagesValue(url) {
+    return request({
+        url: '/api' + url,
+        method: 'post',
+    })
+}
+
+export function delOneAnimeById(id) {
+    return request({
+        url: '/api/anime/delOne',
+        method: 'post',
+        data: parseInt(id),
+    })
+}

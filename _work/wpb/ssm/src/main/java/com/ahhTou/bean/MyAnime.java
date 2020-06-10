@@ -1,8 +1,9 @@
 package com.ahhTou.bean;
 
 import javax.xml.crypto.Data;
+import java.io.Serializable;
 
-public class MyAnime {
+public class MyAnime implements Serializable {
 
     /* 对应动画id */
     private Integer id;

@@ -4,11 +4,16 @@ export function request(config) {
     let path = window.document.location.origin;
     const instance = axios.create({
         baseURL: path,
+        headers: {
+            'content-type': 'application/json;charset=UTF-8'
+        }
+
     })
     instance.interceptors.request.use(
         config => {
             if (localStorage.getItem('token')) {
                 config.headers.token = localStorage.getItem('token');
+                config.headers.contentType = 'application/json;charset=UTF-8'
             }
             return config;
         },

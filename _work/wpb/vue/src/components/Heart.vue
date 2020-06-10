@@ -48,7 +48,7 @@
                     <img id="profilePhoto" src="../assets/img/ProfilePhoto.jpg" alt="图片加载失败"/>
                     <div id="username">{{userBasicData.nickname}}</div>
                     <div class="options" @click="goTo('/myAnime')">我的番剧</div>
-                    <div class="options" @click="goTo('/anime')">番剧库</div>
+                    <div class="options" @click="goTo('/anime/1')">番剧库</div>
                     <div class="options exit" id="exit" @click="toExitLogin">退出</div>
                     <div class="ahhTou" @click="toOpenMyDemoMsg">
                         <div>@偷偷呼吸的死肥宅</div>
@@ -255,22 +255,22 @@
             }
         },
         watch: {
-            $route: {
-                handler: function (val, oldVal) {
-                    let path = val.path
-                    let _isLogin = window.localStorage.getItem("isLogin")
-                    if (path === '/login' && (_isLogin || isLogin !== "true")) {
-                        this.$router.push('/')
-                    }
-                },
-                deep: true
-            }
+            /*            $route: {
+                            handler: function (val, oldVal) {
+                                let path = val.path
+                                let _isLogin = window.localStorage.getItem("isLogin")
+                                if (path === '/login' && (_isLogin || isLogin !== "true")) {
+                                    this.$router.push('/')
+                                }
+                            },
+                            deep: true
+                        }*/
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    @mixin flex {
+    @mixin flex() {
         display: flex;
         align-items: center;
         justify-content: center;

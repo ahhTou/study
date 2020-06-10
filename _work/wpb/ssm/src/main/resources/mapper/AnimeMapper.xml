@@ -19,15 +19,50 @@
 
     <select id="getOnePage" resultMap="Res1">
         <bind name="_page1" value="(page - 1) * 20"/>
-        <bind name="_page2" value="(page - 1) * 20 + 20"/>
+        <bind name="_page2" value="20"/>
         select *
         from anime
+        order by end_time
         limit #{_page1},#{_page2}
     </select>
 
     <select id="getHowMuchColumn" resultType="java.lang.Integer">
-        select count(id) from anime
+        select count(id)
+        from anime
     </select>
+
+    <delete id="delAnimeById">
+        delete
+        from anime
+        where id = #{id}
+    </delete>
+
+    <insert id="addOneAnime">
+        insert into anime(
+        title, end_time
+        <if test="imgUrl!=null and imgUrl!=&quot;&quot;">
+            , img_url
+        </if>
+        )
+        values (#{title}, #{endTime}
+        <if test="imgUrl!=null and imgUrl!=&quot;&quot;">
+            ,#{imgUrl}
+        </if>)
+    </insert>
+
+    <update id="updateOneAnime">
+        update anime
+        <trim prefix="set" suffixOverrides=",">
+            movie_name=#{movieName},
+            <if test="movieType!=null and movieType!=''">
+                movie_type=#{movieType},
+            </if>
+            <if test="movieScore!=null and movieScore!=''">
+                movie_Score=#{movieScore},
+            </if>
+        </trim>
+        where movie_id=#{movieID} and username=#{username}
+    </update>
 
 
 </mapper>

@@ -1,5 +1,5 @@
 <template>
-    <div id="animation">
+    <div id="animation" ref="thisWrapper">
         <span v-for="count in 6">·</span>
     </div>
 </template>
@@ -16,31 +16,39 @@
             }
         },
         mounted() {
-
+            console.log("> 动画组件载入了", this.startLoading)
         },
         methods: {
             toStartLoading() {
+                this.$nextTick(() => {
+                    console.log("> 加载动画启动了")
 
-                let $animation = document.getElementById("animation");
+                    let $animation = this.$refs.thisWrapper
 
-                $animation.className = 'animationIn'
+                    $animation.className = 'animationIn'
 
-                let timerOut = null
+                    let timerOut = null
 
-                this.timerInterval = setInterval(() => {
+                    this.timerInterval = setInterval(() => {
 
-                    timerOut = null
+                        timerOut = null
 
-                    $animation.className = 'animationOut'
+                        $animation.className = 'animationOut'
 
-                    timerOut = setTimeout(() => {
-                        $animation.className = 'animationIn'
-                    }, 200)
+                        timerOut = setTimeout(() => {
+                            $animation.className = 'animationIn'
+                        }, 200)
 
-                }, 1400)
+                    }, 1400)
+
+                })
+
+
             },
 
+
             toStopLoading() {
+                console.log("> 加载动画停止了\r\n")
                 this.timerInterval = null
                 this.startLoading = false
             }
@@ -51,6 +59,7 @@
                     if (val === true) this.toStartLoading();
                     if (val === false) this.toStopLoading();
                 },
+                immediate: true
             }
         }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AnimeServiceImpl implements AnimeService {
@@ -21,7 +22,12 @@ public class AnimeServiceImpl implements AnimeService {
     }
 
     @Override
-    public ArrayList<Anime> getOnePage(Integer page) {
+    public List<Anime> getOnePage(Integer page) {
         return animeMapper.getOnePage(page);
+    }
+
+    @Override
+    public Boolean delAnimeById(Integer id) {
+        return animeMapper.delAnimeById(id);
     }
 }
