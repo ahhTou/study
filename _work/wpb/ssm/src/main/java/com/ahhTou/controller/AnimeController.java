@@ -1,6 +1,7 @@
 package com.ahhTou.controller;
 
 import com.ahhTou.service.AnimeService;
+import com.ahhTou.service.AnimeTypesService;
 import com.ahhTou.untils.MyObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/anime")
@@ -16,6 +18,9 @@ public class AnimeController {
 
     @Resource
     AnimeService animeService;
+
+    @Resource
+    AnimeTypesService animeTypesService;
 
     @RequestMapping("/pages")
     @ResponseBody
@@ -46,4 +51,10 @@ public class AnimeController {
         return animeService.delAnimeById(id);
     }
 
+    @RequestMapping("/getTypes")
+    @ResponseBody
+    public List<String> getTypes() {
+        System.out.println("> 得到全部类型信息");
+        return animeTypesService.getAllTypes();
+    }
 }

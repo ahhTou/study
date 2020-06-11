@@ -22,3 +22,10 @@ export function delOneAnimeById(id) {
         data: parseInt(id),
     })
 }
+
+export function getAllTypes() {
+    return request({
+        url: 'api/anime/getTypes',
+        method: 'post'
+    })
+}

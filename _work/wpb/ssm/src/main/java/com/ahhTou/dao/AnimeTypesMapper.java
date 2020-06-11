@@ -8,4 +8,6 @@ public interface AnimeTypesMapper {
 
     List<String> getTypesByAnimeId(@Param("id") Integer id);
 
+    List<String> getAllTypes();
+
 }

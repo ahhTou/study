@@ -5,12 +5,16 @@
 <mapper namespace="com.ahhTou.dao.AnimeTypesMapper">
 
 
-
     <select id="getTypesByAnimeId" resultType="String">
         select t.type_name
         from anime_types t
                  left join anime_types_mapper tm on t.type_id = tm.type_id
         where tm.id = #{id}
+    </select>
+
+    <select id="getAllTypes" resultType="String">
+        select type_name
+        from anime_types
     </select>
 
 

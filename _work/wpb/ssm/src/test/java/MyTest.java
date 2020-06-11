@@ -35,6 +35,12 @@ public class MyTest {
 
 
     @Test
+    public void typeTest() {
+        List<String> allTypes = animeTypesMapper.getAllTypes();
+        System.out.println(allTypes);
+    }
+
+    @Test
     public void del1() {
 /*        Boolean aBoolean = animeMapper.delAnimeById(101);
         System.out.println(aBoolean);*/
