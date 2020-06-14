@@ -3,7 +3,9 @@ import com.ahhTou.bean.User;
 import com.ahhTou.dao.AnimeMapper;
 import com.ahhTou.dao.AnimeTypesMapper;
 import com.ahhTou.dao.LoginMapper;
+import com.ahhTou.service.AnimeAndTypesService;
 import com.ahhTou.untils.MyObjectMapper;
+import com.ahhTou.untils.MyTypesFilter;
 import com.ahhTou.untils.Token;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
@@ -33,6 +36,53 @@ public class MyTest {
     @Autowired
     AnimeTypesMapper animeTypesMapper;
 
+    @Autowired
+    MyTypesFilter myTypesFilter;
+
+    @Autowired
+    AnimeAndTypesService animeAndTypesService;
+
+    @Test
+    public void testACompleteAddAnime() {
+        Anime anime = new Anime();
+        Date date = new Date(System.currentTimeMillis());
+        List<String> li = new ArrayList<String>();
+        li.add("情感");
+        li.add("治愈");
+        anime.setTitle("未闻花名");
+        anime.setTypes(li);
+        anime.setEndTime(date);
+
+        Boolean aBoolean = animeAndTypesService.addOneWithTypesMapper(anime);
+        System.out.println(aBoolean);
+    }
+
+
+    @Test
+    public void theAddTypesWithMapper() {
+        List<Integer> arrayList = new ArrayList<Integer>();
+
+        arrayList.add(1);
+        arrayList.add(2);
+
+        Boolean aBoolean = animeTypesMapper.addTypesMapper(2, arrayList);
+        System.out.println(aBoolean);
+
+
+    }
+
+    @Test
+    public void myTypesFilter() {
+
+        List<String> arrayList = new ArrayList<String>();
+        arrayList.add("热血");
+        arrayList.add("校园");
+        arrayList.add("推理");
+        List<Integer> integerList = myTypesFilter.stringTypesToIntegerTypes(arrayList);
+        System.out.println(integerList);
+
+    }
+
 
     @Test
     public void typeTest() {
@@ -46,11 +96,11 @@ public class MyTest {
         System.out.println(aBoolean);*/
 
         Anime anime = new Anime();
-        anime.setTitle("神之塔");
+        anime.setTitle("La2");
         Date date = new Date(System.currentTimeMillis());
         anime.setEndTime(date);
         Boolean aBoolean = animeMapper.addOneAnime(anime);
-        System.out.println(aBoolean);
+        System.out.println(anime.getId());
 
     }
 

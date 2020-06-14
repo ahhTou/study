@@ -249,22 +249,9 @@
             },
             goTo(url) {
                 if (this.$route.path !== url) {
-                    console.log('跳转')
                     this.$router.push(url)
                 }
             }
-        },
-        watch: {
-            /*            $route: {
-                            handler: function (val, oldVal) {
-                                let path = val.path
-                                let _isLogin = window.localStorage.getItem("isLogin")
-                                if (path === '/login' && (_isLogin || isLogin !== "true")) {
-                                    this.$router.push('/')
-                                }
-                            },
-                            deep: true
-                        }*/
         },
     }
 </script>

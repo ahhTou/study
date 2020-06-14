@@ -1,6 +1,6 @@
 <template>
     <div id="animeWrapper">
-        <h1>动画列表</h1>
+        <div id="title">动画列表</div>
         <div id="tableWrapper">
             <table>
                 <thead>
@@ -38,7 +38,7 @@
                 <input type="text" v-model="currentAnimeData.imgUrl" placeholder="可以为空">
             </label>
             <label>完结时间<br/>
-                <input type="date" v-model="currentAnimeData.endTime">
+                <input type="date" v-model="endTimeForInput">
             </label>
             <div>
                 类型<br/>
@@ -48,7 +48,11 @@
                     </div>
                 </div>
             </div>
-            <label>操作<br/><input id="btn" type="button" :value="panelTitle" @click.prevent="panelEnter"/></label>
+            操作<br/>
+            <div id="buttonWrapper">
+                <button id="btnEnter" :value="panelTitle" @click.prevent="panelEnter">提交</button>
+                <button id="btnClear" @click.prevent="clearInput">重置</button>
+            </div>
         </div>
 
         <div id="pageBtnWrapper">
@@ -60,8 +64,16 @@
 </template>
 
 <script>
-    import {getHowMuchPages, getOnePagesValue, delOneAnimeById, getAllTypes} from '../network/anime.js'
+    import {
+        addOneAnime,
+        delOneAnimeById,
+        getAllTypes,
+        getHowMuchPages,
+        getOnePagesValue,
+        updateOne
+    } from '../network/anime.js'
     import LoadingAnimation from "../components/LoadingAnimation";
+    import Anime from "../assets/js/Anime";
 
     export default {
         name: "Anime",
@@ -80,12 +92,10 @@
 
                 panelTitle: '添加',
 
-                currentAnimeData: {
-                    types: [],
-                    title: null,
-                    imgUrl: null,
-                    endTime: null
-                },
+                /* 表单绑定的 */
+                currentAnimeData: new Anime(),
+                /* 编辑时存储 */
+                editData: new Anime()
             }
         }
         ,
@@ -102,6 +112,17 @@
             })()
         }
         ,
+        computed: {
+            endTimeForInput: {
+                get() {
+                    return this.currentAnimeData.getEndTimeForInput
+                },
+                set(val) {
+                    console.log(val)
+                    this.currentAnimeData.setEndTimeForInput = val
+                }
+            }
+        },
         mounted() {
             (async () => {
                 console.log("> 准备请求类型")
@@ -155,22 +176,23 @@
             /* 编辑该列 */
             editThisColumn(obj) {
                 this.panelTitle = '编辑'
-                console.log(obj)
-                this.currentAnimeData = obj
-                this.currentAnimeData.endTime = this.timeFormatByTimestamp(obj.endTime)
+                this.editData.setEndTime = this.currentAnimeData.setEndTime = obj.endTime
+                this.editData.setTitle = this.currentAnimeData.setTitle = obj.title
+                this.editData.setImgUrl = this.currentAnimeData.setImgUrl = obj.imgUrl === null ? null : obj.imgUrl
+                this.editData.setTypes = this.currentAnimeData.setTypes = obj.types
+                this.editData.setId = this.currentAnimeData.setId = obj.id
 
                 this.currentTypes = this.currentAnimeData.types
 
+                // 样式切换
                 let $typesWrapper = this.$refs.typesWrapper;
-
                 for (let i = 0; i < $typesWrapper.children.length; i++) {
                     if (this.currentAnimeData.types.includes($typesWrapper.children[i].dataset.types)) {
-                        $typesWrapper.children[i].className = this.typesClass($typesWrapper.children[i].className)
+                        $typesWrapper.children[i].className = 'typeBlock typeBlockChoose'
                     } else {
-                        $typesWrapper.children[i].className = this.typesClass($typesWrapper.children[i].className)
+                        $typesWrapper.children[i].className = 'typeBlock';
                     }
                 }
-
             }
             ,
             /* 删除该列 */
@@ -189,39 +211,58 @@
             ,
             /* 添加面板添加 或者 编辑 */
             panelEnter() {
-                console.log(this.currentAnimeData)
-                let obj = {
-                    types: [],
-                    title: null,
-                    imgUrl: null,
-                    endTime: null
+                let obj = this.currentAnimeData
+                let key = this.panelTitle
+
+                console.log("> 准备提交", obj)
+                if (key === '添加' && obj.title !== null && obj.title !== '' && obj.title !== undefined) {
+                    console.log("> 准备添加动画")
+                    this._addOneAnimeService(obj).then(res => {
+                        console.log('> 添加动画成功')
+                        this.clearInput()
+                        this.refresh(true)
+                    }, err => {
+                        console.log(err)
+                    })
+                } else if (key === '编辑' && obj.id !== null && obj.id !== '' && obj.id !== undefined) {
+                    this._editOneAnimeService(obj).then(res => {
+                        console.log("> 编辑成功", res)
+                        this.clearInput()
+                        this.refresh(false)
+                    }, err => {
+                        console.log("> 编辑失败", err)
+                    })
+                } else {
+                    console.log("> 本地拒绝了添加操作")
                 }
-                obj.title = this.currentAnimeData.title
-                obj.types = this.currentAnimeData.types
-                obj.endTime = this.dateToTimestamp(this.currentAnimeData.endTime)
-                obj.imgUrl = this.currentAnimeData.imgUrl
-                console.log(obj)
+
+
             }
             ,
+            /* 清空按钮 */
+            clearInput() {
+                this.panelTitle = '添加'
 
-            /* 时间戳格式化 */
-            timeFormatByTimestamp(timestamp) {
-                let func = (i) => i > 10 ? i : ('0' + i)
+                this.currentAnimeData = new Anime()
+                this.editData = new Anime()
 
-                let DATE = new Date(timestamp)
-                let fullYear = DATE.getFullYear()
-                let month = func(DATE.getMonth())
-                let day = func(DATE.getDay())
-
-                return fullYear + '-' + month + '-' + day
-            },
-            /* 表单date转时间戳 */
-            dateToTimestamp(time) {
-                let _timeFormat = time.replace(/-/g, '/')
-                let date = new Date(_timeFormat)
-                return date.getTime()
-            },
-
+                /* 清除选中状态 */
+                let $typesWrapper = this.$refs.typesWrapper;
+                for (let i = 0; i < $typesWrapper.children.length; i++) {
+                    $typesWrapper.children[i].className = 'typeBlock';
+                }
+            }
+            ,
+            /* 刷新操作 */
+            refresh(isGoLastPages) {
+                (async () => {
+                    if (isGoLastPages) await this.$router.replace('/anime/' + this.pages)
+                    this.onePageData = await this._getOnePageValueService()
+                    this.pages = await this._getHowMuchPagesService() / 20
+                    this.pages = Math.ceil(this.pages)
+                })()
+            }
+            ,
 
             /* 获取多少页 */
             _getHowMuchPagesService() {
@@ -236,6 +277,28 @@
                 })
             }
             ,
+            /* 添加一个 */
+            _addOneAnimeService(obj) {
+                return new Promise(((resolve, reject) => {
+                    addOneAnime(obj).then(res => {
+                        resolve(res.data)
+                    }, err => {
+                        reject(false)
+                    })
+                }))
+            }
+            ,
+            /* 编辑 */
+            _editOneAnimeService(obj) {
+                return new Promise(((resolve, reject) => {
+                    updateOne(obj).then(res => {
+                        resolve(res.data)
+                    }, err => {
+                        reject(false)
+                    })
+                }))
+            },
+
             /* 获取单页内容 */
             _getOnePageValueService() {
                 return new Promise((resolve, reject) => {
@@ -276,6 +339,8 @@
                     })
                 })
             }
+
+
         }
         ,
         filters: {
@@ -292,8 +357,7 @@
             }
             ,
             timeFilter: function (value) {
-                let data = new Date(value)
-                return data.getFullYear() + '-' + data.getMonth() + '-' + data.getDay()
+                return new Anime().timeFilter(value)
             }
         }
         ,
@@ -340,9 +404,11 @@
 
 
     #animeWrapper {
-        h1 {
-            color: white;
+        #title {
+            text-align: start;
+            margin: 10px;
             width: 100%;
+            font-size: 35px;
         }
 
         position: relative;
@@ -481,7 +547,6 @@
             label {
                 margin-bottom: 30px;
 
-
                 input[type="text"], input[type="date"] {
                     margin-top: 10px;
                     font-size: 15px;
@@ -489,22 +554,41 @@
                     border-bottom: 1px rgb(39, 86, 130) solid;
                     height: 30px;
                 }
+            }
 
-                input[type="button"] {
+            #buttonWrapper {
+                display: flex;
+                width: 200px;
+
+                #btnEnter {
                     cursor: pointer;
                     margin-top: 10px;
-                    width: 200px;
                     height: 30px;
+                    min-width: 140px;
+                    box-sizing: border-box;
                     background: rgba(85, 126, 161, 0);
-                    border: 1px solid rgb(39, 86, 130);
+                    border: 1px solid rgba(39, 86, 130, 1);
                     transition: all .4s;
 
                     &:hover {
-                        background: rgba(85, 126, 161, 1);
+                        border: 1px solid rgba(39, 86, 130, 0);
+                        background: rgb(88, 143, 191);
                         color: white;
                     }
+                }
 
+                #btnClear {
+                    margin-top: 10px;
+                    height: 30px;
+                    width: 50px;
+                    margin-left: 1px;
+                    background-color: #f86262;
+                    color: white;
+                    transition: all .4s;
 
+                    &:hover {
+                        background-color: #ff2323;
+                    }
                 }
             }
 

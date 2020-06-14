@@ -1,5 +1,7 @@
 package com.ahhTou.controller;
 
+import com.ahhTou.bean.Anime;
+import com.ahhTou.service.AnimeAndTypesService;
 import com.ahhTou.service.AnimeService;
 import com.ahhTou.service.AnimeTypesService;
 import com.ahhTou.untils.MyObjectMapper;
@@ -21,6 +23,23 @@ public class AnimeController {
 
     @Resource
     AnimeTypesService animeTypesService;
+
+    @Resource
+    AnimeAndTypesService animeAndTypesService;
+
+    @RequestMapping("/updateOne")
+    @ResponseBody
+    public Boolean updateOne(@RequestBody Anime anime) {
+        System.out.println("> 准备更新id为:" + anime.getId() + "的番剧");
+        return animeAndTypesService.editOneWithTypesMapper(anime);
+    }
+
+    @RequestMapping("/addOne")
+    @ResponseBody
+    public Boolean addOneAnime(@RequestBody Anime anime) {
+        System.out.println("> 进入添加动画方法");
+        return animeAndTypesService.addOneWithTypesMapper(anime);
+    }
 
     @RequestMapping("/pages")
     @ResponseBody

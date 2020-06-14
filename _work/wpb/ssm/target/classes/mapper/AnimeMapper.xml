@@ -37,7 +37,7 @@
         where id = #{id}
     </delete>
 
-    <insert id="addOneAnime">
+    <insert id="addOneAnime" useGeneratedKeys="true" keyProperty="id">
         insert into anime(
         title, end_time
         <if test="imgUrl!=null and imgUrl!=&quot;&quot;">
@@ -52,16 +52,10 @@
 
     <update id="updateOneAnime">
         update anime
-        <trim prefix="set" suffixOverrides=",">
-            movie_name=#{movieName},
-            <if test="movieType!=null and movieType!=''">
-                movie_type=#{movieType},
-            </if>
-            <if test="movieScore!=null and movieScore!=''">
-                movie_Score=#{movieScore},
-            </if>
-        </trim>
-        where movie_id=#{movieID} and username=#{username}
+        set title=#{title},
+            end_time=#{endTime},
+            img_url=#{imgUrl}
+        where id = #{id}
     </update>
 
 

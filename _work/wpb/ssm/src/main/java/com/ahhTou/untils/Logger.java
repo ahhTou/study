@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class Logger {
 
     @Pointcut("execution(*  com.ahhTou.service.impl.*.*(..))")
-    private void pt1(){
+    private void pt1() {
     }
 
     @Around("pt1()")
@@ -28,7 +28,7 @@ public class Logger {
             return reValue;
 
         } catch (Throwable throwable) {
-
+            throwable.printStackTrace();
             System.out.println("  > 执行Service中的方法出现异常");
             throw new RuntimeException(throwable);
 

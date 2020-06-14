@@ -17,5 +17,23 @@
         from anime_types
     </select>
 
+    <select id="getAllTypesMapper" resultType="map">
+        select *
+        from anime_types
+    </select>
+
+    <insert id="addTypesMapper">
+        insert into anime_types_mapper(id, type_id)
+        values
+        <foreach collection="list" item="li" separator=",">
+            (#{id},#{li})
+        </foreach>
+    </insert>
+
+    <delete id="delAllTypesByAnimeId">
+        delete
+        from anime_types_mapper
+        where id=#{id}
+    </delete>
 
 </mapper>

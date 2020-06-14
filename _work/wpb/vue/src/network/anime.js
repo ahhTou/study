@@ -29,3 +29,19 @@ export function getAllTypes() {
         method: 'post'
     })
 }
+
+export function addOneAnime(obj) {
+    return request({
+        url: 'api/anime/addOne',
+        method: 'post',
+        data: obj
+    })
+}
+
+export function updateOne(obj) {
+    return request({
+        url: 'api/anime/updateOne',
+        method: 'post',
+        data: obj
+    })
+}
