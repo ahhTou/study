@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+person:
+  lastName: ahhTou
+  age: 18
+  boss: false
+  birth: 2017/12/12
+  maps: {k1: v1, k2: 12}
+  lists:
+    - ahhTou2
+    - ahhTou3
+  dog:
+    name: 狗
+    age: 12

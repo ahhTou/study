@@ -163,8 +163,8 @@
 
                     this.$store.state.isLogin = true
 
-                    if (this.$route.path !== '/') {
-                        this.$router.push("/")
+                    if (this.$route.path !== '/anime/1') {
+                        this.$router.push("/anime/1")
                     }
 
                     this.start_LA = false
@@ -423,6 +423,8 @@
         .myDemoMsg {
             font-size: 20px;
             padding: 20px;
+            position: relative;
+            z-index: 10000;
             backdrop-filter: blur(30px);
             background-color: rgba(255, 255, 255, 0.1);
             box-shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);

@@ -218,7 +218,7 @@
                 if (key === '添加' && obj.title !== null && obj.title !== '' && obj.title !== undefined) {
                     console.log("> 准备添加动画")
                     this._addOneAnimeService(obj).then(res => {
-                        console.log('> 添加动画成功')
+                        console.log('> 添加动画成功', res)
                         this.clearInput()
                         this.refresh(true)
                     }, err => {
