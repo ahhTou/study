@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahhTou.dao.AnimeMapper">
+
+    <resultMap id="Res1" type="com.ahhTou.bean.Anime">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="end_time" property="endTime"/>
+        <result column="img_url" property="imgUrl"/>
+        <association
+                property="types"
+                javaType="java.util.List"
+                select="com.ahhTou.dao.AnimeTypesMapper.getTypesByAnimeId"
+                column="id"
+        />
+    </resultMap>
+
+    <select id="getOnePage" resultMap="Res1">
+        <bind name="_page1" value="(page - 1) * 20"/>
+        <bind name="_page2" value="20"/>
+        select *
+        from anime
+        order by end_time
+        limit #{_page1},#{_page2}
+    </select>
+
+    <select id="getHowMuchColumn" resultType="java.lang.Integer">
+        select count(id)
+        from anime
+    </select>
+
+    <delete id="delAnimeById">
+        delete
+        from anime
+        where id = #{id}
+    </delete>
+
+    <insert id="addOneAnime" useGeneratedKeys="true" keyProperty="id">
+        insert into anime(
+        title, end_time
+        <if test="imgUrl!=null and imgUrl!=&quot;&quot;">
+            , img_url
+        </if>
+        )
+        values (#{title}, #{endTime}
+        <if test="imgUrl!=null and imgUrl!=&quot;&quot;">
+            ,#{imgUrl}
+        </if>)
+    </insert>
+
+    <update id="updateOneAnime">
+        update anime
+        set title=#{title},
+            end_time=#{endTime},
+            img_url=#{imgUrl}
+        where id = #{id}
+    </update>
+
+
+</mapper>

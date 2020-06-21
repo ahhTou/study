@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahhTou.dao.AnimeTypesMapper">
+
+
+    <select id="getTypesByAnimeId" resultType="String">
+        select t.type_name
+        from anime_types t
+                 left join anime_types_mapper tm on t.type_id = tm.type_id
+        where tm.id = #{id}
+    </select>
+
+    <select id="getAllTypes" resultType="String">
+        select type_name
+        from anime_types
+    </select>
+
+    <select id="getAllTypesMapper" resultType="map">
+        select *
+        from anime_types
+    </select>
+
+    <insert id="addTypesMapper">
+        insert into anime_types_mapper(id, type_id)
+        values
+        <foreach collection="list" item="li" separator=",">
+            (#{id},#{li})
+        </foreach>
+    </insert>
+
+    <delete id="delAllTypesByAnimeId">
+        delete
+        from anime_types_mapper
+        where id=#{id}
+    </delete>
+
+</mapper>

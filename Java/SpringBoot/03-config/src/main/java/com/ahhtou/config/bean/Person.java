@@ -1,6 +1,8 @@
 package com.ahhtou.config.bean;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,11 +14,21 @@ import java.util.Map;
  * @ConfigurationProperties: 告诉SpringBoot将本类中所有的属性和配置文件相关的配置进行绑定
  */
 @Component
+@PropertySource(value = {"classpath:person.properties"})
 @ConfigurationProperties(prefix = "person")
 public class Person {
 
+    /**
+     * <bean class="Person">
+     *      <property name="lastName" value="?"></property>
+     * </bean>
+     */
+
+//    @Value("${person.last-name}")
     private String lastName;
+//    @Value("#{11*2}")
     private Integer age;
+//    @Value("true")
     private Boolean boss;
     private Date birth;
 

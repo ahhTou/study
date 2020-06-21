@@ -356,3 +356,179 @@ public class Person {
 
 }
 ```
+
+我们可以导入配置文件处理器，以后编写配置就有提示了
+
+```xml
+    <!--  导入配置文件处理器，配置文件进行绑定就会有提示 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+```
+
+#### 1、properties的写法
+
+```properties
+person.last-name=ahhTouProperties
+person.age=18
+person.birth=2017/12/15
+person.boss=false
+person.maps.k1=v1
+person.maps..k2=14
+person.lists=a,b,c
+person.dog.name=dog
+person.dog.age=12
+```
+
+#### 2、@Value获取值 和 @ConfigurationProperties获取值比较
+
+|                | @ConfigurationProperties | @Value     |
+| -------------- | ------------------------ | ---------- |
+| 功能           | 批量注入配置文件中的属性 | 一个个指定 |
+| 松散绑定       | 支持                     | 不支持     |
+| SpEL           | 不支持                   | 支持       |
+| JSR303数据校验 | 支持                     | 不支持     |
+| 复杂类型封装   | 支持                     | 不支持     |
+
+配置文件yml还是properties他们都能获取到值
+
+如果说，我们只是再某个业务逻辑中获取需要获取一下配置文件中的某个项，使用@Value
+
+如果说，我们专门编写了一个JavaBean来和配置文件进行映射，我们直接使用ConfigurationProperties
+
+```java
+@Component
+//@ConfigurationProperties(prefix = "person")
+public class Person {
+
+    /**
+     * <bean class="Person">
+     *      <property name="lastName" value="?"></property>
+     * </bean>
+     */
+
+    @Value("${person.last-name}")
+    private String lastName;
+    @Value("#{11*2}")
+    private Integer age;
+    @Value("true")
+    private Boolean boss;
+    private Date birth;
+
+    private Map<String, Object> maps;
+    private List<Object> lists;
+    private Dog dog;
+```
+
+#### 3、配置文件校验
+
+#### 4、@PropertySource@ImportResource
+
+@PropertySource： 加载指定的配置文件
+
+```java
+@Component
+@PropertySource(value = {"classpath:person.properties"})
+@ConfigurationProperties(prefix = "person")
+public class Person {
+    private String lastName;
+    private Integer age;
+    private Boolean boss;
+    private Date birth;
+
+    private Map<String, Object> maps;
+    private List<Object> lists;
+```
+
+**@ImportResource**： 导入Spring的配置文件，让配置里的内容生效
+
+Spring Boot里面没有Spring的配置文件,我们自己编写的配置文件,也不能自动识别;
+想让Spring的配置文件生效,加载进来; **@ImportResource**标注在-个配置类上
+
+```java
+@ImportResource(locations = {"classpath:beans.xml"})
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+```
+
+
+
+不编写Spring的配置文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="helloService" class="com.ahhtou.config.service.HelloService"/>
+
+</beans>
+```
+
+SpringBoot推荐给容器中添加组件的方式;推荐使用全注解的方式
+
+1、配置类=====Spring配置文件
+
+2、使用@Bean给容器添加组件
+
+```java
+@Configuration
+public class MyAppConfig {
+
+    // 将方法的返回值添加到容器中;容器中这个组件默认的id就是方法名
+    @Bean
+    public HelloService helloService() {
+        System.out.println("添加了配置类");
+        return new HelloService();
+    }
+}
+```
+
+### 4、配置文件占位符
+
+#### 1、随机数
+
+```}java
+${random.value}
+${random.int}
+${random.long}
+${random.int(10)}
+${random.int[1024,65536]}
+```
+
+#### 2、占位符获取之前配置的值,如果没有可以是用:指定默认值
+
+```properties
+person.last-name=ahhTou${random.uuid}
+person.age=18
+person.birth=2017/12/15
+person.boss=false
+person.maps.k1=v1
+person.maps..k2=14
+person.lists=a,b,c
+# 是hello_dog
+person.dog.name=${person.hello:hello}_dog
+person.dog.age=12
+```
+
+### 5、Profile
+
+#### 1、多Profile文件
+
+我们在主配置文件编写的时候,文件名可以是application-{profile).properties/yml
+
+
+
+#### 2、yml支持多文档块文件
+
+#### 3、激活指定profile
