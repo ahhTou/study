@@ -1,0 +1,11 @@
+2020-06-30 15:06:34.185  INFO 17536 --- [main] c.a.logging.LoggingApplicationTests      : Starting LoggingApplicationTests on ahhTou with PID 17536 (started by 11979 in D:\PrivateFiles\_study\learn\study\Java\SpringBoot\logging)
+2020-06-30 15:06:34.186 DEBUG 17536 --- [main] c.a.logging.LoggingApplicationTests      : Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-06-30 15:06:34.187  INFO 17536 --- [main] c.a.logging.LoggingApplicationTests      : No active profile set, falling back to default profiles: default
+2020-06-30 15:06:34.944  INFO 17536 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-06-30 15:06:35.127  INFO 17536 --- [main] c.a.logging.LoggingApplicationTests      : Started LoggingApplicationTests in 1.185 seconds (JVM running for 2.011)
+2020-06-30 15:06:35.260 DEBUG 17536 --- [main] c.a.logging.LoggingApplicationTests      : 这是trace日志
+2020-06-30 15:06:35.261 DEBUG 17536 --- [main] c.a.logging.LoggingApplicationTests      : 这是debug日志
+2020-06-30 15:06:35.262  INFO 17536 --- [main] c.a.logging.LoggingApplicationTests      : 这是info日志
+2020-06-30 15:06:35.262  WARN 17536 --- [main] c.a.logging.LoggingApplicationTests      : 这是warn日志
+2020-06-30 15:06:35.262 ERROR 17536 --- [main] c.a.logging.LoggingApplicationTests      : 这是error日志
+2020-06-30 15:06:35.276  INFO 17536 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
