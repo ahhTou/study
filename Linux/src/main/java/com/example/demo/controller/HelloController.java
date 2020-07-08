@@ -8,6 +8,7 @@ public class HelloController {
 
     @RequestMapping("/hello")
     public String hello() {
+        System.out.println("收到请求了");
         return "<h1>Hello,Linux!</h1>";
     }
 }
