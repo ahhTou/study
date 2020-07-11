@@ -7,8 +7,11 @@
              ref="skinWindow"
              @click.stop="changeBg"
              :style="changeBgStyle.isOpen?changeBgStyle.open:changeBgStyle.close">
+            <div v-if="!changeBgStyle.isOpen">
+            </div>
             <div v-if="changeBgStyle.isOpen" v-for="item in bgImageList" class="skin"
                  :style="[skinItemStyle,skinBg(item)]"
+                 @click="clickToChangeBg(item)"
             ></div>
         </div>
     </div>
@@ -50,20 +53,35 @@
             }
         },
         mounted() {
-            this.bgData = {
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundImage: "url(\"" + this.bgImageList.bg1 + "\")",
+            let bg = window.localStorage.getItem("theHelloBg")
+            if (bg === null || bg === '' || bg === undefined) {
+                this.bgData = {
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundImage: "url(\"" + this.bgImageList.bg1 + "\")",
+                }
+            } else {
+                this.bgData = {
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundImage: "url(\"" + bg + "\")",
+                }
             }
         },
-        computed:{
-
-        },
+        computed: {},
         methods: {
-            skinBg(item){
-                return{
+            skinBg(item) {
+                return {
                     backgroundImage: "url(\"" + item + "\")",
                 }
+            },
+            clickToChangeBg(item) {
+                this.bgData = {
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundImage: "url(\"" + item + "\")",
+                }
+                window.localStorage.setItem("theHelloBg", item)
             },
             computeSkin() {
                 return new Promise((resolve, reject) => {
@@ -97,7 +115,7 @@
 </script>
 
 <style lang="scss" scoped>
-    $shadow : 10px 10px 30px rgba(100, 100, 100, 0.5);
+    $shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
 
     @mixin flex {
         display: flex;
@@ -111,7 +129,6 @@
         background-color: rgba(255, 255, 255, .6);
         box-shadow: $shadow;
     }
-
 
 
     #homeWrapper {

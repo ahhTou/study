@@ -1203,3 +1203,461 @@ public class RedisConfig {
 
 }
 ```
+
+# Redis.conf
+
+启动的时候，就通过配置文件
+
+
+
+**在redis-cli中sava可以保存配置文件**
+
+
+
+##### 大小写
+
+配置文件 unit单位 对大小写不敏感
+
+##### 配置文件
+
+```bash
+# include /path/to/local.conf
+# include /path/to/other.conf
+```
+
+##### 网络  
+
+```bash
+# 绑定ip（能访问redis的ip）
+bind 127.0.0.1
+
+# 保护模式
+protected-mode yes
+
+# 端口设置
+prot 6379
+```
+
+##### 通用
+
+```bash
+# 以守护进程的方式运行（后台运行），默认是no，手动开启yes
+daemonize yes
+
+# 如果以后台的方式运行，我们就需要指定一个pid文件
+pidfile /var/run/redis_6379.pid
+
+# 日志
+# Specify the server verbosity level.
+# This can be one of:
+# debug (a lot of information, useful for development/testing)
+# verbose (many rarely useful info, but not a mess like the debug level)
+# notice (moderately verbose, what you want in production probably) 生产环境
+# warning (only very important / critical messages are logged)
+loglevel notice
+
+#生成的日志文件位置名
+logfile ""
+
+# 数据库数量名
+databases 16
+
+# 是否显示logo
+always-show-logo yes
+```
+
+##### 快照
+
+持久化，在规定时间内，执行了多少次操作，则会持久化到文件.rdb aof
+
+redis是内存数据库如果没有持久化，那么数据断电就会失去
+
+```bash
+# 如果900秒内，如果至少一个key进行了修改，我们进行持久化操作
+save 900 1
+save 300 10
+save 60 10000
+# 我们之后学习持久化，会自己定义这个测试
+
+# 持久化如果出错，是否继续工作
+stop-writes-on-bgsave-error yes
+
+# 是否压缩rdb文件，需要小号cpu资源
+rdbcompression yes
+
+# 保存rdb文件的时候，进行错误的校验
+rdbchecksum yes
+
+# 保存的目录
+dir ./
+```
+
+##### 复制
+
+> 主从复制
+
+##### 安全
+
+```bash
+# 设置密码
+127.0.0.1:6379> config set requirepass 123456
+OK
+# 进行验证（登录）
+127.0.0.1:6379> auth 123456
+```
+
+##### 限制
+
+> CLIENTS
+
+```bash
+# 限制能连接上redis的最大的客户端数量
+maxclients 10000
+
+# redis配置最大的内存容量
+maxmemory <bytes>
+
+# 内存达到上线之后的处理策略
+# 1、volatile-lru：只对设置了过期时间的key进行LRU（默认值） 
+# 2、allkeys-lru ： 删除lru算法的key   
+# 3、volatile-random：随机删除即将过期key   
+# 4、allkeys-random：随机删除   
+# 5、volatile-ttl ： 删除即将过期的   
+# 6、noeviction ： 永不过期，返回错误
+maxmemory-policy noeviction
+```
+
+AOF
+
+> APPEND ONLY MODE  aof配置
+
+```bash
+# 默认关闭
+appendonly no
+# 持久化文件的名字
+appendfilename "appendonly.aof"
+
+# 同步
+# appendfsync always # 每秒都会同步，消耗性能
+appendfsync everysec #每秒执行一次，可能会丢失一秒的数据
+# appendfsync no	# 不执行sync，这个时候操作系统自己同步数据，速度罪最快
+```
+
+# 持久化
+
+## RDB
+
+##### 触发机制
+
+1、save的规则满足的情况下,会自动触发rdb规则
+
+2、执行flushall命令,也会触发我们的rdb规则!
+
+3、退出redis ,也会产生rdb文件!
+
+##### 恢复
+
+1、只需要将rdb文件放在我们redis启动目录就可以, redis启动的时候会自动检查dump.rdb恢复其中的数据!
+
+2、查看需要的存在的位置
+
+```bash
+127.0.0.1:6379> config get dir
+1) "dir"
+2) "/usr/local/bin"
+```
+
+##### 优缺点
+
+###### 优点
+
+1、适合大规模的数据恢复
+
+2、对数据的完整性要求不高
+
+###### 缺点
+
+1、需要一定的时间间隔进行操作，如果redis意外宕机了，,这个最后一次修改数据就没有的了!
+
+2、fork进程的时候,会占用- -定的内容空间! !
+
+## AOF
+
+> Append Only File
+>
+> 将我们所有的命令都记录下来，history，恢复的时候就把这个文件全部执行一遍
+>
+> 
+
+##### 启动
+
+默认是不开启的,我们需要手动进行配置!我们只需要将appendonly改为yes就开启了aof !
+重启, redis就可以生效了!
+
+##### 修复
+
+如果redis的aof文件有错位，这时候redis是启动不起来的，我们需要修复这个aof文件
+
+redis提供了一个工具
+
+```bash
+redis-check-aof --fix
+```
+
+##### 优缺点
+
+###### 优点
+
+1、每一次修改都同步,文件的完整会更加好!
+2、每秒同步一次,可能会丢失-秒的数据
+3、从不同步,效率最高的!
+
+###### 缺点
+
+1、相对于数据文件来说, aof远远大于rdb ,修复的速度也比rdb慢
+
+2、Aof 运行效率也要比rdb慢,所以我们redis默认的配置就是rdb持久化
+
+# 发布订阅
+
+##### 订阅端
+
+```bash
+# 订阅一个频倒
+127.0.0.1:6379> subscribe ahhtou
+Reading messages... (press Ctrl-C to quit)
+1) "subscribe"
+2) "ahhtou"
+3) (integer) 1
+
+1) "message" 		# 消息
+2) "ahhtou"			# 哪个频道
+3) "hello,ahhtou"	# 消息的具体内容
+```
+
+发送端
+
+```bash
+127.0.0.1:6379> publish ahhtou "hello,ahhtou"
+(integer) 1
+```
+
+##### 使用场景
+
+1、实时消息系统!
+2、事实聊天! (频道当做聊天室,将信息回显给所有人即可! )
+3、订阅,关注系统都是可以的!
+
+# 主从复制
+
+数据的复制是单向的，只能从主节点到节点
+
+默认情况下，每台Redis服务器都说主节点
+
+##### 环境配置
+
+复制3个配置文件修改对应信息
+
+1、端口
+
+2、pid名字
+
+3、log文件名称
+
+4、dump.rdb
+
+##### 查看信息
+
+```bash
+127.0.0.1:6381> info replication
+# Replication
+role:master
+connected_slaves:0
+master_replid:962bff5e2b5e8cdfdf4ac7bd12fab1d9b0599e32
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+```
+
+##### 一主二从
+
+**默认情况下,每台Redis服务器都是主节点;**我们一般情况下只用配置从机就好了!
+
+一主（79）二从（80.81）
+
+命令配置是临时的，去配置文件配置才是永久的
+
+###### 从机
+
+```bash
+# 认老大
+127.0.0.1:6380> slaveof 127.0.0.1 6379
+OK
+
+127.0.0.1:6380> info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6739
+master_link_status:down
+master_last_io_seconds_ago:-1
+master_sync_in_progress:0
+slave_repl_offset:0
+master_link_down_since_seconds:1594458694
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_replid:245c9cb4edb21cdb2d13c21754363e7b73639a13
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+```
+
+从机只能读
+
+```bash
+127.0.0.1:6381> set k1 k2
+(error) READONLY You can't write against a read only replica.
+```
+
+###### 主机
+
+```bash
+127.0.0.1:6379> info replication
+# Replication
+role:master
+connected_slaves:2
+#从机配置
+slave0:ip=127.0.0.1,port=6381,state=online,offset=14,lag=0
+slave1:ip=127.0.0.1,port=6380,state=online,offset=14,lag=0
+
+master_replid:8e1bcbe8f4c9b282aa9a7cef4ccf213eed4ae60d
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:14
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:14
+```
+
+##### 复制原理
+
+Slave启动成功连接到master后会发送一个sync同步命令
+Master接到命令,启动后台的存盘进程,同时收集所有接收到的用于修改数据集命令,在后台进程执行完毕之后, master将传送
+整个数据文件到slave ,并完成-次完全同步。
+**全量复制**:而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。
+**增量复制**: Master继续将新的所有收集到的修改命令依次传给slave ,完成同步
+但是只要是重新连接master , -次完全同步(全量复制)将被自动执行
+
+##### 谋权篡位
+
+> 让自己变成主机
+
+```bash
+127.0.0.1:6381> slaveof no one
+OK
+```
+
+# 哨兵模式
+
+##### 概述
+
+主从切换技术的方法是:当主服务器宕机后,需要手动把-台从服务器切换为主服务器,这就需要人工干预,费事费力,还会造成
+-段时间内服务不可用。这不是一种推荐的方式,更多时候,我们优先考虑哨兵模式。Redis从2.8开始正式提供了Sentinel (哨
+兵)架构来解决这个问题。
+谋朝篡位的自动版,能够后台监控主机是否故障,如果故障了根据投票数**自动将从库转换为主库**。
+哨兵模式是一种特殊的模式,首先Redis提供了哨兵的命令,哨兵是一一个独立的进程,作为进程,它会独立运行。其原理是* *哨兵
+**通过发送命令,等待Redis服务器响应,从而监控运行的多个Redis实例。**
+
+##### 测试
+
+核心配置
+
+```conf
+# sentinel monitor 被监控的名称 host port 1
+sentinel monitor myredis 127.0.0.1 6379 1
+```
+
+```bash
+[root@ahhtou bin]# redis-sentinel MyConf/sentinel.conf
+```
+
+
+
+后面的数字1代表主机挂了 slave投票看让谁接替成主机。票多就会成为主机
+
+##### 优缺点
+
+###### 优点
+
+1、哨兵集群,基于主从复制模式,所有的主从配置优点，它全有
+2、主从可以切换,故障可以转移,系统的可用性就会更好
+3、哨兵模式就是主从模式的升级,手动到自动,更加健壮!
+
+###### 缺点
+
+1、Redis不好啊在线扩容的,集群容量--旦到达上限,在线扩容就+分麻烦!
+2、实现哨兵模式的配置其实是很麻烦的,里面有很多选择!
+
+# 缓存穿透和雪崩
+
+## 缓存穿透
+
+##### 概念
+
+缓存穿透的概念很简单,用户想要查询一-个数据,发现redis内存数据库没有,也就是缓存没有命中,于是向持久层数据库查询。发现也没有,于是本次查询失败。当用户很多的时候,缓存都没有命中(秒杀! ) , 于是都去请求了持久层数据库。这会给持久层数据库造成很大的压力,这时候就相当于出现了缓存穿透。
+
+##### 解决方案
+
+布隆过滤器和缓存空对象
+
+
+
+## 缓存击穿
+
+##### 概念
+
+这里需要注意和缓存击穿的区别,缓存击穿,是指- -个key非常热点,在不停的扛着大并发,大并发集中对这一-个点进行访问，当这个key在失效的瞬间,持续的大并发就穿破缓存,直接请求数据库,就像在一个屏障 上凿开了一一个洞。
+当某个key在过期的瞬间,有大量的请求并发访问,这类数据- -般是热点数据 ,由于缓存过期,会同时访问数据库来查询最新数据,并且回写缓存,会导使数据库瞬间压力过大。
+
+##### 解决方案
+
+##### 设置热点数据永不过期
+
+从缓存层面来看,没有设置过期时间,所以不会出现热点key过期后产生的问题。
+
+##### 加互斥锁
+
+分布式锁:使用分布式锁,保证对于每个key同时只有一个线程去查询后端服务,其他线程没有获得分布式锁的权限,因此只需要等待即可。这种方式将高并发的压力转移到了分布式锁,因此对分布式锁的考验很大。
+
+## 缓存雪崩
+
+##### 概念
+
+实集中过期,倒不是非常致命,比较致命的缓存雪崩,是缓存服务器某个节点宕机或断网。因为自然形成的缓存雪崩, 一定是在某个时间段集中创建缓存,这个时候,数据库也是可以顶住压力的。无非就是对数据库产生周期性的压力而已。而缓存服务节点的宕机，对数据库服务器造成的压力是不可预知的,很有可能瞬间就把数据库压垮。
+
+##### 解决方案
+
+###### redis高可用
+
+这个思想的含义是,既然redis有可能挂掉,那我多增设几台redis ,这样-台挂掉之 后其他的还可以继续工作,其实就是搭建的集
+群。( 异地多活! )
+
+###### 限流降级
+
+这个解决方案的思想是,在缓存失效后,通过加锁或者队列来控制读数据库写缓存的线程数量。比如对某个key只允许- -个线程查
+询数据和写缓存,其他线程等待。I
+
+###### 数据预热
+
+数据加热的含义就是在正式部署之前,我先把可能的数据先预先访问一遍,这样部分可能大量访问的数据就会加载到缓存中。在即
+将发生大并发访问前手动触发加载缓存不同的key ,设置不同的过期时间,让缓存失效的时间点尽量均匀。
