@@ -1,0 +1,50 @@
+@mixin flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin wrapper {
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.safeRoom{
+  @include wrapper;
+  position: absolute;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+}
+button {
+
+  border: 0;
+
+  background-color: unset;
+
+  outline: none;
+
+}
+
+input {
+
+  border: none; // 清除默认边框
+
+  outline: none; // input标签聚焦时不出现蓝色边框
+
+}
+
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dl, dt, dd, ol, form, input, textarea, th, td, select {
+  margin: 0;
+  padding: 0;
+}
+
+ul，ol {
+  list-style: none;
+}
+
+
+a {
+  text-decoration: none;
+}

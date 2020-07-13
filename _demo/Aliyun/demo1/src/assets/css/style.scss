@@ -1,0 +1,34 @@
+$shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
+@mixin blurWindow {
+  color: black;
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, .6);
+  box-shadow: $shadow;
+}
+
+@mixin bgBlur {
+  color: black;
+  backdrop-filter: blur(15px);
+  background-color: rgba(42, 42, 42, 0.6);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .3s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.bigger-enter-active,
+.bigger-leave-active {
+  transition: all .3s;
+}
+
+.bigger-enter,
+.bigger-leave-to {
+  opacity: 0;
+  transform: scale(1.2);
+}

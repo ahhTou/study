@@ -1,4 +1,5 @@
-package com.kuang.pojo;
+package com.ahhtou.bean;
+
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -6,16 +7,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class User implements Serializable {
+public class MsgBoard implements Serializable {
 
-    private String name;
-    private int age;
-
-
+    String sendName;
+    String content;
+    Date sendTime;
 
 }
