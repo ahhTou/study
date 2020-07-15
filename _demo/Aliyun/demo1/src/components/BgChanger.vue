@@ -1,5 +1,6 @@
 <template>
-    <div id="bgChangerWrapper" :style="bgData" ref="bgChangerWrapperRef" @click="closeBgWindow">
+    <div id="bgChangerWrapper" ref="bgChangerWrapperRef" @click="closeBgWindow">
+        <div :style="bgData" id="bg"></div>
         <transition name="fade">
             <div id="shade" v-show="isOpen"></div>
         </transition>
@@ -30,15 +31,15 @@
 
 <script>
     export default {
-        name: "BgChanger",
+        name: 'BgChanger',
         data() {
             return {
                 bgData: null,
                 bgImageList: {
-                    bg1: "http://39.99.154.145/img/hello/bg1.jpg",
-                    bg2: "http://39.99.154.145/img/hello/bg2.jpg",
-                    bg3: "http://39.99.154.145/img/hello/bg3.jpg",
-                    bg4: "http://39.99.154.145/img/hello/bg4.jpg",
+                    bg1: 'http://39.99.154.145/img/hello/bg1.jpg',
+                    bg2: 'http://39.99.154.145/img/hello/bg2.jpg',
+                    bg3: 'http://39.99.154.145/img/hello/bg3.jpg',
+                    bg4: 'http://39.99.154.145/img/hello/bg4.jpg',
                 },
                 isOpen: false,
                 skinItemStyle: null,
@@ -54,32 +55,32 @@
         mounted() {
             this.computeWindow()
 
-            let $dom = this.$refs.skinWindow;
+            let $dom = this.$refs.skinWindow
             $dom.className = 'animeOut'
 
-            let bg = window.localStorage.getItem("theHelloBg")
+            let bg = window.localStorage.getItem('theHelloBg')
             if (bg === null || bg === '' || bg === undefined) {
                 this.bgData = {
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundImage: "url(\"" + this.bgImageList.bg1 + "\")",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url("' + this.bgImageList.bg1 + '")',
                 }
             } else {
                 this.bgData = {
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundImage: "url(\"" + bg + "\")",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url("' + bg + '")',
                 }
             }
 
-            window.addEventListener("resize", () => {
+            window.addEventListener('resize', () => {
                 this.computeWindow()
             })
         },
         methods: {
             skinBg(item) {
                 return {
-                    backgroundImage: "url(\"" + item + "\")",
+                    backgroundImage: 'url("' + item + '")',
                 }
             },
             computeSkin() {
@@ -89,12 +90,12 @@
                 this.skinItemStyle = {
                     '--item-width': width + 'px',
                     '--item-height': height + 'px',
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                 }
             },
             computeWindow() {
-                let $window = this.$refs.bgChangerWrapperRef;
+                let $window = this.$refs.bgChangerWrapperRef
                 let height = $window.offsetHeight * 0.4
                 let width = $window.offsetWidth * 0.7
                 let h = 50 / height
@@ -108,27 +109,27 @@
                 if (!this.isOpen) {
                     this.isOpen = true
 
-                    let $dom = this.$refs.skinWindow;
+                    let $dom = this.$refs.skinWindow
                     $dom.className = 'animeTo'
                     this.computeWindow()
                     this.computeSkin()
                 } else {
-                    this.closeBgWindow();
+                    this.closeBgWindow()
                 }
             },
             closeBgWindow() {
                 this.isOpen = false
 
-                let $dom = this.$refs.skinWindow;
+                let $dom = this.$refs.skinWindow
                 $dom.className = 'animeOut'
             },
             clickToChangeBg(item) {
                 this.bgData = {
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundImage: "url(\"" + item + "\")",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundImage: 'url("' + item + '")',
                 }
-                window.localStorage.setItem("theHelloBg", item)
+                window.localStorage.setItem('theHelloBg', item)
             },
         }
     }
@@ -141,12 +142,20 @@
     #bgChangerWrapper {
         @include wrapper;
         position: absolute;
+        overflow: hidden;
+
+        #bg {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: -100;
+        }
 
         #shade {
-            @include wrapper;
-            @include bgBlur;
+            @include shade;
             z-index: 99;
-            position: absolute;
         }
 
 
@@ -165,6 +174,7 @@
             box-sizing: border-box;
 
             #title {
+                @include flex;
                 position: absolute;
                 font-size: 2rem;
                 width: 70vw;
@@ -190,7 +200,7 @@
                 overflow-y: hidden;
 
                 &::-webkit-scrollbar {
-                    height: 10px;
+                    height: 2px;
                 }
 
                 &::-webkit-scrollbar-thumb {

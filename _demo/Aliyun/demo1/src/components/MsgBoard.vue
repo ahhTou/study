@@ -10,7 +10,6 @@
 
             <transition name="bigger">
                 <div id="wrapper" v-show="isOpen&&!isSending">
-
                     <div v-for="item in currentMsgData" class="msgBlock">
                         <div class="sends">
                             <div class="sendName">{{item.sendName}}</div>
@@ -18,13 +17,13 @@
                         </div>
                         <div class="content">{{item.content}}</div>
                     </div>
-
                 </div>
             </transition>
 
             <transition name="fade">
-                <div id="btnForSendWrapper" class="sendClose" ref="btnForSendWrapperRef" v-show="isOpen">
-                    <div id="btnForSend" @click="isSending?toSend():toSending()">欢迎留言~</div>
+                <div id="btnForSendWrapper" :class="btnForSendWrapperClassName"
+                     v-show="isOpen" @touchmove.prevent>
+                    <div id="btnForSend" @click="isSending?toSend():toSending()">{{this.btnForSendText}}</div>
                     <transition name="fade">
                         <div id="formWrapper" v-if="isSending">
                             输入您的大名
@@ -56,33 +55,32 @@
             return {
                 isOpen: false,
                 isSending: false,
+
                 currentMsgData: [],
                 currentSendName: null,
                 currentContent: null,
-                sending: false,
+
+                sendingLock: false, //负责锁定发送
+                btnForSendWrapperClassName: 'sendClose',
+
+                btnForSendText: '点击此处开始留言'
+
             }
         },
         mounted() {
-            let a = new MsgBoard('ahhTou', 'hello', new Date())
-            getAllMsgBoardData().then(res => {
-                for (let j = 0, len = res.data.length; j < len; j++) {
-                    this.currentMsgData.push(JSON.parse(res.data[j]))
-                }
-            })
+            this.refresh()
         },
         methods: {
             change(value) {
                 if (!value) {
-                    let $dom = this.$refs.btnForSendWrapperRef
                     // 退出
                     if (this.isSending) {
                         this.isSending = false
-                        $dom.className = 'sendClose'
+                        this.closeSend()
                     } else {
-                        $dom.className = 'sendClose'
                         this.isOpen = false
                         this.isSending = true
-
+                        this.closeSend()
                     }
                 } else {
                     // 打开
@@ -92,41 +90,49 @@
             },
             toSend() {
                 // 发送中，不能重复点击
-                if (!this.sending) {
-                    let $dom = this.$refs.btnForSendWrapperRef
-                    let date = new Date()
-                    let msg = new MsgBoard(this.currentSendName, this.currentContent, date)
+                if (!this.sendingLock) {
+                    let msg = new MsgBoard(this.currentSendName, this.currentContent, new Date())
                     if (msg.content !== '' && msg.content !== null) {
+                        this.btnForSendText = '发送中...'
                         // 内容不为空，则发送
                         setOneMsgBoardData(msg)
                             .then(res => {
                                 if (res.data) {
-                                    return getAllMsgBoardData()
+                                    this.refresh()
+                                    this.closeSend()
+                                    this.isSending = false
+                                    this.sendingLock = false
                                 }
-                            })
-                            .then(res => {
-                                this.currentMsgData = []
-                                for (let j = 0, len = res.data.length; j < len; j++) {
-                                    this.currentMsgData.push(JSON.parse(res.data[j]))
-                                }
-                                this.isSending = false
-                                this.sending = false
-                                $dom.className = 'sendClose'
                             })
                     } else {
                         // 如果输入内容为空，则退到留言区
+                        this.closeSend()
                         this.isSending = false
-                        $dom.className = 'sendClose'
-
                     }
+                } else {
+                    this.btnForSendText = '发送中，请不要重复点击'
                 }
 
             },
             toSending() {
-                let $dom = this.$refs.btnForSendWrapperRef
-                $dom.className = 'sendOpen'
+                this.btnForSendWrapperClassName = 'sendOpen'
+                this.btnForSendText = '再次点击进行留言'
                 this.isOpen = true
                 this.isSending = true
+            },
+            refresh() {
+                this.currentMsgData = []
+                getAllMsgBoardData().then(res => {
+                    for (let j = 0, len = res.data.length; j < len; j++) {
+                        this.currentMsgData.push(JSON.parse(res.data[j]))
+                    }
+                })
+            },
+            closeSend() {
+                this.$nextTick(() => {
+                    this.btnForSendWrapperClassName = 'sendClose'
+                    this.btnForSendText = '点击此处开始留言'
+                })
             }
         },
         filters: {
@@ -143,14 +149,16 @@
 
     #msgBoardWrapper {
         position: absolute;
-        height: 100vh;
         width: 100vw;
+        top: 0;
+        right: 0;
         display: flex;
         justify-content: center;
 
         #btn {
+            cursor: pointer;
             position: fixed;
-            z-index: 100;
+            z-index: 98;
             @include flex;
             right: 110px;
             transform: translate(50%, -50%);
@@ -163,10 +171,8 @@
         }
 
         #shade {
-            @include wrapper;
-            @include bgBlur;
+            @include shade;
             z-index: 101;
-            position: absolute;
         }
 
         .sendOpen {
@@ -178,18 +184,20 @@
         }
 
         #btnForSendWrapper {
+            $width: 300px;
+            $br: 15px;
             position: fixed;
-            width: 100vw;
+            width: $width;
             display: flex;
             flex-direction: column;
             align-items: center;
 
             bottom: 0;
 
-            z-index: 102;
+            z-index: 201;
             padding: 0;
             backdrop-filter: blur(3px);
-            border-radius: 15px 15px 0 0;
+            border-radius: $br $br 0 0;
             transition: all .3s;
 
 
@@ -226,11 +234,6 @@
                     box-sizing: border-box;
                     font-size: 20px;
 
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
-
-
                 }
 
                 #nameArea {
@@ -254,37 +257,30 @@
                 position: absolute;
                 color: white;
                 background: rgb(234, 73, 95);
-                width: 320px;
-                border-radius: 15px;
+                width: $width;
+                border-radius: $br;
                 height: 55px;
                 box-shadow: $shadow;
                 cursor: pointer;
                 font-size: 20px;
                 transition: all .5s;
                 font-weight: bolder;
-
-                &:hover {
-                    transform: scale(1.1);
-                }
             }
 
         }
 
         #wrapper {
-            width: 100%;
-            height: 100vh;
-            padding-top: 50px;
+            position: relative;
+            $scrollbarWidth: 1px;
+            width: 310px;
+            padding-left: $scrollbarWidth;
             box-sizing: border-box;
-            position: fixed;
+
+            z-index: 200;
+
             display: flex;
             align-items: center;
             flex-direction: column;
-            z-index: 101;
-            overflow-y: scroll;
-
-            &::-webkit-scrollbar {
-                display: none;
-            }
 
             .msgBlock {
                 flex-shrink: 0;
@@ -294,12 +290,8 @@
                 overflow: hidden;
                 margin: 5px 0 5px 0;
 
-
                 transition: all .5s;
 
-                &:hover {
-                    transform: scale(1.05);
-                }
 
                 .sends {
                     height: 55px;
@@ -318,7 +310,6 @@
                         font-weight: bolder;
                         color: rgb(234, 73, 95);
                     }
-
 
                     .sendTime {
                         font-size: 10px;

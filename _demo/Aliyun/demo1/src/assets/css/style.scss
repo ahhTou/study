@@ -12,23 +12,36 @@ $shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
   background-color: rgba(42, 42, 42, 0.6);
 }
 
+@mixin shade {
+  @include bgBlur;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+}
+
 .fade-enter-active,
 .fade-leave-active {
+  position: absolute;
   transition: all .3s;
 }
 
 .fade-enter,
 .fade-leave-to {
+  position: absolute;
   opacity: 0;
 }
 
 .bigger-enter-active,
 .bigger-leave-active {
+  position: absolute;
   transition: all .3s;
 }
 
 .bigger-enter,
 .bigger-leave-to {
+  position: absolute;
   opacity: 0;
   transform: scale(1.2);
 }
