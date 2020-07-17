@@ -10,13 +10,18 @@
   box-sizing: border-box;
 }
 
-.safeRoom{
+@mixin t {
+  border: black 2px solid;
+}
+
+.safeRoom {
   @include wrapper;
   position: absolute;
   overflow: hidden;
   right: 0;
   top: 0;
 }
+
 button {
 
   border: 0;

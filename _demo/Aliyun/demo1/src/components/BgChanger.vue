@@ -1,37 +1,30 @@
 <template>
-    <div id="bgChangerWrapper" ref="bgChangerWrapperRef" @click="closeBgWindow">
-        <div :style="bgData" id="bg"></div>
-        <transition name="fade">
-            <div id="shade" v-show="isOpen"></div>
-        </transition>
-        <div id="changeBgBtn"
-             ref="skinWindow"
-             @click.stop="changeBg"
-             :style="changerStyle"
-        >
-            <transition>
-                <div id="title" v-show="isOpen">
+    <shade-slots>
+        <template #center>
+            <div id="changerWrapper">
+                <div id="title">
                     更 换 背 景
                 </div>
-            </transition>
+                <div id="content" ref="bgChangerContent" @click.stop>
+                    <div
+                            v-for="item in bgImageList"
+                            class="skin"
+                            :style="[skinItemStyle,skinBg(item)]"
+                            @click.stop="clickToChangeBg(item)"
+                    ></div>
+                </div>
 
-            <div id="content" ref="bgChangerContent">
-                <div v-show="isOpen"
-                     v-for="item in bgImageList"
-                     class="skin"
-                     :style="[skinItemStyle,skinBg(item)]"
-                     @click.stop="clickToChangeBg(item)"
-                ></div>
             </div>
-
-        </div>
-        <div style="position: absolute;z-index: -100"></div>
-    </div>
+        </template>
+    </shade-slots>
 </template>
 
 <script>
+    import ShadeSlots from './ShadeSlots'
+
     export default {
         name: 'BgChanger',
+        components: {ShadeSlots},
         data() {
             return {
                 bgData: null,
@@ -41,41 +34,17 @@
                     bg3: 'http://39.99.154.145/img/hello/bg3.jpg',
                     bg4: 'http://39.99.154.145/img/hello/bg4.jpg',
                 },
-                isOpen: false,
                 skinItemStyle: null,
                 skinItemBg: null,
                 isPrimeWindowOpen: false,
-                changerStyle: {
-                    '--hx': 1,
-                    '--hw': 1,
-                }
 
             }
         },
         mounted() {
-            this.computeWindow()
-
-            let $dom = this.$refs.skinWindow
-            $dom.className = 'animeOut'
-
-            let bg = window.localStorage.getItem('theHelloBg')
-            if (bg === null || bg === '' || bg === undefined) {
-                this.bgData = {
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundImage: 'url("' + this.bgImageList.bg1 + '")',
-                }
-            } else {
-                this.bgData = {
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundImage: 'url("' + bg + '")',
-                }
-            }
-
-            window.addEventListener('resize', () => {
-                this.computeWindow()
+            setTimeout(() => {
+                this.computeSkin()
             })
+
         },
         methods: {
             skinBg(item) {
@@ -85,51 +54,17 @@
             },
             computeSkin() {
                 let $dom = this.$refs.bgChangerContent
-                let height = Math.round($dom.offsetHeight * 0.8)
-                let width = Math.round($dom.offsetWidth * 0.3)
                 this.skinItemStyle = {
-                    '--item-width': width + 'px',
-                    '--item-height': height + 'px',
+                    '--item-width': Math.round($dom.offsetWidth * 0.3) + 'px',
+                    '--item-height': Math.round($dom.offsetHeight * 0.8) + 'px',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }
-            },
-            computeWindow() {
-                let $window = this.$refs.bgChangerWrapperRef
-                let height = $window.offsetHeight * 0.4
-                let width = $window.offsetWidth * 0.7
-                let h = 50 / height
-                let w = 50 / width
-                this.changerStyle = {
-                    '--hx': h,
-                    '--hw': w,
-                }
-            },
-            changeBg() {
-                if (!this.isOpen) {
-                    this.isOpen = true
-
-                    let $dom = this.$refs.skinWindow
-                    $dom.className = 'animeTo'
-                    this.computeWindow()
-                    this.computeSkin()
-                } else {
-                    this.closeBgWindow()
-                }
-            },
-            closeBgWindow() {
-                this.isOpen = false
-
-                let $dom = this.$refs.skinWindow
-                $dom.className = 'animeOut'
             },
             clickToChangeBg(item) {
-                this.bgData = {
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundImage: 'url("' + item + '")',
-                }
-                window.localStorage.setItem('theHelloBg', item)
+                this.$store.commit('changeBg', item)
+                console.log(this.$store.state.bgUrl)
+
             },
         }
     }
@@ -139,121 +74,71 @@
     @import 'src/assets/css/style';
     @import "src/assets/css/base";
 
-    #bgChangerWrapper {
-        @include wrapper;
-        position: absolute;
-        overflow: hidden;
 
-        #bg {
-            position: fixed;
-            right: 0;
-            top: 0;
-            height: 100vh;
-            width: 100vw;
-            z-index: -100;
-        }
+    #changerWrapper {
+        @include flex;
+        position: fixed;
+        z-index: 200;
+        width: 70vw;
+        height: 60vh;
 
-        #shade {
-            @include shade;
-            z-index: 99;
-        }
+        flex-direction: column;
+        flex-shrink: 0;
 
+        box-sizing: border-box;
 
-        #changeBgBtn {
+        #title {
             @include flex;
-            position: fixed;
-            z-index: 100;
-            transform-origin: top right;
+            position: absolute;
+            font-size: 2rem;
             width: 70vw;
-            height: 60vh;
+            height: 50px;
+            top: 0;
+            margin-bottom: 30px;
+            color: white;
+        }
 
-            flex-direction: column;
+        #content {
+            background-color: rgba(241, 243, 244, .6);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: $shadow;
+            width: 70vw;
+            height: 40vh;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             flex-shrink: 0;
 
-            transition: all .3s;
-            box-sizing: border-box;
+            overflow-x: scroll;
+            overflow-y: hidden;
 
-            #title {
-                @include flex;
-                position: absolute;
-                font-size: 2rem;
-                width: 70vw;
-                height: 50px;
-                top: 0;
-                margin-bottom: 30px;
-                color: white;
+            &::-webkit-scrollbar {
+                height: 15px
             }
 
-            #content {
-                @include blurWindow;
-                cursor: pointer;
-                position: relative;
-                box-shadow: $shadow;
-                width: 70vw;
-                height: 40vh;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                flex-shrink: 0;
-
-                overflow-x: scroll;
-                overflow-y: hidden;
-
-                &::-webkit-scrollbar {
-                    height: 2px;
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    background-color: white;
-                    border-radius: 10px;
-                }
+            &::-webkit-scrollbar-thumb {
+                background-color: white;
             }
 
-
-            .skin {
-                flex-shrink: 0;
-                --item-width: 0px;
-                --item-height: 0px;
-                position: relative;
-                width: var(--item-width);
-                height: var(--item-height);
-                background-color: black;
-                margin: 10px;
+            &::-webkit-scrollbar-button {
+                width: 8px;
+                height: 20px;
             }
         }
     }
 
-    .animeTo {
-        animation: anmTo .3s forwards;
+    .skin {
+        flex-shrink: 0;
+        --item-width: 0px;
+        --item-height: 0px;
+        position: relative;
+        width: var(--item-width);
+        height: var(--item-height);
+        background-color: black;
+        margin: 10px;
+        cursor: pointer;
     }
 
-    .animeOut {
-        animation: anmOut .3s forwards;
-    }
 
-    @keyframes anmTo {
-        0% {
-            top: 30px;
-            right: 30px;
-            transform: scale(var(--hw), var(--hx)) translate(50%, -50%);
-        }
-        100% {
-            top: 50%;
-            right: 50%;
-            transform: translate(50%, -50%);
-        }
-    }
-
-    @keyframes anmOut {
-        0% {
-            top: 50%;
-            right: 50%;
-            transform: translate(50%, -50%);
-        }
-        100% {
-            top: 30px;
-            right: 30px;
-            transform: scale(var(--hw), var(--hx)) translate(50%, -50%);
-        }
-    }
 </style>

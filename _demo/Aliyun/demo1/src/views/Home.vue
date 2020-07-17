@@ -1,41 +1,31 @@
 <template>
     <div id="homeWrapper" ref="homeWrapper">
-        <div id="title" @click="openPrimeWindow">
+        <div id="title" @click="$router.push('/PrimeMenu')">
             Hello, ahhTou
         </div>
-        <div class="safeRoom">
-            <prime-menu :isOpen="isPrimeWindowOpen"/>
+        <div id="btnLine">
+            <div class="btn" id="board" @click="$router.push('/MsgBoard')">留言板</div>
+            <div class="btn" @click="$router.push('/BgChanger')">切换背景</div>
         </div>
-        <div class="safeRoom">
-            <bg-changer/>
-        </div>
-        <msg-board/>
+        <!-- 背景图片 -->
+        <bg-shower/>
+
+        <router-view/>
     </div>
 </template>
 
 <script>
-    import PrimeMenu from 'src/components/PrimeMenu'
     import BgChanger from 'src/components/BgChanger'
-    import MsgBoard from 'src/components/MsgBoard'
+    import BgShower from '../components/BgShower'
 
     export default {
         name: 'Home',
         components: {
-            PrimeMenu,
+            BgShower,
             BgChanger,
-            MsgBoard
         },
         data() {
             return {
-                bgImageList: {
-                    bg1: 'http://39.99.154.145/img/hello/bg1.jpg',
-                    bg2: 'http://39.99.154.145/img/hello/bg2.jpg',
-                    bg3: 'http://39.99.154.145/img/hello/bg3.jpg',
-                    bg4: 'http://39.99.154.145/img/hello/bg4.jpg'
-                },
-                changeBgStyle: {
-                    isOpen: false
-                },
                 isPrimeWindowOpen: false
             }
         },
@@ -51,6 +41,34 @@
     @import 'src/assets/css/style';
     @import 'src/assets/css/base';
 
+    #btnLine {
+        position: fixed;
+        display: flex;
+        width: 100vw;
+        justify-content: flex-end;
+        align-items: center;
+        box-sizing: border-box;
+
+        #board {
+            background: rgb(234, 73, 95);
+            color: white;
+        }
+
+        .btn {
+            @include flex;
+            box-shadow: $shadow;
+            float: left;
+            cursor: pointer;
+            z-index: 98;
+            box-sizing: border-box;
+            padding: 10px;
+            height: 50px;
+            background-color: white;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+    }
 
     #homeWrapper {
         width: 100vw;
