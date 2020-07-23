@@ -341,3 +341,195 @@ delete from `student` where id=1;
 
 # DQL查询
 
+## 基础
+
+##### 基础查询和别名
+
+> select 字段 ... from 表
+
+```mysql
+-- 查询全部的学生
+SELECT * FROM student;
+
+-- 查询指定字段
+SELECT `studentno`, `name` FROM student;
+
+-- 使用别名
+SELECT `studentno` AS 学号, `name` AS 学生姓名 FROM student;
+SELECT `studentno` 学号, `name`  学生姓名 FROM student;
+
+-- 函数 concat(a, b)
+SELECT CONCAT('姓名：',`name`)  AS 新名字 FROM student;
+```
+
+##### 去重 distinct
+
+```mysql
+-- 去重一下有哪些同学参加了考试
+SELECT * FROM result;  -- 查询全部的成绩
+
+SELECT DISTINCT `studentno` FROM result; -- 查询有那些同学参加了考试
+```
+
+##### 数据库的列(表达式)
+
+> 数据库中的表达式:文本值， 列，Null, 函数,计算表达式，系统变量...
+
+```mysql
+-- 查询系统版本
+SELECT VERSION();
+
+-- 用来计算
+SELECT 100*3-1 AS  计算结果;
+
+-- 查询自增的步长
+SELECT @@auto_increment_increment; -- 查询步长
+
+-- 学员成绩加一分查看
+SELECT `studentno` , `studentresult` + 1 AS '提高分数' FROM result;
+```
+
+## where 条件子句
+
+##### 逻辑运算符
+
+> 尽量使用英文字母
+
+| 运算符  | 语法                 | 描述   |
+| ------- | -------------------- | ------ |
+| and &&  | a and b     a && b   | 逻辑与 |
+| or \|\| | a or b        a\|\|b | 逻辑否 |
+| Not !   | not a          ! a   | 逻辑非 |
+
+```mysql
+-- and 
+SELECT `studentno`, `studentresult` FROM result
+WHERE `studentresult`>=95 AND `studentresult` <=100;
+
+-- &&
+SELECT `studentno`, `studentresult` FROM result
+WHERE `studentresult`>=95 && `studentresult` <=100;
+
+-- 区间查询
+SELECT `studentno`, `studentresult` FROM result
+WHERE `studentresult`  BETWEEN 95 AND  `studentresult` ;
+
+-- 除了1000号学生以外的同学的成绩
+SELECT `studentno`, `studentresult` FROM result
+WHERE `studentno` !=1000;
+
+-- != not
+SELECT `studentno`, `studentresult` FROM result
+WHERE NOT `studentno` = 1000;
+```
+
+##### 模糊查询 比较运算符
+
+| 运算符      | 语法               | 描述                                            |
+| ----------- | ------------------ | ----------------------------------------------- |
+| is null     | a is null          | 如果操作符为NUII, 结果为真                      |
+| is not null | a is not null      | 如果操作符不为null,结果为真                     |
+| between     | a between b and c  | 若a 在b和C之间，则结果为真                      |
+| **like**    | a like b           | sql匹配，如果a匹配b，则结果为真                 |
+| in          | a in (a1,a2,a3...) | 假设a在a1,或者a..... 其中的某-个值中， 结果为真 |
+
+###### like
+
+> 模糊查询
+
+```mysql
+-- 查询 姓刘的
+select `studentno`, `name` from `student`
+where `name` like '刘%';
+
+-- 查询姓刘且名字只有一个字
+SELECT `studentno`, `name` FROM `student`
+WHERE `name` LIKE '刘_';
+
+-- 查询名字里带大的
+SELECT `studentno`, `name` FROM `student`
+WHERE `name` LIKE '%大%';
+```
+
+###### in
+
+> 必须是具体的值
+
+```mysql
+-- 查询 1001，1002，1003 学员
+SELECT `studentno`,`name` FROM `student`
+WHERE `studentno` IN (1001,1002,1003);
+
+-- 查询在北京的学生
+SELECT `studentno`,`name` FROM `student`
+WHERE `address` IN ('广东深圳');
+```
+
+###### null
+
+```mysql
+-- 查询地址为空的学生
+SELECT `studentno`,`name` FROM `student`
+WHERE `address` = '' OR `address` IS NULL;
+
+
+-- 查询有出生日期的同学
+SELECT `studentno`,`name` FROM `student`
+WHERE `borndate` IS NOT NULL;
+
+-- 查询没有出生日期的同学
+SELECT `studentno`,`name` FROM `student`
+WHERE `borndate` IS  NULL;
+```
+
+##### 联表查询
+
+> join (连接的表) on (判断条件)  连接查询
+>
+> where 等值查询
+
+```mysql
+
+--  参加了考试的同学
+
+/*
+	思路分析
+	1.分析需求，分析查询的字段来自哪些表， (连接查询)
+	
+	2.确定使用哪种连接查询?7种
+
+	确定交叉点(这两个表中哪个数据是相同的)
+	
+	判断的条件 ： 学生表的中 studentNo = 成绩表studentNo
+
+*/
+
+-- inner join
+SELECT s.`studentno`,s.`name`,r.`subjectno`,r.`studentresult`
+FROM student AS s 
+INNER JOIN result  AS r
+ON s.studentno = r.studentno;
+
+-- right join
+SELECT s.`studentno`,s.`name`,r.`subjectno`,r.`studentresult`
+FROM student  s 
+LEFT JOIN result   r
+ON s.studentno = r.studentno;
+
+-- left join
+SELECT s.`studentno`,s.`name`,r.`subjectno`,r.`studentresult`
+FROM student  s 
+RIGHT JOIN result   r
+ON s.studentno = r.studentno;
+
+
+
+
+```
+
+| 操作       | 描述                                       |
+| ---------- | ------------------------------------------ |
+| inner join | 如果表中至少有一个匹配，就返回行           |
+| left join  | 会从左表中返回所有的值，即使右表中没有匹配 |
+| right join | 会从右表中返回所有的值，即使左表中没有匹配 |
+
