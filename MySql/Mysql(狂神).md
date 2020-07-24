@@ -33,7 +33,9 @@ describe student -- 显示数据库中所有表的信息
 create database westos;
 ```
 
-# 操作数据库
+# 数据库
+
+## 操作数据库
 
 ##### 创建数据库
 
@@ -60,7 +62,7 @@ USE `study_school`; -- 如果字段里面有特殊字符就要这些写
 SHOW DATABASES;
 ```
 
-# 数据库的基本类型
+## 数据库的基本类型
 
 ##### 数值
 
@@ -99,7 +101,7 @@ SHOW DATABASES;
 - 没有值，位置
 - 不要用null进行运算，结果为null
 
-# 数据的字段属性
+## 数据的字段属性
 
 ##### Unsigned
 
@@ -126,9 +128,9 @@ SHOW DATABASES;
 
 - 设置默认的值
 
+# 表
 
-
-# 表_相关知识
+## 表_相关知识
 
 - innodb 默认使用
 - myisam
@@ -162,7 +164,7 @@ Mysql引擎在屋里文件上的区别
   - *.myd 数据文件(data)
   - *.myi 索引文件
 
-# 表_基本操作
+## 表_基本操作
 
 ##### 创建
 
@@ -243,7 +245,7 @@ ALTER TABLE [if exists] teacherDROP age1;
 
 
 
-# 外键_仅作了解
+## 外键
 
 ##### 方式1
 
@@ -255,7 +257,9 @@ ALTER TABLE [if exists] teacherDROP age1;
 
 创建表成功后，再添加约束
 
-# 操作符
+# 符号和函数
+
+## 操作符
 
 操作符会返回布尔值
 
@@ -268,7 +272,52 @@ ALTER TABLE [if exists] teacherDROP age1;
 | and                 | &&           | 5>1 and 1>2 | false |
 | or                  | \|\|         | 5>1 or 1>2  | true  |
 
-# DML整改删
+## 常用函数
+
+```mysql
+-- 计算
+select abs(-8); -- 绝对值
+select ceiling(9.4); -- 向上取整
+select floor(9.4);  -- 向下取整
+select rand(); -- 返回0-1的随机数
+select sign(-10); -- 判断一个数的符号
+
+ -- 字符串函数
+ select char_length('我是ahhTou'); -- 字符串长度
+ select concat('我爱','二刺螈') ; -- 拼接字符串
+ select insert ('我爱编程helloworld',1,2,'超级热爱' ); -- 替换字符串
+ select lower('HelloWorld'); -- 小写
+ select upper('helloworld'); -- 大写
+ select instr('ahhTou','h'); -- 返回第一次出现字符串的索引
+ select replace('ahhTou是个啥b','啥b','sb'); -- 替换字符串
+ select substr('ahhTou是个傻逼',7,4); -- 返回指定字符串
+ select reverse('清晨我上马'); -- 反转
+ 
+ -- 查询姓周的同学，姓名替换为邹
+ select replace(`name`,'周','邹') from student 
+ where `name` like '周%';
+ 
+ -- 时间和日期函数（记住）
+ select current_date(); -- 获得当前日期;
+ select curdate() ;-- 获取当前日期
+ select now(); -- 获取当前的时间
+ select localtime() ;-- 本地时间
+select sysdate(); -- 系统时间
+
+select year(now());
+select month(now());
+select day(now());
+select hour(now());
+select minute(now());
+select second(now());
+
+-- 系统
+select system_user();
+select user();
+select version();
+```
+
+# (重点) DML整改删
 
 ## 插入
 
@@ -339,7 +388,7 @@ delete from `student` where id=1;
     - truncate 重新设置自增列计数器会归零
     - truncate 不会影响事务
 
-# DQL查询
+# (重点) DQL查询
 
 ## 基础
 
@@ -482,7 +531,7 @@ SELECT `studentno`,`name` FROM `student`
 WHERE `borndate` IS  NULL;
 ```
 
-##### 联表查询
+## 联表查询
 
 > join (连接的表) on (判断条件)  连接查询
 >
@@ -532,4 +581,149 @@ ON s.studentno = r.studentno;
 | inner join | 如果表中至少有一个匹配，就返回行           |
 | left join  | 会从左表中返回所有的值，即使右表中没有匹配 |
 | right join | 会从右表中返回所有的值，即使左表中没有匹配 |
+
+## 自连接
+
+```mysql
+CREATE TABLE `school`.`category`( `categoryid` INT(3) NOT NULL COMMENT 'id', `pid` INT(3) NOT NULL COMMENT '父id 没有父则为1', `categoryname` VARCHAR(10) NOT NULL COMMENT '种类名字', PRIMARY KEY (`categoryid`) ) ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT INTO `school`.`category` (`categoryid`, `pid`, `categoryname`) VALUES ('2', '1', '信息技术');
+INSERT INTO `school`.`CATEGOrY` (`categoryid`, `pid`, `categoryname`) VALUES ('3', '1', '软件开发');
+INSERT INTO `school`.`category` (`categoryid`, `PId`, `categoryname`) VALUES ('5', '1', '美术设计');
+INSERT INTO `School`.`category` (`categoryid`, `pid`, `categorynamE`) VALUES ('4', '3', '数据库');
+INSERT INTO `school`.`category` (`CATEgoryid`, `pid`, `categoryname`) VALUES ('8', '2', '办公信息');
+INSERT INTO `school`.`category` (`categoryid`, `pid`, `CAtegoryname`) VALUES ('6', '3', 'web开发');
+INSERT INTO `SCHool`.`category` (`categoryid`, `pid`, `categoryname`) VALUES ('7', '5', 'ps技术');
+```
+
+**自己的表和自己的表连接，核心: 一张表拆为两张一样的表即可**
+
+父类
+
+| categoryid | categoryName |
+| ---------- | ------------ |
+| 2          | 信息技术     |
+| 3          | 软件开发     |
+| 5          | 美术设计     |
+
+子类
+
+| pid  | categoryid | categoryName |
+| ---- | ---------- | ------------ |
+| 3    | 4          | 数据库       |
+| 2    | 8          | 办公信息     |
+| 3    | 6          | web开发      |
+| 5    | 7          | Ps技术       |
+
+操作：查询父类对应的之类关系
+
+| 父类     | 子类     |
+| -------- | -------- |
+| 信息技术 | 办公信息 |
+| 软件开发 | 数据库   |
+| 软件开发 | web开发  |
+| 美术设计 | ps技术   |
+|          |          |
+
+```mysql
+SELECT a.`categoryname` AS '父栏目', b.`categoryname` AS '子栏目'
+FROM `category` AS a , `category` AS b
+WHERE a.`categoryid` = b.`pid`;
+```
+
+## 排序
+
+> limit and order by
+
+```mysql
+-- 排序 : 升序ASC 降序DESC
+-- ORDER BY 通过那个字段排序，怎么排
+-- 查询的结果根据成绩降序 排序
+select s.`studentno`,`name`,`subjectname`,`studentresult`
+from `student` as s
+left join `result` as r
+on s.`studentno` = r.`subjectno`
+left join `subject` sub
+on r.`subjectno` = sub.`subjectno`
+order by `studentresult` desc[asc];
+```
+
+## 分页
+
+```mysql
+-- 为什么要分页
+-- 缓解数据库压力，给人的体验更好，瀑布流
+-- 分页，每页只显示五秉数据
+-- 语法: 	limit	 起始值，页面的大小
+-- limit 0,5	1~5
+-- limit 1,5	2~6  
+-- 第n页	limit 0,5 (n-1)  *  pageSize, pageSize
+SELECT s.`studentno`,`name`,`subjectname`,`studentresult`
+FROM `student` AS s
+LEFT JOIN `result` AS r
+ON s.`studentno` = r.`subjectno`
+LEFT JOIN `subject` sub
+ON r.`subjectno` = sub.`subjectno`
+limit 0,10
+;
+```
+
+## 子查询
+
+```mysql
+-- 查询数据库结构-1的所有考试结果（学号，科目编号，成绩），降序排序
+-- 方式一 ： 连接查询
+SELECT `studentno`,`subjectname`,`studentresult`
+FROM `result` r
+LEFT JOIN `subject` sub
+ON r.`subjectno` = sub.`subjectno`
+WHERE `subjectname` IS NOT NULL;
+
+-- 方式二 子查询(由里及外)
+SELECT `studentno`,`subjectname`,`studentresult`
+FROM `result`
+WHERE `studentno` = (
+	SELECT `subjectno` FROM `subject` 
+	WHERE  `subjectname` IS NOT NULL;
+)
+;
+-- 查询所有数据库结构-1的学生学号
+SELECT `subjectno` FROM `subject` WHERE  `subjectname` IS NOT NULL;
+
+-- 分数不小于80分的学生的学号和姓名
+SELECT s.`studentno`,`name`
+FROM `student` s
+INNER JOIN `result` r
+ ON r.`studentno` = s.`studentno`
+ WHERE `studentresult`>=80;
+
+-- 在这个基础上增加一个科目，高等数学-2
+SELECT s.`studentno`,`name`
+FROM `student` s
+INNER JOIN `result` r
+ ON r.`studentno` = s.`studentno`
+ WHERE `studentresult`>=80 AND `subjectno` = (
+	SELECT `subjectno` FROM `subject` 
+	WHERE `subjectname` = '高等数学-1'
+ );
+ 
+ 
+ -- 改造
+SELECT `studentno`,`name` FROM `student`WHERE `studentno` IN (
+ SELECT `studentno` FROM result WHERE  `studentresult`>=80 AND `subjectno` = (
+	SELECT `subjectno` FROM `subject` WHERE `subjectname` = '高等数学-1'
+ )
+);
+```
+
+# 聚合函数
+
+| 函数名称 | 描述   |
+| -------- | ------ |
+| count()  | 计数   |
+| sum()    | 求和   |
+| avg()    | 平均值 |
+| max()    | 最大值 |
+| min()    | 最小值 |
+| ...      | ...    |
 
