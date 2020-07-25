@@ -317,6 +317,46 @@ select user();
 select version();
 ```
 
+## md5加密
+
+```mysql
+-- 明文密码
+INSERT INTO testmd5 
+VALUES(1,'zhangshan','123456'),
+(2,'lisi','123456'),
+(3,'wangwu','123456');
+
+-- 加密
+UPDATE testmd5 SET pwd=MD5(pwd) WHERE id !=1 ;
+
+INSERT INTO testmd5 
+VALUES(4,'zhangshan',MD5('123456'));
+```
+
+
+
+## 聚合函数
+
+| 函数名称 | 描述   |
+| -------- | ------ |
+| count()  | 计数   |
+| sum()    | 求和   |
+| avg()    | 平均值 |
+| max()    | 最大值 |
+| min()    | 最小值 |
+| ...      | ...    |
+
+```mysql
+select count(name) from student; -- count(字段) 会忽略所有的null值
+select count(*) from student; -- 不会忽略null值 本质计算行数
+select count(1) from result; -- 不会忽略的所有的null值 本质计算行数
+
+select sum(`studentresult`) as 总和 from result;
+SELECT avg(`studentresult`) AS 平均数 FROM result;
+SELECT max(`studentresult`) AS 最高分 FROM result;
+SELECT min(`studentresult`) AS 最低分 FROM result;
+```
+
 # (重点) DML整改删
 
 ## 插入
@@ -716,14 +756,173 @@ SELECT `studentno`,`name` FROM `student`WHERE `studentno` IN (
 );
 ```
 
-# 聚合函数
+## 分组过滤
 
-| 函数名称 | 描述   |
-| -------- | ------ |
-| count()  | 计数   |
-| sum()    | 求和   |
-| avg()    | 平均值 |
-| max()    | 最大值 |
-| min()    | 最小值 |
-| ...      | ...    |
+```mysql
+-- 查询不同课程的平均分，最高分，最低分
+-- 核心:(根据不同的课程分组)
+SELECT `subjectname`  AS 科目名称, AVG(`studentresult`) AS 平均分, MAX(`studentresult`) AS 最高分,MIN(`studentresult`) AS 最低分
+FROM result r
+INNER JOIN `subject` sub
+ON r.`subjectno` = sub.`subjectno`
+[where ...]
+GROUP BY r.`subjectno` -- 通过字段来分组
+HAVING 平均分> 80 -- 过滤
+...
+;
+```
 
+# 事务
+
+## 什么是事务
+
+> 要么都成功,要么都失败
+
+事务原则: ACID原则 原子性，一致性，隔离性，持久性 (脏读,幻读....)
+
+**原子性(Atomicity)**
+
+要么都成功，要么都失败
+
+**一致性(Consistency)**
+
+事务前后的数据完整性要保证一致，1000
+
+**持久性(Durability)** --- 事务提交
+
+事务一旦提交则不可逆，被持久化到数据库中!
+
+**隔离性(Isolation)**
+
+事务的隔离性是多个用户并发访问数据库时,数据库为每一个用户开启的事务, 不能被其他事务的操作数据所干扰,事务之间要相互隔离。
+
+> 隔离导致的问题
+
+**脏读**
+
+指一个事务读取了另外一个事务未提交的数据。
+
+**不可重复读**
+
+在一个事务内读取表中的某-一行数据， 多次读取结果不同。(这个不一 定是错误， 只是某些场合不对)
+
+**虚读(幻读)**
+
+是指在一个事务内读取到了 别的事务插入的数据，导致前后读取不一致。
+
+## 事务流程
+
+```mysql
+ SET autocommit = 0 ; -- 关闭
+ SET autocommit = 1 ; -- 开启（默认）
+ 
+ -- 手动处理事务
+  SET autocommit = 0 ; 
+ -- 事务开启
+START TRANSACTION -- 标记一个事务的开始 
+
+INSERT xx
+INSERT xx
+
+-- 提交 ： 持久化 （成功！）
+COMMIT ;
+ 
+ -- 回滚 ： 回到原来的样子 （失败！）
+ROLLBACK;
+
+-- 事务结束
+ SET autocommit = 1 ; 
+ 
+ -- 了解
+ SAVEPOINT; 保存点 -- 设置一个事务的保存点 
+ ROLLBACK TO SAVEPOINT; 保存点 -- 回滚到保存点
+ RELEASE SAVEPOINT ;保存点  -- 删除保留点
+
+```
+
+## 模拟转账
+
+```mysql
+ SET autocommit = 0 ; -- 关闭自动提交
+ START TRANSACTION ; -- 开启一个事务
+ UPDATE account SET money=money-500 WHERE `name` = 'A' ;-- a减500
+ UPDATE account SET money=money-500 WHERE `name` = 'b' ;--  b减500
+ COMMIT;
+ ROLLBACK;
+ SET autocommit = 1;
+```
+
+# 索引
+
+> MySQL官方对索引的定义为: 	**索引(Index) 是帮助MySQL高效获取数据的数据结构**。提取句子主干，就可以得到索引的本质:索引是数据结构。
+
+## 索引的分类
+
+> 在一个表,主键索引只能有一个,唯一索引可以有多个
+
+- 主键索引 Primary Key
+    - 唯一的标识,不可重复
+- 唯一索引 Unique Key
+    - 避免重复的列出现,唯一索引可以重复,多个列都可以标识位 唯一索引
+- 常规索引 Key/Index
+    - 默认的,index, key关键字设置
+- 全文索引 FullText
+    - 在特定数据库引擎下才有，Myisam
+    - 快速定位数据
+
+## 基础语法
+
+```mysql
+ -- 1、在创建的时候给字段增加索引
+ -- 2、创建完成后，增加索引
+ 
+ -- 显示所有的的索引信息
+ SHOW INDEX FROM `student`;
+ 
+ -- 增加一个索引 									(索引名) 列明
+ ALTER TABLE school.`student` ADD FULLTEXT INDEX `name` (`name`);
+ 
+ -- explain 分析sql执行的情况
+ EXPLAIN SELECT * FROM student ; -- 非全文索引
+ 
+EXPLAIN SELECT * FROM student WHERE MATCH(`name`) AGAINST('刘') ;
+```
+
+## 索引测试
+
+> 基于100万条数据
+
+```mysql
+SELECT * FROM `student` WHERE `name` = '用户9999'; -- 4.276 sec
+SELECT * FROM `student` WHERE `name` = '用户9999';  -- 4.284 sec
+
+CREATE INDEX id_student_user_name ON `student`(`name`);
+
+SELECT * FROM `student` WHERE `name` = '用户9999';  --  0 sec
+EXPLAIN SELECT * FROM `student` WHERE `name` = '用户9999';  --  0 sec
+```
+
+## 索引原则
+
+- 索引不是越多越好
+- 不要对进程变动数据加索引
+- 小数据量的表不需要加索引
+- 索引一般加在常用来查询的字段上!
+
+
+
+> 索引的数据结构
+
+hash类型的索引
+
+Btree : innoDB 默认的数据结构
+
+
+
+# 权限管理和备份
+
+> sqlyog图像管理
+
+
+
+> SQL 命令操作
