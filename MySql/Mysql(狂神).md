@@ -854,6 +854,8 @@ ROLLBACK;
 
 # 索引
 
+ https://blog.codinglabs.org/articles/theory-of-mysql-index.html
+
 > MySQL官方对索引的定义为: 	**索引(Index) 是帮助MySQL高效获取数据的数据结构**。提取句子主干，就可以得到索引的本质:索引是数据结构。
 
 ## 索引的分类
@@ -921,8 +923,344 @@ Btree : innoDB 默认的数据结构
 
 # 权限管理和备份
 
+## 用户管理
+
 > sqlyog图像管理
 
 
 
 > SQL 命令操作
+
+```mysql
+-- 创建用户
+create user test identified by '123456';
+
+-- 修改密码 （当前）
+set password = password('123456');
+
+--  修改密码 （指定）
+set password for test = password('123456');
+
+
+-- 重命名
+rename user test to test2;
+
+
+-- 用户授权  除了给别人授权，其他都能干
+grant all privileges on *.*  to test2 ;-- 所有权限
+
+-- 查询权限
+show grants for test2; 
+show grants for root@localhost;
+ 
+
+-- 撤销权限 revoke 哪些权限，在哪个库，给谁撤销
+revoke all privileges on *.* from test2;
+
+-- 删除用户
+drop user test2;
+```
+
+## 备份
+
+为什么要备份:
+
+- 保证重要的数据不丢失
+
+- 数据转移
+
+MySQL数据库备份的方式
+
+- 直接拷贝物理文件
+
+- 在Sqlyog这种可视化工具中手动导出
+
+- 使用命令行导出mysqldump 命令行使用
+
+    ```bash
+    # 导出单张表 -h主机 -u用户名 -p密码数据库 表名 > 物理磁盘位置/文件名
+    mysqldump -hlocalhost -uroot -p123 school student >D:/a.sql
+     
+    # 导出多张表  -h主机 -u用户名 -p密码数据库 表1 表2 表3 > 物理磁盘位置/文件名
+    mysqldump -hlocalhost -uroot -p123 school student >D:/a.sql
+      
+    # 导出数据库  -h主机 -u用户名 -p密码数据库 > 物理磁盘位置/文件名
+    mysqldump -hlocalhost -uroot -p123 school >D:/a.sql
+     
+    # 导入
+    # 登录的情况下，切换到指定的数据库
+    mysql> source d:/a.sql
+     
+    # 没有登录
+    # mysql -u用户名 -p用户名 库名< 备份文件
+    ```
+
+# 规范数据库设计
+
+## 为什么需要设计
+
+>  当数据库比较复杂的时候，我们就需要设计了
+
+**糟糕的数据库设计**:
+
+- 数据冗余,浪费空间
+- 数据库插入和删除都会麻烦、异常[ 屏蔽使用物理外键]
+- 程序的性能差
+
+**良好的数据库设计:**
+
+- 节省内存空间
+- 保证数据库的完整性
+- 方便我们开发系统
+
+**软件开发中，关于数据库的设计**
+
+- 分析需求:分析业务和需要处理的数据库的需求
+
+- 概要设计:设计关系图E-R图
+
+## 三大范式
+
+> 为什么要有数据库规范化
+
+- 信息重复
+- 更新异常
+- 插入异常
+    - 无法正常显示信息
+- 删除异常
+
+> 三大范式
+
+**第一范式(!NF)**
+
+原子性：保证每一列不能再分
+
+
+
+**第二范式(2NF)**
+
+满足第一范式
+
+每张表只描述一件事
+
+
+
+**第三范式(1NF)**
+
+满足第一范式 和 第二范式
+
+第三范式需要确保数据表中的每一列数据都和主键直接相关， 而不能间接相关。
+
+
+
+规范性 和 性能的问题
+
+关联查询的表不超过三张表
+
+# JDBC
+
+> sun 公司未来简化 开发人员的（对数据库的统一）操作，提供了一个（java操作数据的）规范，简称jdbc
+>
+> 这些规范的实现由具体的厂商去做
+>
+> 对于开发人员，我们只需要掌握jdbc接口的操作即可
+
+## 详解
+
+> DriverManager
+
+```java
+// 1. 加载驱动
+// DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+Class.forName("com.mysql.cj.jdbc.Driver"); // 固定写法，加载驱动
+```
+
+> Connection
+
+```java
+Connection connection = DriverManager.getConnection(url, username, password);
+
+// 数据库操作都在connection里做
+connection.rollback();
+connection.commit();
+connection.setAutoCommit(true);
+```
+
+> **Statemen**t 执行sql的对象 PrepareStatement
+
+```java
+ResultSet resultSet = statement.executeQuery(sql);
+statement.executeQuery();   // 执行操作返回结果集
+statement.execute();
+statement.executeUpdate(); // 更新插入删除都是用这个
+```
+
+> ResultSet
+
+```java
+resultSet.getObject();
+resultSet.getString();
+resultSet.getInt();
+
+resultSet.beforeFirst(); // 移动到最前面
+resultSet.afterLast(); // 移动到最后面
+resultSet.next(); // 移动到下一个
+resultSet.previous(); // 移动到上一个
+resultSet.absolute(row); // 移动到指定行
+```
+
+## 完整案例
+
+```java
+// 1. 加载驱动
+Class.forName("com.mysql.cj.jdbc.Driver"); // 固定写法，加载驱动
+// 2. 用户信息和url
+String url = "jdbc:mysql://localhost:3306/jdbcStudy?serverTimezone=GMT%2B8";
+String username = "root";
+String password = "123";
+
+// 3. 连接成功, 得到数据库对象
+Connection connection = DriverManager.getConnection(url, username, password);
+
+// 4. 执行sql对象
+Statement statement = connection.createStatement();
+
+// 5. 执行sql的对象 去 执行sql 可能会返回结果
+String sql = "select * from `users`";
+
+ResultSet resultSet = statement.executeQuery(sql);
+
+while (resultSet.next()) {
+    System.out.print("id=" + resultSet.getObject("id") + "||");
+    System.out.print("id=" + resultSet.getObject("name") + "||");
+    System.out.print("id=" + resultSet.getObject("password") + "||");
+    System.out.print("id=" + resultSet.getObject("email") + "||");
+    System.out.println("id=" + resultSet.getObject("birthday"));
+}
+
+// 6. 释放连接
+resultSet.close();
+statement.close();
+connection.close();
+```
+
+## SQL注入
+
+略
+
+## PreparedStatement
+
+PreparedStatement可以防止SQL注入。效率更好!
+
+PreparedStatement 防SQL注入的本质，把传递进来的参数当做字符
+假设其中存在转义字符，就直接忽略，会被直接转义
+
+```java
+Connection conn = null;
+PreparedStatement st = null;
+ResultSet rs = null;
+
+try {
+    // 获取数据库连接
+    conn = JdbcUtils.getConnection();
+
+    String sql = "INSERT INTO users(`name`, `password`,`email`,`birthday`) " +
+            "VALUES(?,?,?,?)";
+
+    // 预编译sql，先写sql，然后不执行
+    st = conn.prepareStatement(sql);
+
+    st.setString(1,"la");
+    st.setString(2,"123");
+    st.setString(3,"123@qq.com");
+    st.setDate(4,new Date(new java.util.Date().getTime()));
+
+    System.out.println(st);
+
+    int i = st.executeUpdate();
+    if (i > 0) {
+        System.out.println("插入了" + i + "条数据");
+    } else {
+        System.out.println("没有插入任何数据");
+    }
+
+} catch (Exception e) {
+    e.printStackTrace();
+} finally {
+    JdbcUtils.release(conn, st, rs);
+}
+
+```
+
+## 事务
+
+```java
+Connection conn = null;
+PreparedStatement st = null;
+ResultSet rs = null;
+
+try {
+
+    conn = JdbcUtils.getConnection();
+
+    // 关闭数据库自动提交，自动开启事务
+    conn.setAutoCommit(false);
+
+    String sql1 = "update `account` set money = money -100 where name ='A' ";
+    String sql2 = "update `account` set money = money +100 where name ='b'";
+
+    st = conn.prepareStatement(sql1);
+    st.executeUpdate();
+    st = conn.prepareStatement(sql2);
+    st.executeUpdate();
+
+    conn.commit();
+
+
+} catch (Exception e) {
+    e.printStackTrace();
+    try {
+        // 默认:失败是默认回滚
+        assert conn != null;
+        conn.rollback();
+    } catch (Exception ee) {
+        ee.printStackTrace();
+    }
+
+} finally {
+    com.ahhTou.lesson02.utils.JdbcUtils.release(conn, st, rs);
+}
+```
+
+## 数据库连接池
+
+数据库连接---执行完毕--释放
+连接-释放十分浪费系统资源
+
+**池化技术:准备一些预先的资源，过来就连接预先准备好的**
+
+常用连接数
+
+最小连接数
+
+最大连接数
+
+排队等待
+
+等待超时：100ms
+
+
+
+编写连接池，实现一个接口
+
+> DBCP
+
+> C3P0
+
+略 参看java代码
+
+
+
+> 结论
+
+无论使用什么数据源，本质还是一样的，DataSource接口不会变,方法就不会变
