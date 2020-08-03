@@ -1,3 +1,16 @@
+## 个人常用
+
+```bash
+# 查看进程占用
+ps -ef |grep redis
+# 杀死进程
+kill -9 4394
+
+nohup java -jar shareniu.jar >temp.txt &
+```
+
+
+
 Linux
 
 ## 基本命令

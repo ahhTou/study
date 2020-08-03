@@ -18,6 +18,7 @@ const routes = [
                 name: 'PrimeMenu',
                 meta: {
                     title: '老demo',
+                    EnterType: 'center'
                 },
                 component: () => import('../components/PrimeMenu.vue')
             },
@@ -26,6 +27,7 @@ const routes = [
                 name: 'MsgBoard',
                 meta: {
                     title: '留言板',
+                    EnterType: 'centerWithScroll',
                 },
                 component: () => import('../components/MsgBoard.vue')
             },
@@ -34,9 +36,29 @@ const routes = [
                 name: 'BgChanger',
                 meta: {
                     title: '切换背景',
+                    EnterType: 'center',
                 },
                 component: () => import('../components/BgChanger.vue')
             },
+            {
+                path: '/Register',
+                name: 'Register',
+                meta: {
+                    title: '注册',
+                    EnterType: 'card',
+                },
+                component: () => import('../components/Register.vue')
+            },
+            {
+                path: '/Login',
+                name: 'Login',
+                meta: {
+                    title: '登录',
+                    EnterType: 'card',
+                },
+                component: () => import('../components/Login.vue')
+            },
+
         ],
     },
 
