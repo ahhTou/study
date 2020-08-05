@@ -1,6 +1,7 @@
 package com.ahhTou.utils;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -109,6 +110,7 @@ public class MyEmailSender {
     }
 
     /* 创建一个验证码 */
+    @Bean("VCode")
     public static String createVerificationCode() {
         Random random = new Random(new Date().getTime());
         String code = "";

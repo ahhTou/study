@@ -32,10 +32,12 @@ class HelloApplicationTests {
     @Resource
     UserService userService;
 
+    
     @Test
     void testMybatis() {
 
-        System.out.println(userMapper.getUserMsgByUsername("aaa"));
+        System.out.println("=====");
+//        System.out.println(userMapper.getUserMsgByUsername("aaa"));
 //        System.out.println(myRedis.getAllList("ss"));
 /*        User user = new User();
         user.setEmail("xx@qq.com");
