@@ -110,7 +110,6 @@ public class MyEmailSender {
     }
 
     /* 创建一个验证码 */
-    @Bean("VCode")
     public static String createVerificationCode() {
         Random random = new Random(new Date().getTime());
         String code = "";
