@@ -1,21 +1,22 @@
 package com.ahhTou;
 
-import com.ahhTou.bean.Board;
-import com.ahhTou.bean.User;
 import com.ahhTou.mapper.UserMapper;
 import com.ahhTou.service.UserService;
 import com.ahhTou.utils.MyRedis;
 import com.ahhTou.utils.MyEmailSender;
 import com.ahhTou.utils.MyObjectMapper;
+import com.ahhtou.simple_mailer.SimpleMailer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
 
 @SpringBootTest
 class HelloApplicationTests {
+
+
+    @Resource
+    SimpleMailer simpleMailer;
 
     @Resource
     MyRedis myRedis;
@@ -32,11 +33,17 @@ class HelloApplicationTests {
     @Resource
     UserService userService;
 
-    
+
+    @Test
+    void t1() {
+        simpleMailer.show();
+    }
+
     @Test
     void testMybatis() {
 
-        System.out.println("=====");
+/*        System.out.println("=====");
+        System.out.println(Thread.currentThread().getName());*/
 //        System.out.println(userMapper.getUserMsgByUsername("aaa"));
 //        System.out.println(myRedis.getAllList("ss"));
 /*        User user = new User();

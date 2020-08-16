@@ -27,7 +27,8 @@ public class UserController {
             // 检查邮箱是否唯一
             if (userService.checkEmailUnique(email)) {
                 // 发送邮件
-                return myTools.sendVCodeUnique(email);
+                new Thread(() -> myTools.sendVCodeUnique(email)).start();
+                return true;
             }
         } catch (Exception e) {
             return "err";

@@ -1,7 +1,7 @@
 package com.ahhTou.utils;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,15 +14,20 @@ import java.util.Properties;
 import java.util.Random;
 
 @Component
+@Data
+@ConfigurationProperties(prefix = "sender")
 public class MyEmailSender {
 
     @Resource
     MyRedis myRedis;
 
-    @Value("${emailSender.password}")
     private String mySenderPassword;
-    @Value("${emailSender.sendEmail}")
+
     private String mySenderEmail;
+
+    public void show() {
+        System.out.println(mySenderEmail + "~~" + mySenderPassword);
+    }
 
 
     public Session createSession() {
@@ -45,24 +50,6 @@ public class MyEmailSender {
         return session;
     }
 
-    /* 发送验证码 */
-    public String sendVerificationCodeEmail(String receiver) {
-        String verificationCode = createVerificationCode();
-        String content = "您的注册验证码为:  <strong>" + verificationCode + "</strong><br>验证码在5分钟内有效，请在五分钟内完成登录";
-        String title = "欢迎注册，无名小站";
-        Transport transport = null;
-        try {
-            MimeMessage message = createMimeMessage(mySenderEmail, receiver, content, title);
-            transport = createTransport(mySenderEmail, receiver, mySenderPassword);
-            transport.sendMessage(message, message.getAllRecipients());
-            transport.close();
-
-            return myRedis.setEmailVerificationCode(receiver, verificationCode, 5);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /* 创建一次对话 */
     public Transport createTransport(String sender, String receiver, String sendPassword) {
@@ -107,6 +94,24 @@ public class MyEmailSender {
         message.saveChanges();
 
         return message;
+    }
+
+    /* 发送验证码 */
+    public String sendVerificationCodeEmail(String receiver) {
+        String verificationCode = createVerificationCode();
+        String content = "您的注册验证码为:  <strong>" + verificationCode + "</strong><br>验证码在5分钟内有效，请在五分钟内完成登录";
+        String title = "欢迎注册，无名小站";
+        Transport transport;
+        try {
+            MimeMessage message = createMimeMessage(mySenderEmail, receiver, content, title);
+            transport = createTransport(mySenderEmail, receiver, mySenderPassword);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+            return myRedis.setEmailVerificationCode(receiver, verificationCode, 5);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /* 创建一个验证码 */

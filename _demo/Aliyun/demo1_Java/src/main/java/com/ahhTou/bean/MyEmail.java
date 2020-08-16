@@ -14,6 +14,4 @@ import org.springframework.stereotype.Component;
 public class MyEmail {
     String password;
     String sendEmail;
-
-
 }

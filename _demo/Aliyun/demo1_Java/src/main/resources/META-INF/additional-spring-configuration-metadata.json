@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "sender.mySenderPassword",
+      "type": "java.lang.String",
+      "description": "Description for sender.mySenderPassword."
+  }
+] }

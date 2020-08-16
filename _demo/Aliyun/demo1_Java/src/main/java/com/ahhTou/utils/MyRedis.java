@@ -1,6 +1,5 @@
 package com.ahhTou.utils;
 
-import com.ahhTou.utils.MyObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +12,6 @@ public class MyRedis {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
-
-    MyObjectMapper myObjectMapper;
 
     public void setForString(String key, String value) {
         redisTemplate.opsForValue().set(key, value);
@@ -45,10 +42,10 @@ public class MyRedis {
     }
 
     public String getEmailVerificationCode(String email) {
-        try{
+        try {
             String key = "VerificationCodeFor_" + email;
             return redisTemplate.opsForValue().get(key);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

@@ -1,7 +1,6 @@
 package com.ahhTou.controller;
 
 import com.ahhTou.bean.Board;
-import com.ahhTou.mapper.UserMapper;
 import com.ahhTou.utils.MyRedis;
 import com.ahhTou.utils.MyObjectMapper;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
         String username = user.getUsername();
         String code = user.getCode();
         String email = user.getEmail();
-        String password = user.getPassword();
 
         // 检查验证码是否有效
         if (!myTools.checkVCode(email, code)) return false;

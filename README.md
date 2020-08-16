@@ -1,14 +1,14 @@
 #### JAVA
 
-Java基础
+基础
 
 - **[ √  ]  基础入门**：[黑马](https://www.bilibili.com/video/BV18J411W7cE)
 - **[ √  ] 注解和反射** : [狂神](https://www.bilibili.com/video/BV1p4411P7V3)
 - **[ √  ] 多线程**： [狂神](https://www.bilibili.com/video/BV1V4411p7EF)
 
-Java进阶
+进阶
 
-- [待学习]Java JUC
+- **[ √ ] JUC入门 [狂神](https://www.bilibili.com/video/BV1B7411L7tE)**
 
 ####  数据库
 
@@ -36,7 +36,7 @@ Java进阶
 
 - [ √  ] VUE 快速入门：[黑马](https://www.bilibili.com/video/BV12J411m7MG)
 
-- [ √  ] **VUE 入门 **: [小码哥 codewhy](https://www.bilibili.com/video/BV15741177Eh)
+- [ √  ] **VUE 入门** : [小码哥 codewhy](https://www.bilibili.com/video/BV15741177Eh)
 
 **其他** 
 
@@ -55,21 +55,21 @@ Java进阶
 
 ####  软件项目管理
 
- **Maven**:
- **SVN**：
- **Git**：
- Jenkins：
+ **Maven**
+ **SVN**
+ **Git**
+ Jenkins
 
 ####  热门技术框架
 
-**[ √  ]Spring:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
+**[ √  ]Spring 入门:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
 
 **[ √  ]Mybatis :[尚硅谷MyBatis](https://www.bilibili.com/video/BV1mW411M737)**
 
 **[ × ] SpringBoot: 学习中**
 
-[ × ] **Mybatis**-Plus
-[ × ]  **Spring** Data
+[ × ] **Mybatis-Plus**
+[ × ]  **SpringData**
 
 ####  分布式架构
 
@@ -92,19 +92,29 @@ Java进阶
 
 ####  服务器技术
 
-[ √  ] **Linux**系统入门：[狂神](https://www.bilibili.com/video/BV187411y7hF)
-[ × ] CentOS、Virtualbox
-[ × ] Ubuntu、Vmware
+ **Linux**
+- [ √  ] CentOS入门：[狂神](https://www.bilibili.com/video/BV187411y7hF)
+
+- [ × ] Virtualbox
+
+- [ × ] Ubuntu、Vmware
+
+
 
 ####  容器技术
 
- Docker
+Docker
 
 ####  业务解决方案（实战项目）
 
- Elasticsearch
- Lucene
- Quartz
- Elastic-Job
- **SpringSecurity**
- Activiti
+Elasticsearch
+
+Lucene
+
+Quartz
+
+Elastic-Job
+
+**SpringSecurity** 
+
+Activiti
