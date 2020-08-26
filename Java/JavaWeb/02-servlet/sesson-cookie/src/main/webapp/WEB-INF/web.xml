@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
+    <display-name>Archetype Created Web Application</display-name>
+
+    <servlet>
+        <servlet-name>cookieDemo1</servlet-name>
+        <servlet-class>com.ahhTou.servlet.CookieDemo1</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>cookieDemo1</servlet-name>
+        <url-pattern>/time</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>sessionDemo01</servlet-name>
+        <servlet-class>com.ahhTou.servlet.SessionDemo01</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sessionDemo01</servlet-name>
+        <url-pattern>/s1</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>sessionDemo02</servlet-name>
+        <servlet-class>com.ahhTou.servlet.SessionDemo02</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sessionDemo02</servlet-name>
+        <url-pattern>/s2</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <!-- 15分钟后session自动失效 ， 分钟为单位-->
+        <session-timeout>15</session-timeout>
+    </session-config>
+</web-app>

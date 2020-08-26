@@ -1,16 +1,21 @@
-#### JAVA
-
-基础
+# 编程
 
 - **[ √  ]  基础入门**：[黑马](https://www.bilibili.com/video/BV18J411W7cE)
 - **[ √  ] 注解和反射** : [狂神](https://www.bilibili.com/video/BV1p4411P7V3)
 - **[ √  ] 多线程**： [狂神](https://www.bilibili.com/video/BV1V4411p7EF)
+- [ × ] JavaWeb
+  - Tomcat、Maven 基本
+  - **Servlet**
+      - Cookie-Session
+  - 过滤器 、监听器
 
-进阶
+**进阶**
 
 - **[ √ ] JUC入门 [狂神](https://www.bilibili.com/video/BV1B7411L7tE)**
+-  JVM优化：[av70549061](https://www.bilibili.com/video/av70549061/)
+     数据结构算法：[av83826038](https://www.bilibili.com/video/av83826038/) [av78639604](https://www.bilibili.com/video/av78639604/)
 
-####  数据库
+#  数据库
 
 **[ √  ] MYSQL + JDBC + C3p0 入门 **[狂神MySQL](https://www.bilibili.com/video/BV1NJ411J79W)
 
@@ -18,7 +23,7 @@
 
 
 
-####  前端技术
+#  前端技术
 
 **HTML**：自学了解
 
@@ -41,44 +46,39 @@
 **其他** 
 
 - [ √  ] jQuery：自学了解
-
 - [ × ] 微信小程序
-
 - [ × ] 动态网页
 
 
 
-####  编程强化
-
- JVM优化：[av70549061](https://www.bilibili.com/video/av70549061/)
- 数据结构算法：[av83826038](https://www.bilibili.com/video/av83826038/) [av78639604](https://www.bilibili.com/video/av78639604/)
-
-####  软件项目管理
+#  软件项目管理
 
  **Maven**
  **SVN**
  **Git**
  Jenkins
 
-####  热门技术框架
+#  框架
 
 **[ √  ]Spring 入门:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
 
 **[ √  ]Mybatis :[尚硅谷MyBatis](https://www.bilibili.com/video/BV1mW411M737)**
 
-**[ × ] SpringBoot: 学习中**
+**[ × ] SpringBoot入门**
+
+- **SpringSecurity** 
 
 [ × ] **Mybatis-Plus**
 [ × ]  **SpringData**
 
-####  分布式架构
+#  分布式架构
 
  [ × ] **Dubbo**、**Zookeeper**（会用一种）
  [ × ] **SpringCloud**（会用一种）
  [ × ] Eureka
  [ × ] Skywalking
 
-####  服务器中间件
+#  服务器中间件
 
 [ √  ] **Redis入门** [狂神](https://www.bilibili.com/video/BV1S54y1R7SB)
 
@@ -90,7 +90,7 @@
 
 [ × ] MongoDB
 
-####  服务器技术
+#  服务器技术
 
  **Linux**
 - [ √  ] CentOS入门：[狂神](https://www.bilibili.com/video/BV187411y7hF)
@@ -101,11 +101,11 @@
 
 
 
-####  容器技术
+#  容器技术
 
 Docker
 
-####  业务解决方案（实战项目）
+#  业务解决方案（实战项目）
 
 Elasticsearch
 
@@ -114,7 +114,5 @@ Lucene
 Quartz
 
 Elastic-Job
-
-**SpringSecurity** 
 
 Activiti

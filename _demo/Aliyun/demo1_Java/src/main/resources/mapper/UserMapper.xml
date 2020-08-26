@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ahhTou.mapper.UserMapper">
 
-    <cache type="com.ahhTou.config.MybatisRedisCache">
+    <cache type="com.ahhTou.conf.MybatisRedisCache">
         <property name="eviction" value="LRU"/>
         <property name="flushInterval" value="6000000"/>
         <property name="size" value="1024"/>

@@ -1,33 +1,24 @@
 package com.ahhTou.utils;
 
+
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import java.util.Date;
+import java.util.Random;
 
 @Component
 public class MyTools {
 
-    @Resource
-    MyRedis myRedis;
-
-    @Resource
-    MyEmailSender myEmailSender;
-
-
-    public Boolean checkVCode(String email, String code) {
-
-        String rCode = myRedis.getEmailVerificationCode(email);
-        if (rCode != null && !rCode.equals(""))
-
-            return rCode.equals(code);
-
-        else
-            return false;
-
+    /* 创建一个验证码 */
+    public static String createVerificationCode() {
+        Random random = new Random(new Date().getTime());
+        String code = "";
+        for (int i = 0; i < 6; i++) {
+            int i1 = random.nextInt(10);
+            code = code.concat(String.valueOf(i1));
+        }
+        return code;
     }
 
-    public Boolean sendVCodeUnique(String email) {
-        String s = myEmailSender.sendVerificationCodeEmail(email);
-        return s != null && !s.equals("");
-    }
+
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
+    <display-name>Archetype Created Web Application</display-name>
+
+    <servlet>
+        <servlet-name>down</servlet-name>
+        <servlet-class>com.ahhTou.servlet.FileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>down</servlet-name>
+        <url-pattern>/down</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>img</servlet-name>
+        <servlet-class>com.ahhTou.servlet.ImageServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>img</servlet-name>
+        <url-pattern>/img</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>red</servlet-name>
+        <servlet-class>com.ahhTou.servlet.RedirectServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>red</servlet-name>
+        <url-pattern>/red</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>getVar</servlet-name>
+        <servlet-class>com.ahhTou.servlet.RequestTest</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>getVar</servlet-name>
+        <url-pattern>/getVar</url-pattern>
+    </servlet-mapping>
+
+</web-app>

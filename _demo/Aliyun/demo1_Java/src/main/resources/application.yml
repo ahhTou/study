@@ -5,9 +5,6 @@ spring:
     host: 127.0.0.1
     port: 6379
 
-sender:
-  mySenderPassword: EEQDRTMEKQDONCRC
-  mySenderEmail: ahhTou@163.com
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -19,3 +16,19 @@ mybatis:
     lazy-loading-enabled: true
     map-underscore-to-camel-case: true
     jdbc-type-for-null: null
+
+
+ahhtou:
+  utils:
+    bg-searcher:
+      local-url: C:\Users\11979\OneDrive\图片
+      proxy-url: http://39.99.154.145/img/hello/
+      cycle-time: 5
+      img-regs:
+        - .*.jpg
+        - .*.png
+    email-sender:
+      mySenderPassword: EEQDRTMEKQDONCRC
+      mySenderEmail: ahhTou@163.com
+
+

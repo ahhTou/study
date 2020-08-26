@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Maven 版本 和 头文件 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 配置的GAV -->
+    <groupId>com.ahhTou</groupId>
+    <artifactId>JavaWebStudy</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <!--
+        项目的打包方式
+        jar : java 应用
+        war : JavaWeb应用
+     -->
+    <packaging>war</packaging>
+
+    <!-- 配置 -->
+    <properties>
+        <!-- 项目的默认构建编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 编码版本 -->
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <!-- Maven的高级指出在于： 会自动后导入jar包所依赖的jar包 -->
+    <!-- 项目依赖 -->
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- 项目构建用的东西 -->
+    <!-- 在build中配置resources，来防止我们资源导出失败的问题 -->
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

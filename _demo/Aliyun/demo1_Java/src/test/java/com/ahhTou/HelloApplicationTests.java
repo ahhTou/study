@@ -2,10 +2,10 @@ package com.ahhTou;
 
 import com.ahhTou.mapper.UserMapper;
 import com.ahhTou.service.UserService;
+import com.ahhTou.utils.BgSearcher;
 import com.ahhTou.utils.MyRedis;
 import com.ahhTou.utils.MyEmailSender;
 import com.ahhTou.utils.MyObjectMapper;
-import com.ahhtou.simple_mailer.SimpleMailer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,12 +16,10 @@ class HelloApplicationTests {
 
 
     @Resource
-    SimpleMailer simpleMailer;
-
-    @Resource
     MyRedis myRedis;
 
-    MyObjectMapper myObjectMapper = new MyObjectMapper();
+    @Resource
+    MyObjectMapper myObjectMapper;
 
     @Resource
     MyEmailSender myEmailSender;
@@ -33,10 +31,12 @@ class HelloApplicationTests {
     @Resource
     UserService userService;
 
+    @Resource
+    BgSearcher bgSearcher;
+
 
     @Test
     void t1() {
-        simpleMailer.show();
     }
 
     @Test
