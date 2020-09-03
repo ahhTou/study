@@ -1,4 +1,6 @@
-# 编程
+# 学过的
+
+## 基础
 
 - **[ √  ]  基础入门**：[黑马](https://www.bilibili.com/video/BV18J411W7cE)
 - **[ √  ] 注解和反射** : [狂神](https://www.bilibili.com/video/BV1p4411P7V3)
@@ -9,27 +11,9 @@
       - Cookie-Session
   - 过滤器 、监听器
 
-**进阶**
+## 前端
 
-- **[ √ ] JUC入门 [狂神](https://www.bilibili.com/video/BV1B7411L7tE)**
--  JVM优化：[av70549061](https://www.bilibili.com/video/av70549061/)
-     数据结构算法：[av83826038](https://www.bilibili.com/video/av83826038/) [av78639604](https://www.bilibili.com/video/av78639604/)
-
-#  数据库
-
-**[ √  ] MYSQL + JDBC + C3p0 入门 **[狂神MySQL](https://www.bilibili.com/video/BV1NJ411J79W)
-
-**[ × ] Oracle**
-
-
-
-#  前端技术
-
-**HTML**：自学了解
-
-**CSS**：自学了解
-
-**Ajax**：自学了解
+**HTML CSS Ajax**：自学了解
 
 **JavaScript**
 
@@ -42,6 +26,40 @@
 - [ √  ] VUE 快速入门：[黑马](https://www.bilibili.com/video/BV12J411m7MG)
 
 - [ √  ] **VUE 入门** : [小码哥 codewhy](https://www.bilibili.com/video/BV15741177Eh)
+
+
+
+## **进阶**
+
+- **[ √ ] JUC入门 [狂神](https://www.bilibili.com/video/BV1B7411L7tE)**
+
+
+
+## 数据库
+
+**[ √  ] MYSQL + JDBC + C3p0 入门 **[狂神MySQL](https://www.bilibili.com/video/BV1NJ411J79W)
+
+
+
+## 框架
+
+**[ √  ]Spring 入门:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
+
+**[ √  ]Mybatis :[尚硅谷MyBatis](https://www.bilibili.com/video/BV1mW411M737)**
+
+**[ × ] SpringBoot入门**
+
+- **SpringSecurity** 
+- Shiro
+- Swagger
+
+#  数据库
+
+**[ × ] Oracle**
+
+
+
+#  前端技术
 
 **其他** 
 
@@ -59,14 +77,6 @@
  Jenkins
 
 #  框架
-
-**[ √  ]Spring 入门:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
-
-**[ √  ]Mybatis :[尚硅谷MyBatis](https://www.bilibili.com/video/BV1mW411M737)**
-
-**[ × ] SpringBoot入门**
-
-- **SpringSecurity** 
 
 [ × ] **Mybatis-Plus**
 [ × ]  **SpringData**

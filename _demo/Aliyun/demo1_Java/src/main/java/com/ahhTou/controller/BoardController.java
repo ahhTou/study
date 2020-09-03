@@ -17,7 +17,8 @@ public class BoardController {
     @Resource
     MyRedis myRedis;
 
-    MyObjectMapper myObjectMapper = new MyObjectMapper();
+    @Resource
+    MyObjectMapper myObjectMapper;
 
     final String listName = "MsgBoardList";
 

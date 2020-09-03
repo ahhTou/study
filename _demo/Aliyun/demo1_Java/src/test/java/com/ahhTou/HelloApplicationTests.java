@@ -1,8 +1,9 @@
 package com.ahhTou;
 
+import com.ahhTou.bean.User;
 import com.ahhTou.mapper.UserMapper;
 import com.ahhTou.service.UserService;
-import com.ahhTou.utils.BgSearcher;
+import com.ahhTou.utils.img.BgSearcher;
 import com.ahhTou.utils.MyRedis;
 import com.ahhTou.utils.MyEmailSender;
 import com.ahhTou.utils.MyObjectMapper;
@@ -36,7 +37,18 @@ class HelloApplicationTests {
 
 
     @Test
+    void bg() {
+        System.out.println(bgSearcher.getLocalUrl());
+    }
+
+    @Test
     void t1() {
+        User user = new User();
+        user.setEmail("xx@qq.com");
+        user.setUsername("ahhTouPro");
+        user.setPassword("xw3333");
+        String s = myObjectMapper.obj2String(user);
+        System.out.println(s);
     }
 
     @Test
@@ -46,11 +58,11 @@ class HelloApplicationTests {
         System.out.println(Thread.currentThread().getName());*/
 //        System.out.println(userMapper.getUserMsgByUsername("aaa"));
 //        System.out.println(myRedis.getAllList("ss"));
-/*        User user = new User();
+        User user = new User();
         user.setEmail("xx@qq.com");
         user.setUsername("ahhTouPro");
         user.setPassword("xw3333");
-        userMapper.register(user);*/
+        userMapper.register(user);
 
 /*        System.out.println(userService.checkUsernameUnique("123123"));
         System.out.println(userService.checkEmailUnique("0@qq.com"));*/

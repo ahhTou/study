@@ -2,8 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 映射的接口 -->
 <mapper namespace="com.ahhTou.mapper.UserMapper">
-
+    <!-- 配置缓存 -->
     <cache type="com.ahhTou.conf.MybatisRedisCache">
         <property name="eviction" value="LRU"/>
         <property name="flushInterval" value="6000000"/>
@@ -11,7 +12,7 @@
         <property name="readOnly" value="false"/>
     </cache>
 
-
+    <!-- 对应的sql -->
     <select id="checkUsernameUnique" resultType="String">
         select username
         from user

@@ -1,6 +1,7 @@
 package com.ahhTou.conf;
 
 import com.ahhTou.utils.ApplicationContextHolder;
+import org.apache.ibatis.annotations.CacheNamespaceRef;
 import org.apache.ibatis.cache.Cache;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
@@ -39,18 +40,19 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public void putObject(Object key, Object value) {
+        System.out.println("redis");
         if (value != null) {
             // 向Redis中添加数据，有效时间是2天
-            System.out.println("Redis-> PutObject");
             redisTemplate.opsForValue().set(key.toString(), value, 2, TimeUnit.DAYS);
         }
     }
 
     @Override
     public Object getObject(Object key) {
+        System.out.println("redis");
+
         try {
             if (key != null) {
-                System.out.println("Redis-> GetObject");
                 return redisTemplate.opsForValue().get(key.toString());
             }
         } catch (Exception e) {
@@ -61,9 +63,10 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public Object removeObject(Object key) {
+        System.out.println("redis");
+
         try {
             if (key != null) {
-                System.out.println("Redis-> RemoveObject");
                 redisTemplate.delete(key.toString());
             }
         } catch (Exception e) {
@@ -74,10 +77,11 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public void clear() {
+        System.out.println("redis");
+
         try {
             Set<String> keys = redisTemplate.keys("*:" + this.id + "*");
             if (!CollectionUtils.isEmpty(keys)) {
-                System.out.println("Redis-> Clear");
                 redisTemplate.delete(keys);
             }
         } catch (Exception e) {
@@ -87,6 +91,8 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public int getSize() {
+        System.out.println("redis");
+
         Long size = redisTemplate.execute(RedisServerCommands::dbSize);
         assert size != null;
         return size.intValue();

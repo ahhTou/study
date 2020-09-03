@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+person:
+  name: ahhTou${random.uuid}}
+  age: 13
+  happy: false
+  birth: 2000/07/10
+  hello: 旺财plus
+  maps: {k1: v1, k2: v2}
+  list:
+    - code
+    - music
+    - girl
+  dog:
+    name: ${person.hello:hello}_旺财
+    age: 3
+
+
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 8081
+spring:
+  profiles: dev
+
+---
+server:
+  port: 8082
+spring:
+  profiles: prod

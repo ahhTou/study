@@ -3,12 +3,12 @@
         <template v-slot:card="slotIsOpen" @click.stop>
             <div id="register-wrapper" @click.stop>
 
-                <div id="main-title" :style="main_title.style" class="block">
+                <div id="main-title" :style="inputTitleStyle" class="block">
                     <div style="font-size: 30px;font-weight: bolder;" v-show="!isErrTips">
-                        {{ status[main_title.step].title }}
+                        {{ status[step - 1].title }}
                     </div>
                     <div style="margin: 10px; color: rgb(142, 142, 146)" v-show="!isErrTips">
-                        {{ status[main_title.step].describe }}
+                        {{ status[step - 1].describe }}
                     </div>
                     <div style="color: indianred;font-size: 40px; font-weight: bolder;" v-show="isErrTips">
                         {{ errTips }}
@@ -19,20 +19,20 @@
                     <div id="long-line" :style="inputStyle">
                         <div class="inputBox" v-for="item in status">
                             <label>
-                                <input type="text" :placeholder="item.placeholder" v-model="item.data">
+                                <input :type="item.inputType" :placeholder="item.placeholder" v-model="USER[item.type]">
                             </label>
                         </div>
                     </div>
                 </div>
 
                 <div id="btnLine" class="block">
-                    <span @click="stepController(true)">
-                        <btn-circle :is-active="nextBtn_isActive" :is-loading="isLoading"/>
+                    <span @click="clickController(true)">
+                        <btn-circle :is-active="nextBtnIsActive" :is-loading="isLoading"/>
                     </span>
 
                     <div class="back">
                         <button class="icon iconfont icon-back back-btn pointer"
-                                @click="stepController(false)"></button>
+                                @click="clickController(false)"></button>
                     </div>
                 </div>
 
@@ -45,7 +45,7 @@
 import ShadeSlots from './ShadeSlots'
 import BtnCircle from './BtnCircle'
 import RegxChecker from '../assets/utils/RegxChecker'
-import User from '../assets/pojo/User'
+import User from 'assets/pojo/User'
 
 export default {
     name: 'Register',
@@ -53,6 +53,17 @@ export default {
 
     data() {
         return {
+            USER: new User(),
+            inputTitleStyle: {
+                opacity: '1',
+                transition: 'opacity .1s',
+            },
+            step: 1,
+            vars: 'username',
+
+            isLoading: false,
+            isErrTips: false,
+            errTips: null,
             status: [
                 {
                     title: '输入邮箱',
@@ -60,6 +71,8 @@ export default {
                     placeholder: '请输入邮箱',
                     data: null,
                     already: false,
+                    type: 'email',
+                    inputType: 'text'
 
                 },
                 {
@@ -68,6 +81,9 @@ export default {
                     placeholder: '请输入六位验证码',
                     data: null,
                     already: false,
+                    type: 'code',
+                    inputType: 'text'
+
 
                 },
                 {
@@ -76,37 +92,28 @@ export default {
                     placeholder: '输入用户名',
                     data: null,
                     already: false,
+                    type: 'username',
+                    inputType: 'text',
                 },
                 {
-                    title: '密码',
+                    title: '首次输入密码',
                     describe: '至少6位，必须是字母+数字的组合',
-                    placeholder: '第一次输入密码',
+                    placeholder: '请输入密码',
                     data: null,
                     already: false,
+                    type: 'password',
+                    inputType: 'password',
                 },
                 {
-                    title: '重新输入密码',
+                    title: '再次输入密码',
                     describe: '密码要保证和上一次一样',
-                    placeholder: '第二次输入密码',
+                    placeholder: '请再次输入密码',
                     data: null,
+                    type: 'passwordR',
                     already: false,
+                    inputType: 'password',
                 },
             ],
-
-            main_title:
-                {
-                    step: 0,
-                    style: {
-                        opacity: '1',
-                        transition: 'opacity .1s',
-                    },
-                },
-            step: 1,
-
-            isLoading: false,
-
-            isErrTips: false,
-            errTips: null,
 
         }
     },
@@ -119,129 +126,183 @@ export default {
                 '--length': this.status.length
             }
         },
-        max_step() {
-            return this.status.length
+        isMaxStep() {
+            return this.step === this.status.length
         },
-        nextBtn_isActive() {
+        nextBtnIsActive() {
             let isActive = false
             switch (this.step) {
                 case 1:
-                    isActive = RegxChecker.checkEmail(this.status[0].data)
+                    isActive = RegxChecker.checkEmail(this.USER.email)
                     break
                 case 2:
-                    isActive = this.status[1].data !== null ? this.status[1].data.length === 6 : false
+                    isActive = this.USER.code !== null ? this.USER.code.toString().length === 6 : false
                     break
                 case 3:
-                    isActive = RegxChecker.checkUsername(this.status[2].data)
+                    isActive = RegxChecker.checkUsername(this.USER.username)
                     break
                 case 4:
-                    isActive = RegxChecker.checkPassword(this.status[3].data)
+                    isActive = RegxChecker.checkPassword(this.USER.password)
                     break
                 case 5:
-                    isActive = this.status[3].data === this.status[4].data
+                    isActive = this.USER.password === this.USER.code
             }
             return isActive
         }
     },
     methods: {
-        stepController(isNext) {
-            /* 切换title */
-            let changeTitle = (isAdd, errT) => {
-                let timer = 100
-                this.main_title.style.opacity = '0'
-                setTimeout(() => {
-                    if (isAdd !== null) {
-                        isAdd ? this.main_title.step++ : this.main_title.step--
-                        this.main_title.style.opacity = '1'
-                    } else {
-                        console.log(isAdd)
-                        this.isErrTips = true
-                        this.errTips = errT
-                        this.main_title.style.opacity = '1'
-                        setTimeout(() => {
-                            this.main_title.style.opacity = '0'
-                            setTimeout(() => {
-                                this.isErrTips = false
-                                this.errTips = null
-                                this.main_title.style.opacity = '1'
-                            }, timer)
-                        }, 3000)
-                    }
-                }, timer)
-            }
+        toRegSucView() {
+            this.$children[0].exit()
+            this.$myTipsViews('open', {
+                type: 'regSuc',
+                data: this.USER.username,
+            })
+        },
 
-            /* 下一步 */
-            let next = () => {
-                if (this.step !== this.max_step) {
-                    this.isLoading = false
-                    changeTitle(true)
-                    this.step++
-                } else {
-                    this.$children[0].exit()
-                    this.$myTipsViews('open', {
-                        type: 'regSuc',
-                        data: this.status[2].data,
-                    })
-                }
-            }
+        nextInputView() {
+            this.changeTitle(true)
+            this.isLoading = false
+            this.step++
+        },
 
-            let stepFuc = async (apiFuc, args, step, err) => {
-                let isAlready = this.status[step]
-                if (apiFuc !== null && !isAlready.already) { // apiFuc和already为true时直接跳转
-                    this.isLoading = true
-                    let api_res = await apiFuc(args)
-                    switch (api_res) {
-                        case true:
-                            isAlready.already = true
-                            this.isLoading = false
-                            next()
-                            break
-                        default:
-                            changeTitle(null, err !== null ? err : api_res)
-                            this.isLoading = false
-                            break
-                    }
-                } else next()
+        btnToLoading() {
+            this.isLoading = true
 
+        },
 
-            }
+        btnNotLoading() {
+            this.isLoading = false
 
-            /* 下一步 */
-            if (isNext && this.step <= this.max_step && this.nextBtn_isActive) {
-                switch (this.step) {
-                    case 1:
-                        stepFuc(User.sendVerificationEmail, this.status[0].data, 0, null)
-                        break
-                    case 2:
-                        let user1 = new User()
-                        user1.setEC(this.status[0].data, this.status[1].data)
-                        let err1 = '验证码错误'
-                        stepFuc(User.checkVerification, user1, 1, err1)
-                        break
-                    case 3:
-                        let args = this.status[2].data // 用户名输入的
-                        let err2 = '用户名已存在'
-                        stepFuc(User.checkUsernameUnique, args, 2, err2)
-                        break
-                    case 4:
-                        next()
-                        break
-                    case 5:
-                        let err4 = '注册失败'
-                        let user2 = new User()
-                        user2.email = this.status[0].data
-                        user2.code = this.status[1].data
-                        user2.username = this.status[2].data
-                        user2.password = this.$md5(this.status[3].data)
-                        stepFuc(User.register, user2, 4, err4)
-                        break
-                }
-            } else if (!isNext && this.step > 1) {
-                changeTitle(false)
-                this.step--
+        },
+
+        /* 下一步 */
+        clickController(isNext) {
+            if (isNext && this.step <= this.status.length && this.nextBtnIsActive)
+                this.toReq()
+            else if (!isNext && this.step > 1)
+                this.stepController('incr')
+        }
+        ,
+
+        toReq() {
+            switch (this.step) {
+                case 1:
+                    this.funcWorker(this.USER.sendVerificationEmail, '邮箱已存在')
+                    break
+
+                case 2:
+                    this.funcWorker(this.USER.checkVerification, '验证码错误')
+                    break
+
+                case 3:
+                    this.funcWorker(this.USER.checkUsernameUnique, '用户名已存在')
+                    break
+
+                case 4:
+                    this.stepController('incr')
+                    break
+
+                case 5:
+                    this.funcWorker(this.USER.register, '注册失败')
+                    break
             }
         }
-    }
+        ,
+
+        async funcWorker(apiFuc, err) {
+            console.log(this.USER)
+            let step = this.step - 1
+            let isAlready = this.status[step]
+            if (!isAlready.already) { // already为true时直接跳转
+                this.btnToLoading()
+                let res = await apiFuc()
+                switch (res) {
+                    case true:
+                        isAlready.already = true
+                        this.btnNotLoading()
+                        this.stepController('incr')
+                        break
+
+                    default:
+                        this.btnNotLoading()
+                        this.stepController('err', res !== null ? res : err)
+                        break
+                }
+            } else this.stepController('incr')
+        }
+        ,
+
+        stepController(to, errT) {
+            switch (to) {
+                case 'incr':
+                    this.step++
+                    if (!this.isMaxStep) this.nextInputView()
+                    else this.toRegSucView()
+                    break
+
+                case 'decr':
+                    this.step--
+                    break
+
+                case 'err':
+                    this.changeTitle('err', errT)
+                    break
+
+                default:
+                    break
+            }
+        }
+        ,
+        inputText(status = 'normal', timer = 0, text = null) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    switch (status) {
+                        case 'err':
+                            this.isErrTips = true
+                            this.errTips = text
+                            this.inputTitleStyle.opacity = '1'
+                            break
+
+                        case 'normal':
+                            this.isErrTips = false
+                            this.errTips = null
+                            this.inputTitleStyle.opacity = '1'
+                            break
+
+                        case 'opacity':
+                            this.inputTitleStyle.opacity = '0'
+                            break
+                    }
+                    resolve()
+                }, timer)
+            })
+        }
+        ,
+        changeTitle(to, errT) {
+            let timer = 100
+            this.inputText('opacity')
+
+            switch (to) {
+                case 'incr':
+                    this.inputText('normal', timer)
+                    break
+
+                case 'decr':
+                    this.inputText('normal', timer)
+                    break
+
+                case 'err':
+                    this.inputText('err', timer, errT)
+                        .then(() => {
+                            return this.inputText('opacity', 3000)
+                        })
+                        .then(() => {
+                            this.inputText('normal', timer)
+                        })
+            }
+        }
+        ,
+    },
 }
 </script>
 

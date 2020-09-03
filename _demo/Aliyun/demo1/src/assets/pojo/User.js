@@ -1,69 +1,21 @@
-import {request} from '../js/axios.js'
-
-function api_sendVerificationEmail(email) {
-    return request({
-        url: '/api/account/sendVerificationEmail',
-        method: 'post',
-        data: email,
-    })
-}
-
-function api_checkVerification(code) {
-    return request({
-        url: '/api/account/checkVerification',
-        method: 'post',
-        data: code,
-    })
-}
-
-
-function api_checkUsernameUnique(username) {
-    return request({
-        url: '/api/account/checkUsernameUnique',
-        method: 'post',
-        data: username,
-    })
-}
-
-function api_register(obj) {
-    return request({
-        url: '/api/account/register',
-        method: 'post',
-        data: obj,
-    })
-}
-
-function api_regSuc(obj) {
-    return request({
-        url: '/api/account/regSuc',
-        method: 'post',
-        data: obj,
-    })
-}
-
-function api_Solver(apiFuc, args, errT) {
-    return new Promise((resolve, reject) => {
-        apiFuc(args).then(res => {
-            switch (res.data) {
-                case true:
-                    resolve(true)
-                    break
-                case false:
-                    resolve(errT)
-                    break
-                case 'err':
-                    resolve('服务器发生错误')
-                    break
-                default:
-                    resolve(res.data)
-            }
-        }, err => {
-            reject('请求发生异常' + err)
-        })
-    })
-}
+import UtilsFactory from 'assets/factory/UtilsFactory'
 
 export default class User {
+
+    passwordR = null
+
+    axios = UtilsFactory.getAxios()
+
+    apiUrl = {
+        sendVerificationEmail: '/api/account/sendVerificationEmail',
+        checkVerification: '/api/account/checkVerification',
+        checkUsernameUnique: '/api/account/checkUsernameUnique',
+        register: '/api/account/register',
+        regSuc: 'regSuc',
+    }
+
+    code = null
+
     constructor(id, email, username, password, nickname) {
         this.id = id
         this.username = username
@@ -77,26 +29,54 @@ export default class User {
         this.code = code
     }
 
-    static sendVerificationEmail(email) {
-        return api_Solver(api_sendVerificationEmail, email, '邮箱已存在')
+    sendVerificationEmail = () => {
+        let axiosPromise = this.axios.cPost(this.apiUrl.sendVerificationEmail, this.email)
+        return api_Solver(axiosPromise, '邮箱已存在')
 
     }
 
-    static checkVerification(obj) {
-        return api_Solver(api_checkVerification, obj, '验证码错误')
-
+    checkVerification = () => {
+        let axiosPromise = this.axios.cPost(this.apiUrl.checkVerification, this)
+        return api_Solver(axiosPromise, '验证码错误')
     }
 
-    static checkUsernameUnique(obj) {
-        return api_Solver(api_checkUsernameUnique, obj, '用户名已存在')
+    checkUsernameUnique = () => {
+        let axiosPromise = this.axios.cPost(this.apiUrl.checkUsernameUnique, this)
+        return api_Solver(axiosPromise, '用户名已存在')
     }
 
-    static register(obj) {
-        return api_Solver(api_register, obj, '注册失败')
+    register = () => {
+        let axiosPromise = this.axios.cPost(this.apiUrl.register, this)
+        return api_Solver(axiosPromise, '注册失败')
     }
 
-    static regSuc(obj) {
-        return api_Solver(api_regSuc, obj, '获取失败')
+    regSuc = () => {
+        let axiosPromise = this.axios.cPost(this.apiUrl.regSuc, this.username)
+        return api_Solver(axiosPromise, '获取失败')
     }
 
 }
+
+
+function api_Solver(api, errT) {
+    return new Promise(resolve => {
+        api.then(res => {
+            switch (res.data) {
+                case true:
+                    resolve(true)
+                    break
+                case false:
+                    resolve(errT)
+                    break
+                case 'err':
+                    resolve('服务器发生错误')
+                    break
+                default:
+                    resolve(res.data)
+            }
+        }, () => {
+            resolve('失去连接')
+        })
+    })
+}
+

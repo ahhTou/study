@@ -1,6 +1,6 @@
 package com.ahhTou.servlet;
 
-import com.ahhTou.utils.BgSearcher;
+import com.ahhTou.utils.img.BgSearcher;
 import com.ahhTou.utils.MyObjectMapper;
 import com.ahhTou.utils.MyRedis;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
-@Component
+//@Component
 public class BgSearcherService {
 
-    @Resource
+/*    @Resource
     BgSearcher bgSearcher;
 
     @Resource
@@ -32,5 +32,5 @@ public class BgSearcherService {
                     .expire("BgListToString-ahhTou", 1, TimeUnit.DAYS);
 
         }).start();
-    }
+    }*/
 }

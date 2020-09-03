@@ -5,13 +5,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class ObjectMapperConf {
 
     @Bean
-    public static ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper() {
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         // 转换为格式化的json
