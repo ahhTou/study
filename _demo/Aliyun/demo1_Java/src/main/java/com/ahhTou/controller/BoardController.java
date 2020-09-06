@@ -3,6 +3,7 @@ package com.ahhTou.controller;
 import com.ahhTou.bean.Board;
 import com.ahhTou.utils.MyRedis;
 import com.ahhTou.utils.MyObjectMapper;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +24,12 @@ public class BoardController {
     final String listName = "MsgBoardList";
 
 
-    @RequestMapping("/getAll")
+    @PostMapping("/getAll")
     public List<String> getAllMsg() {
         return myRedis.getAllList(listName);
     }
 
-    @RequestMapping("/setOne")
+    @PostMapping("/setOne")
     public Boolean setOneMsg(@RequestBody Board msgBoard) {
         try {
             System.out.println(msgBoard);

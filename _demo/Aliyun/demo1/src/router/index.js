@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Err404 from 'views/Err404'
+import Err403 from 'views/Err403'
 
 Vue.use(VueRouter)
 
@@ -61,6 +63,22 @@ const routes = [
 
         ],
     },
+    {
+        path: '/403',
+        name: '403',
+        component: Err403,
+        meta: {
+            title: '403'
+        }
+    },
+    {
+        path: '/**',
+        name: '404',
+        component: Err404,
+        meta: {
+            title: '404'
+        }
+    }
 
 
 ]

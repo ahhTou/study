@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.ahhTou.utils.conf.BgSearcherAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.ahhTou.utils.img.searcher.BgSearcherAutoConfiguration

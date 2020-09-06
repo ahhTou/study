@@ -4,10 +4,7 @@ import com.ahhTou.bean.User;
 import com.ahhTou.service.MailService;
 import com.ahhTou.service.UserService;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -22,7 +19,7 @@ public class UserController {
     @Resource
     MailService mailService;
 
-    @RequestMapping("sendVerificationEmail")
+    @PostMapping("sendVerificationEmail")
     public Object sendVerificationEmail(@RequestBody String email) {
         try {
             // 检查邮箱是否唯一
@@ -36,19 +33,19 @@ public class UserController {
         }
     }
 
-    @RequestMapping("checkVerification")
+    @PostMapping("checkVerification")
     public Object checkVerification(@RequestBody User req) {
         System.out.println("> 验证验证码是否正确");
         return mailService.checkVCode(req.getEmail(), req.getCode());
     }
 
-    @RequestMapping("checkUsernameUnique")
+    @PostMapping("checkUsernameUnique")
     public Object checkUsernameUnique(@RequestBody String username) {
         System.out.println("> 验证用户名是否唯一");
         return userService.checkUsernameUnique(username);
     }
 
-    @RequestMapping("register")
+    @PostMapping("register")
     public Object register(@RequestBody User user) {
         try {
             return userService.register(user);
@@ -58,7 +55,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("regSuc")
+    @PostMapping("regSuc")
     public Object regSuc(@RequestBody String username) {
         try {
             return userService.getUserMsgByUsername(username);

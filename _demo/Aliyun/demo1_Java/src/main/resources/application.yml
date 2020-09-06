@@ -20,13 +20,13 @@ mybatis:
 
 ahhtou:
   utils:
-    bg-searcher:
-      local-url: C:\Users\11979\OneDrive\图片
-      proxy-url: http://39.99.154.145/img/hello/
-      cycle-time: 5
-      img-regs:
-        - .*.jpg
-        - .*.png
+    img:
+      searcher:
+        proxy-url: http://39.99.154.145/img/hello/
+        cycle-time: 5
+        img-regs:
+          - .*.jpg
+          - .*.png
     email-sender:
       mySenderPassword: EEQDRTMEKQDONCRC
       mySenderEmail: ahhTou@163.com

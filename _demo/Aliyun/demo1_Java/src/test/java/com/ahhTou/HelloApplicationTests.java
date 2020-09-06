@@ -2,8 +2,9 @@ package com.ahhTou;
 
 import com.ahhTou.bean.User;
 import com.ahhTou.mapper.UserMapper;
+import com.ahhTou.service.BaseService;
 import com.ahhTou.service.UserService;
-import com.ahhTou.utils.img.BgSearcher;
+import com.ahhTou.utils.img.ImgSearcher;
 import com.ahhTou.utils.MyRedis;
 import com.ahhTou.utils.MyEmailSender;
 import com.ahhTou.utils.MyObjectMapper;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @SpringBootTest
 class HelloApplicationTests {
@@ -33,12 +35,15 @@ class HelloApplicationTests {
     UserService userService;
 
     @Resource
-    BgSearcher bgSearcher;
+    ImgSearcher imgSearcher;
 
+
+    @Resource
+    BaseService baseService;
 
     @Test
     void bg() {
-        System.out.println(bgSearcher.getLocalUrl());
+        List<String> bgImages = baseService.getBgImages();
     }
 
     @Test
