@@ -15,6 +15,8 @@
 
 **HTML CSS Ajax**：自学了解
 
+jQuery：自学了解
+
 **JavaScript**
 
 - [ √  ]  **JavaScript WEB API**： [黑马PINK](https://www.bilibili.com/video/BV167411p7hi)
@@ -43,15 +45,15 @@
 
 ## 框架
 
-**[ √  ]Spring 入门:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
+**[ √  ] Spring 入门:[黑马张阳 Spring入门](https://www.bilibili.com/video/BV1Sb411s7vP)**
 
-**[ √  ]Mybatis :[尚硅谷MyBatis](https://www.bilibili.com/video/BV1mW411M737)**
+**[ √  ] Mybatis :[尚硅谷MyBatis](https://www.bilibili.com/video/BV1mW411M737)**
 
 **[ × ] SpringBoot入门**
 
 - **SpringSecurity** 
 - Shiro
-- Swagger
+- [ √  ] Swagger
 
 #  数据库
 
@@ -63,7 +65,7 @@
 
 **其他** 
 
-- [ √  ] jQuery：自学了解
+- 
 - [ × ] 微信小程序
 - [ × ] 动态网页
 

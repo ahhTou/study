@@ -29,7 +29,7 @@ public class UserRealm extends AuthorizingRealm {
         User user = (User) subject.getPrincipal();
 
         info.addStringPermission(user.getName());
-
+        
 
         return info;
     }

@@ -1,0 +1,39 @@
+$color: rgb(234, 73, 95);
+
+$width: 300px; // 宽度
+$senderWidth: $width *1.1;
+$br: 15px; // 边框
+
+@mixin trans {
+  transition: all .5s ease;
+
+}
+
+
+.fade0-enter-active,
+.fade0-leave-active {
+  transition: all .5s;
+  transform-origin: 0 0;
+
+}
+
+.fade0-enter,
+.fade0-leave-to {
+  opacity: 0;
+  transform: rotate(20deg);
+}
+
+
+@mixin do {
+  background: linear-gradient(90deg, $color, #c206f6, $color);
+  background-size: 400%;
+
+  animation: redAni 8s infinite;
+
+  @keyframes redAni {
+    100% {
+      background-position: 400%;
+    }
+  }
+
+}

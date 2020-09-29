@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link href="../../../assets/css/err.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<body>
+<div id="errViewsWrapper">
+
+    <div id="wrapper">
+        <div id="code">
+            {{ status[current].code }}
+        </div>
+        <div id="tip">
+            {{ status[current].tip }}
+        </div>
+    </div>
+
+</div>
+<script>
+    new Vue({
+        el: "#errViewsWrapper",
+        props: {
+            current: {
+                default: '4xx'
+            }
+        },
+        computed: {
+            bg() {
+                return {
+                    'background-color': this.status[this.current].color
+                }
+            }
+        },
+        mounted: function () {
+            let url = window.document.location.href.toString();
+            let code = url.split('?')[1];
+            if (code !== null && code.length === 3) {
+                this.current = code
+            }
+        },
+        data: {
+            status: {
+                '404': {
+                    code: '404',
+                    tip: '未找到该网页',
+                    color: '#f19292'
+                },
+                '4xx': {
+                    code: 'Error',
+                    tip: '客户端出现错误',
+                    color: '#d23f3f'
+                },
+                '405': {
+                    code: '405',
+                    tip: '错误的请求方式',
+                    color: '#65c99d'
+
+                },
+                '500': {
+                    code: '500',
+                    tip: '服务器出现异常',
+                    color: '#ff0024'
+
+                },
+            }
+
+        },
+    })
+
+</script>
+</body>
+</html>

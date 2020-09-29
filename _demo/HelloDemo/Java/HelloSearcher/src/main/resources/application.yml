@@ -1,0 +1,23 @@
+server:
+  port: 9001
+
+ahhtou:
+  utils:
+    img:
+      redis-bg-images-url-save-key: BgImagesForHelloProject
+      img-suffix-reg:
+        - .*.reg
+      zip-and-cut:
+        path:
+          - 123
+          - 321
+        height: 500
+        width: 300
+      search:
+        path:
+          - 123
+          - 321
+      path:
+        - 123
+        - 321
+        - 123

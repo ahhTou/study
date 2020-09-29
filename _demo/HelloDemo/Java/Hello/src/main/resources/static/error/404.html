@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404</title>
+
+    <link href="../assets/css/err.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app">
+    <err-views current="404"></err-views>
+</div>
+</body>
+<script type="module">
+    new Vue({
+        el: '#app',
+        components: {
+            ErrViews: () => import("../assets/TemplateViews.js"),
+        }
+    })
+</script>
+</html>

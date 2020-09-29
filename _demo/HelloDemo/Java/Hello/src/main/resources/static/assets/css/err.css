@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+#errViewsWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background: deeppink;
+
+
+}
+
+#wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+
+}
+
+#tip {
+    font-size: 2.5vw;
+}
+
+#code {
+    font-size: 16vw;
+}

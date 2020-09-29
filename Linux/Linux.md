@@ -7,6 +7,14 @@ ps -ef |grep redis
 kill -9 4394
 
 nohup java -jar shareniu.jar >temp.txt &
+
+# nginx 目录
+/usr/local/nginx
+# nginx 重启
+/usr/local/nginx/sbin/nginx -s reload
+
+#redis位置
+默认位置 在 usr/local/bin
 ```
 
 

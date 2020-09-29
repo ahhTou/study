@@ -19,12 +19,9 @@ public class ShiroConf {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         // 设置安全管理器
         bean.setSecurityManager(sm);
-
-
-
         /*
          * anon 无需认证就可以访问
-         * authc 必须人整了才能访问
+         * authc 必须认证了才能访问
          * user 必须拥有过记住我功能才能用
          * perms 拥有对某个权限才能访问
          * role 拥有某个角色全新啊才能访问
