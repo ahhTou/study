@@ -6,18 +6,20 @@ ahhtou:
     img:
       redis-bg-images-url-save-key: BgImagesForHelloProject
       img-suffix-reg:
-        - .*.reg
+        - .*.webp
+      path:
+        - C:\Users\11979\OneDrive\图片\Hello
+        - /home/web/image/hello
       zip-and-cut:
+        img-suffix-reg:
+          - .*.webp
         path:
-          - 123
-          - 321
+          - C:\Users\11979\OneDrive\图片\Hello
+          - /home/web/image/hello
         height: 500
         width: 300
+        suffix-name: _bg_changer
       search:
         path:
           - 123
           - 321
-      path:
-        - 123
-        - 321
-        - 123

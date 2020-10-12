@@ -1,16 +1,13 @@
 package com.ahhtou.logger;
 
-import lombok.Data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Data
 public class HelloLogger {
 
-    private String project;
-    private String name;
-
+    private final String project;
+    private final String name;
     private String doWhat;
 
     public HelloLogger(String project, String name) {
@@ -24,21 +21,51 @@ public class HelloLogger {
 
 
     public void log(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.GREY);
+    }
+    public void logWhite(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.WHITE);
+    }
+    public void logRed(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.RED);
+    }
+    public void logGreen(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.GREEN);
+    }
+    public void logYellow(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.YELLOW);
+    }
+    public void logBlue(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.BLUE);
+    }
+    public void logPurple(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.PURPLE);
+    }
+    public void logGB(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.GREEN_BLUE);
+    }
+    public void logGray(String doWhat) {
+        logToColor(logTemplate(doWhat), HelloLogColor.GREY);
+    }
+
+
+    public String logTemplate(String doWhat) {
         Date date = new Date();
         String strDateFormat = "yyyy-MM-dd HH:mm:ss.SSS";
         SimpleDateFormat format = new SimpleDateFormat(strDateFormat);
-        logColor("" + format.format(date) + "  "
-                + "[ " + Thread.currentThread().getName() + " ] "
-                + this.project + "::" + this.name + " -> " + doWhat
-        );
+        return format.format(date) + "  "
+//                + "[ " + Thread.currentThread().getName() + " ] "
+                + this.project + "::" + this.name + " -> " + doWhat;
+
     }
 
-    private void logColor(String say) {
-        System.out.println("\033[31;1m" + say + "\033[0m");
+    private void logToColor(String say, HelloLogColor color) {
+        String prefix1 = "\033[";
+        String prefix2 = ";1m";
+
+        String suffix = "\033[0m";
+        System.out.println(prefix1 + color.getColor() + prefix2 + say + suffix);
     }
 
-    public static void logRed(String say) {
-        System.out.println("\033[31;1m" + say + "\033[0m");
-    }
 
 }

@@ -1,20 +1,20 @@
 package com.ahhtou.var;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Set;
 
 @Configuration
 @ConfigurationProperties(prefix = "ahhtou.utils.img.zip-and-cut")
 @Data
-public class ZipAndCutProperties {
+@EqualsAndHashCode(callSuper = true)
+public class ZipAndCutProperties extends Properties {
 
-    private Set<String> path;
+    private String suffixName;
 
-    private int width = 450;
+    private int width;
 
-    private int height = 450;
+    private int height;
 
 }

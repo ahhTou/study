@@ -11,15 +11,19 @@ import java.util.Set;
 @Data
 public class Properties {
 
-    private String RedisBgImagesUrlSaveKey;
+    private String redisBgImagesUrlSaveKey;
 
-    private Set<String> ImgSuffixReg;
-
-    private SearchProperties search;
-
-    private ZipAndCutProperties zipAndCut;
+    private Set<String> imgSuffixReg;
 
     private Set<String> path;
+
+    private int width;
+
+    private int height;
+
+    private String proxyPath;
+
+    private int cycleTime;
 
 
 }
