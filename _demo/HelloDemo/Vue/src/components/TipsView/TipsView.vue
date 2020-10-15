@@ -16,7 +16,7 @@
                         <span @click="exit" style="margin: 10px;">
                             <btn-circle :is-active="true"
                                         :size="'70px'"
-                                        btn-svg-style="icon-approvalprocessiconfinish"/>
+                                        btn-svg-style="icon-ok"/>
                         </span>
                         </div>
                         <div style="text-align: right;color: rgb(142, 142, 146);font-size: 12px">
@@ -31,7 +31,7 @@
 
 <script>
 import LoadingBlock from '../LoadingBlock'
-import BtnCircle from '../BtnCircle'
+import BtnCircle from '@/components/button/BtnCircle'
 import User from '../../assets/pojo/User'
 
 export default {

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+    <p>{{ msg }}</p>
+    <input></input>
+
+</div>
+<script type="module">
+    new Vue({
+        el: '#app',
+        data: {
+            msg: '哈哈哈',
+        },
+        mounted: function () {
+
+            console.log("123")
+            let ws = new WebSocket('ws://localhost:8081/websocket/ahhtou')
+            // let wss = new WebSocket('wss://localhost:8081/websocket')
+            ws.addEventListener('open', () => {
+                console.log('已连接')
+            })
+
+            setInterval(() => {
+                console.log(ws.readyState)
+            }, 300)
+        },
+
+    })
+</script>
+</body>
+
+</html>

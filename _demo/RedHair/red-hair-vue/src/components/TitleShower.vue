@@ -166,6 +166,7 @@ export default {
     background-size: cover;
     font-family: '微软雅黑 Light', sans-serif;
     padding: 15px;
+
     p {
       font-weight: var(--every-title-is-bolder);
       color: var(--every-title-color);

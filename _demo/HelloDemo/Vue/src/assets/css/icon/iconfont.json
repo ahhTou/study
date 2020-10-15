@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15838517",
+      "name": "prompt",
+      "font_class": "prompt",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "6584496",
+      "name": "关闭",
+      "font_class": "shut-down",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
       "icon_id": "5812169",
       "name": "feedback",
       "font_class": "feedback",
@@ -36,7 +50,7 @@
     {
       "icon_id": "213525",
       "name": "finish",
-      "font_class": "approvalprocessiconfinish",
+      "font_class": "ok",
       "unicode": "e60b",
       "unicode_decimal": 58891
     },

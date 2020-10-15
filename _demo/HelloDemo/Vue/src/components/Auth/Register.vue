@@ -43,7 +43,7 @@
 
 <script>
 import ShadeSlots from '../ShadeSlots'
-import BtnCircle from '../BtnCircle'
+import BtnCircle from '@/components/button/BtnCircle'
 import RegxChecker from 'assets/utils/RegxChecker'
 import User from 'assets/pojo/User'
 

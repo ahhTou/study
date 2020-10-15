@@ -1,10 +1,10 @@
 package com.ahhtou.conf;
 
 import com.ahhtou.logger.HelloLogger;
-import com.ahhtou.service.DoStart;
-import com.ahhtou.service.GetThings;
-import com.ahhtou.var.Properties;
-import com.ahhtou.var.ZipAndCutProperties;
+import com.ahhtou.doSome.DoSomeImpl.DoStart;
+import com.ahhtou.doSome.DoSomeImpl.GetThings;
+import com.ahhtou.utils.Properties;
+import com.ahhtou.utils.ZipAndCutProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

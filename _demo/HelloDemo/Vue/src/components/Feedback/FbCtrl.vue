@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import BtnCircle from 'components/BtnCircle'
+import BtnCircle from '@/components/button/BtnCircle'
 import FbSender from 'components/Feedback/FbSender'
 import FbBus from 'components/Feedback/FbBus'
 

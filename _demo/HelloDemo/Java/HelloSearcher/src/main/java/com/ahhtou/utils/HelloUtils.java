@@ -1,6 +1,5 @@
 package com.ahhtou.utils;
 
-import com.ahhtou.var.Properties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

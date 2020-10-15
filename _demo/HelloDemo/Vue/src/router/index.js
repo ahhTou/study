@@ -69,6 +69,14 @@ const routes = [
         ],
     },
     {
+        path: '/root',
+        name: 'root',
+        component: () => import('@/views/Root'),
+        meta: {
+            title: '管理员界面',
+        }
+    },
+    {
         path: '/403',
         name: '403',
         component: Err403,
