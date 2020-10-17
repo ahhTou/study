@@ -20,7 +20,7 @@
 
 
 <script>
-import FeedBack from 'assets/pojo/FeedBack'
+import FeedBack from 'assets/Bean/FeedBack'
 import MyFilter from 'assets/utils/MyFilter'
 import ShadeSlots from 'components/ShadeSlots'
 import FbCtrl from 'components/Feedback/FbCtrl'

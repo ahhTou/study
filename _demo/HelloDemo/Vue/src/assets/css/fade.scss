@@ -33,12 +33,12 @@
 }
 
 .card-with-slider-enter-active, {
-  transition: all .3s cubic-bezier(.14, -0.13, .04, 1.38);
+  transition: all .5s;
 
 }
 
 .card-with-slider-leave-active {
-  transition: all .2s;
+  transition: all .5s;
 
 }
 

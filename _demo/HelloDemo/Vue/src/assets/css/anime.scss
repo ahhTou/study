@@ -1,0 +1,24 @@
+@mixin shake-rotate($time, $num) {
+  $w: 5deg;
+  transform-origin: center;
+  animation: ani $time $num;
+  @keyframes ani {
+    0% {
+      transform: rotateZ($w);
+    }
+    25% {
+      transform: rotateZ(0);
+    }
+    75% {
+      transform: rotateZ(-$w);
+    }
+    100% {
+      transform: rotateZ(0);
+    }
+  }
+}
+
+.shake-rotate {
+  @include shake-rotate(.2s, 2)
+}
+

@@ -1,4 +1,35 @@
 $shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
+$shadow-mini: 5px 5px 0px rgba(255, 255, 255, 0.2);
+$light-grey: rgb(142, 142, 146);
+@mixin shadow-mini() {
+  box-shadow: 3px 3px 10px rgba(60, 63, 65, .4);
+}
+
+@mixin input-txt-div($w, $h) {
+  width: $w;
+  height: $h;
+
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-color: rgb(238, 238, 239);
+  font-size: 16px;
+  padding: 0 10px 0 10px;
+
+
+}
+
+@mixin input-txt {
+  width: 300px;
+  height: 40px;
+
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-color: rgb(238, 238, 239);
+  font-size: 16px;
+  padding: 0 10px 0 10px;
+
+}
+
 @mixin blurWindow {
   color: black;
   backdrop-filter: blur(15px);

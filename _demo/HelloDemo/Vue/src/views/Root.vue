@@ -1,7 +1,7 @@
 <template>
   <div id="root-wrapper">
-    <img src="~src/assets/image/sticker/1.webp"/>
-    <root-for-search/>
+    <img src="~src/assets/image/sticker/miku-happy.webp" alt="logo"/>
+    <root-for-search />
 
     <div id="bg"></div>
   </div>

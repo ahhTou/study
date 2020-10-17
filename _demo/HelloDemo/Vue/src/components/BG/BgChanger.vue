@@ -36,7 +36,7 @@
 <script>
 import ShadeSlots from '../ShadeSlots'
 import UtilsFactory from 'assets/factory/UtilsFactory'
-import Base from 'assets/pojo/Base'
+import Base from 'assets/Bean/Base'
 import SliderBar from 'components/BG/SliderBar'
 import BgBus from 'components/BG/BgBus'
 import Device from 'assets/utils/Device'

@@ -31,6 +31,13 @@ module.exports = {
                     '^/search': '/'
                 }
             },
+            '/email': {
+                target: 'http://127.0.0.1:9002/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/email': '/'
+                }
+            },
         }
     },
     css: {
@@ -41,6 +48,7 @@ module.exports = {
                   @import 'src/assets/css/style.scss';
                   @import 'src/assets/css/base.scss';
                   @import 'src/assets/css/fade.scss';
+                  @import 'src/assets/css/anime.scss';
             `
             }
         }

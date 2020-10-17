@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import FeedBack from 'assets/pojo/FeedBack'
+import FeedBack from 'assets/Bean/FeedBack'
 import FbBus from 'components/Feedback/FbBus'
 
 export default {

@@ -1,56 +1,63 @@
 <template>
-    <div id="LrBtnLineWrapper">
-        <button id="login" disabled="disabled">
-            <span class="icon iconfont icon-close-bold"></span>
-            登录
-        </button>
-        <button id="register" @click="$router.push('/Register')">
-            <span class="icon iconfont icon-register"></span>
-            注册
-        </button>
+  <div id="LrBtnLineWrapper">
+    <div id="btn-line">
+      <button id="login" @click="$router.push('/Login')">
+        <!--        <span class="icon iconfont icon-close-bold"></span>-->
+        登陆账号
+      </button>
+      <button id="register" @click="$router.push('/Register')">
+        <span class="icon iconfont icon-register"></span>
+      </button>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'LrBtnLine'
+  name: 'LrBtnLine'
 }
 </script>
 
 <style lang="scss" scoped>
 
 #LrBtnLineWrapper {
-    width: 100%;
-    height: 100px;
-    margin: auto;
+  @include flex;
+  width: 100%;
+  height: 100px;
+  margin: auto;
+  position: fixed;
+  bottom: 20px;
+
+  #btn-line {
+    width: 320px;
     @include flex;
-    position: fixed;
-    bottom: 20px;
 
     button {
-        margin: 5px;
-        height: 50px;
-        border-radius: 10px;
-        width: 170px;
-        background: white;
+      margin: 5px;
+      height: 50px;
+      border-radius: 5px;
+      background: white;
+      @include shadow-mini;
+
+      span {
+        font-size: 20px;
+      }
     }
 
     #login {
-        cursor: not-allowed;
-
-        color: white;
-        font-size: 16px;
-        background: rgb(115, 118, 119);
+      cursor: pointer;
+      flex: 1;
+      color: black;
+      background: rgb(187, 207, 94);
     }
 
     #register {
-        cursor: pointer;
-
-        color: white;
-        font-size: 16px;
-        background: rgb(75, 181, 220);
-        box-shadow: 3px 3px 10px rgba(60, 63, 65, .4);
+      cursor: pointer;
+      width: 50px;
+      color: white;
+      background: rgb(75, 181, 220);
     }
+  }
 
 }
 

@@ -61,7 +61,7 @@ const routes = [
                 name: 'Login',
                 meta: {
                     title: '登录',
-                    EnterType: 'card',
+                    EnterType: 'center',
                 },
                 component: () => import('../components/Auth/Login.vue')
             },
