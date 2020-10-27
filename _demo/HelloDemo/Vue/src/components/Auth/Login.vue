@@ -13,7 +13,8 @@
           <div @click="clickToLogin">
             <btn-circle :is-active="btnIsActive" :is-loading="isLoading" size="80px"/>
           </div>
-          <span style="margin: 10px;color: #ea495f">{{ errText1 }}</span>
+          <span id="errTip"
+                style="margin: 10px;color: #ea495f;overflow: hidden;font-size: 16px;height: 20px;">{{ errText1 }}</span>
         </div>
       </div>
     </template>
@@ -23,10 +24,12 @@
 <script>
 import ShadeSlots from 'components/ShadeSlots'
 import BtnCircle from 'components/button/BtnCircle'
-import RegxChecker from 'assets/utils/RegxChecker'
-import User from 'assets/Bean/User'
-import {HelloDom} from 'assets/utils/AnimeUtils'
-import {isEmpty} from 'assets/utils/Utils'
+import RegxChecker from '@/utils/RegxChecker'
+import User from '@/utils/bean/User'
+import {HelloDom} from '@/utils/AnimeUtils'
+import {isEmpty} from '@/utils/Utils'
+import {saveAuthToken} from '@/utils/LocalSaver'
+import {checkLogin} from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -44,6 +47,12 @@ export default {
       isLoading: false,
       errText: null
     }
+  },
+  mounted() {
+    checkLogin().then(res => {
+      this.$justTips('请不要重复登陆', 'alert')
+      this.$router.push('/')
+    })
   },
   computed: {
     btnIsActive() {
@@ -77,12 +86,11 @@ export default {
 
         this.isLoading = true
 
-        user.login().then(res => {
+        user.login().then(data => {
           this.isLoading = false
-          console.log('login' + res)
-          if (res.success) {
-            this.$children[0].exit()
-          }
+          // 保存 auth token
+          saveAuthToken(data)
+          this.$children[0].exit()
         }).catch(err => {
           this.isLoading = false
           this.inputPwd = null

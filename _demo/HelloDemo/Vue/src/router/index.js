@@ -54,7 +54,7 @@ const routes = [
                     title: '注册',
                     EnterType: 'card',
                 },
-                component: () => import('../components/Auth/Register.vue')
+                component: () => import('../components/auth/Register.vue')
             },
             {
                 path: '/Login',
@@ -63,7 +63,7 @@ const routes = [
                     title: '登录',
                     EnterType: 'center',
                 },
-                component: () => import('../components/Auth/Login.vue')
+                component: () => import('../components/auth/Login.vue')
             },
 
         ],

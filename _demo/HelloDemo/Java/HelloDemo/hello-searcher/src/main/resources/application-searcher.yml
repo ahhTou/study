@@ -1,0 +1,27 @@
+ahhtou:
+  utils:
+    img:
+      height: 500
+      width: 300
+      redis-bg-images-url-save-key: BgImagesForHelloProject
+      img-suffix-reg:
+        - .*.webp
+      path:
+        - D:\Envir\_resources\img\hello\
+        - /home/web/image/hello
+      zip-and-cut:
+        img-suffix-reg:
+          - .*.webp
+        path:
+          - D:\Envir\_resources\img\hello\
+          - /home/web/image/hello
+        height: 500
+        width: 300
+        suffix-name: _bg_changer
+      search:
+        path:
+          - 123
+          - 321
+      cycle-time: 10
+      #      proxy-path: http://39.99.154.145/hello/
+      proxy-path: http://localhost/image/hello

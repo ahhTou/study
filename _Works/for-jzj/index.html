@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--<table>
+    <thead>
+    <tr style="width: 400px">
+        <th id="a">电影名称</th>
+        <th id="b">电影类型</th>
+        <th id="c">我的评分</th>
+        <th id="d">添加时间</th>
+    </tr>
+    </thead>
+    <tbody id="tableBody">
+    <tr>
+        <td id="content1">www</td>
+        &lt;!&ndash;        <td>123</td>&ndash;&gt;
+        &lt;!&ndash;        <td>123</td>&ndash;&gt;
+        &lt;!&ndash;        <td>123</td>&ndash;&gt;
+        &lt;!&ndash;        <td>123</td>&ndash;&gt;
+    </tr>
+    </tbody>
+</table>-->
+<div class="li">测试1</div
+><div class="li">测试2</div
+><div class="li">测试3</div
+><div class="li">测试4</div>
+<div id="box">
+    <div class="content">我是内容1号！</div>
+    <div class="content">我是内容2号！</div>
+    <div class="content">我是内容3号！</div>
+    <div class="content">我是内容4号！</div>
+</div>
+</body>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    .li {
+        display: inline-block;
+        list-style: none;
+        width: 100px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: rgb(73, 125, 153);
+        background: rgb(189, 217, 153);
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    #box {
+        width: 400px;
+        height: 400px;
+        background: rgb(189, 217, 153);
+        color: white;
+        z-index: 1;
+
+    }
+
+    #box .content {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: black;
+        z-index: -1;
+
+    }
+
+    .li:hover {
+        background: rgb(115, 168, 111);
+    }
+
+    .li:hover:nth-child(1) ~ #box .content:nth-child(1),
+    .li:hover:nth-child(2) ~ #box .content:nth-child(2),
+    .li:hover:nth-child(3) ~ #box .content:nth-child(3),
+    .li:hover:nth-child(4) ~ #box .content:nth-child(4) {
+        z-index: 1;
+    }
+</style>
+</html>

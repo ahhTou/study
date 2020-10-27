@@ -1,8 +1,14 @@
 $shadow: 10px 10px 30px rgba(100, 100, 100, 0.5);
 $shadow-mini: 5px 5px 0px rgba(255, 255, 255, 0.2);
 $light-grey: rgb(142, 142, 146);
-@mixin shadow-mini() {
+$light-red-a:  rgb(234, 73, 95);
+$light-blue-a : rgb(75,181,220);
+@mixin shadow-mini(){
   box-shadow: 3px 3px 10px rgba(60, 63, 65, .4);
+}
+
+@mixin shadow-mid() {
+  box-shadow: 5px 5px 20px rgba(165, 165, 165, 0.7);
 }
 
 @mixin input-txt-div($w, $h) {

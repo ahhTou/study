@@ -37,4 +37,5 @@
             <bean class="com.xhr.authorizedInterceptor.AuthorizedInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
 </beans>

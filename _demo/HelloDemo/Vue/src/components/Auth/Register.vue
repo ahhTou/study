@@ -44,9 +44,10 @@
 <script>
 import ShadeSlots from '../ShadeSlots'
 import BtnCircle from '@/components/button/BtnCircle'
-import RegxChecker from 'assets/utils/RegxChecker'
-import User from 'assets/Bean/User'
-import {isEmpty} from 'assets/utils/Utils'
+import RegxChecker from '@/utils/RegxChecker'
+import User from '@/utils/bean/User'
+import {isEmpty} from '@/utils/Utils'
+import {checkLogin} from '@/utils/auth'
 
 export default {
   name: 'Register',
@@ -117,6 +118,12 @@ export default {
       ],
 
     }
+  },
+  mounted() {
+    checkLogin().then(res => {
+      this.$justTips('请在退出账户之后进行注册', 'alert')
+      this.$router.push('/')
+    })
   },
   computed: {
     inputStyle() {

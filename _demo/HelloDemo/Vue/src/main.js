@@ -2,24 +2,32 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import UtilsFactory from 'assets/factory/UtilsFactory'
 
 
-import TipsView from './components/TipsView/index'
-import JustLoad from 'components/JustLoad/index'
+import TipsView from '@/components/_overall/TipsView/index'
+import JustLoad from '@/components/_overall/JustLoad/index'
+import JustTips from '@/components/_overall/JustTips/index'
+
+Vue.use(JustTips)   // 全局提醒
 Vue.use(TipsView)   // 全局弹窗
 Vue.use(JustLoad)   // 全局加载
 
 /* md5 */
+/* axios */
 import md5 from 'js-md5'
+import {HelloAxios} from '@/utils/MyAjax'
+import {result} from '@/utils/ResultHandler'
+import {objCopy} from '@/utils/Utils'
+
 Vue.prototype.$md5 = md5
+Vue.prototype.$axios = new HelloAxios()
+Vue.prototype.$result = result
+Vue.prototype.$objCopy = objCopy
+
 
 /* 图标 */
 import './assets/css/icon/iconfont.css'
 
-
-/* UtilsFactory */
-UtilsFactory.create()
 
 /* fastClick */
 import FastClick from 'fastclick'

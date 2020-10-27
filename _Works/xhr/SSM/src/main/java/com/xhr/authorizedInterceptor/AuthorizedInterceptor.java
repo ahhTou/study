@@ -1,6 +1,7 @@
 package com.xhr.authorizedInterceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -11,14 +12,14 @@ public class AuthorizedInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
-        System.out.println("\r\n> 拦截到了" + req.getRequestURI() + "的请求") ;
+        System.out.println("\r\n> 拦截到了" + req.getRequestURI() + "的请求");
         Cookie[] cookies = req.getCookies();
-        if (cookies == null){
+        if (cookies == null) {
             System.out.println("> 未找到Cookies!");
             return false;
         }
         HttpSession session = req.getSession();
-        try{
+        try {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("JSESSIONID")) {
                     if (req.getSession().getId().equals(cookie.getValue())) {
@@ -36,7 +37,7 @@ public class AuthorizedInterceptor implements HandlerInterceptor {
 
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("> 验证出错");
             e.printStackTrace();
             return false;
@@ -55,5 +56,15 @@ public class AuthorizedInterceptor implements HandlerInterceptor {
         }
         System.out.println("> 拒绝了请求 + \r\n");
         return false;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
     }
 }

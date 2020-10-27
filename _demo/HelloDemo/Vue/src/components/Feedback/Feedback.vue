@@ -20,8 +20,8 @@
 
 
 <script>
-import FeedBack from 'assets/Bean/FeedBack'
-import MyFilter from 'assets/utils/MyFilter'
+import FeedBack from '@/utils/bean/FeedBack'
+import MyFilter from '@/utils/MyFilter'
 import ShadeSlots from 'components/ShadeSlots'
 import FbCtrl from 'components/Feedback/FbCtrl'
 import FbBus from 'components/Feedback/FbBus'

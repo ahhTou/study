@@ -32,6 +32,7 @@
   position: absolute;
 }
 
+/* 卡片式上升显现 */
 .card-with-slider-enter-active, {
   transition: all .5s;
 
@@ -49,3 +50,15 @@
 .card-with-slider-leave-to {
   transform: translateY(90vh);
 }
+
+/* 水平上升消失 */
+.up-out-enter-active,
+.up-out-leave-active {
+  transition: all 1s cubic-bezier(.14, -0.13, .04, 1.38);
+}
+
+.up-out-enter,
+.up-out-leave-to {
+  transform: translateY(-300%);
+}
+

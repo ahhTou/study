@@ -1,4 +1,4 @@
-let url = "http://localhost:8080/SSM_war_exploded"
+let url = "http://localhost:8080"
 
 
 export function getNicknameByUsername(username) {

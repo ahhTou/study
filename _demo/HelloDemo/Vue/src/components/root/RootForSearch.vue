@@ -18,65 +18,93 @@
     <div>
       <h5>已经到的搜索内容</h5>
       <div id="core-content">
-        <p v-for="(li, index) in coreContent" :key="index">{{ li }}</p>
+        <div>
+          缩略图比例: {{ coreContent.width + '*' + coreContent.height }}
+          <br>
+          <br>
+          代理地址: {{ coreContent.proxyUrl }}
+          <br>
+          <br>
+          搜寻地址
+          <button @click="exchange">
+            点击我切换地址
+          </button>
+          ：
+          <p v-for="(li, index) in coreContent.searchPaths" :key="index">{{ li }}</p>
+        </div>
+        <br>
+        <p v-for="(li, index) in coreContent.bgList" :key="index">{{ li }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import UtilsFactory from 'assets/factory/UtilsFactory'
-import StatusTab3 from 'components/tab/StatusTab3'
-
-let axios = UtilsFactory.getAxios()
+import StatusTab3 from '@/components/tab/StatusTab3'
+import BgList from '@/utils/bean/BgList'
+import {pathJoin} from '@/utils/Utils'
 
 export default {
   name: 'RootForSearch',
   components: {StatusTab3},
   data: function () {
     return {
-      coreContent: [],
+      coreContent: new BgList(),
       status: 1,
       statusText: {
         1: '出现异常',
         2: '运行中',
         3: '未运行'
-      }
+      },
+      otherUrls: []
     }
   },
   methods: {
+    exchange() {
+      [this.coreContent.bgList, this.otherUrls] = [this.otherUrls, this.coreContent.bgList]
+    },
     searchToStart() {
-      axios.cPost('/search/core/start').then(res => {
+      this.$axios.post('/api/core/start').then(res => {
         if (res.data === true) {
           this.status = 2
         }
       })
     },
     searchToShutDown() {
-      axios.cPost('/search/core/shutDown').then(res => {
+      this.$axios.post('/api/core/shutDown').then(res => {
         if (res.data === true) {
           this.status = 3
         }
       })
     }
   },
-  mounted() {
-    axios.cPost('/search/core/isActive').then(res => {
+  mounted: function () {
+    this.$axios.post('/api/core/isActive').then(res => {
       if (res.data === true) {
-        console.log('123')
         this.status = 2
       }
       if (res.data === false) {
-        console.log('123')
         this.status = 3
       }
     })
-    axios.cPost('/search/core/getContent').then(res => {
-      if (res.data) {
-        this.coreContent = res.data
-      }
+
+    this.$axios.get('/api/core/getBgList').then(res => {
+      let obj = this.$result(res)
+      this.$objCopy(obj, this.coreContent)
+
+      this.coreContent.bgList.forEach(l => {
+        l = l.toLowerCase()
+        this.coreContent.searchPaths.forEach(p => {
+          l = l.replace(p.toLowerCase(), '')
+        })
+        l = pathJoin(this.coreContent.proxyUrl, l)
+        this.otherUrls.push(l)
+
+      })
     })
-  }
+
+  },
+  computed: {}
 }
 </script>
 

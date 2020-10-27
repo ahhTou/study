@@ -18,7 +18,7 @@
 <script>
 import BgChanger from 'components/BG/BgChanger'
 import BgShower from 'components/BG/BgShower'
-import LrBtnLine from 'components/Auth/LrBtnLine'
+import LrBtnLine from 'components/auth/LrBtnLine'
 
 export default {
     name: 'Home',

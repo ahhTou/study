@@ -1,0 +1,28 @@
+server:
+  port: 9000
+
+
+
+spring:
+  mail: # 邮箱信息
+    host: smtp.163.com
+    username: ahhTou@163.com
+    password: LZHNBGGZMFTPIZML
+    port: 25
+    default-encoding: utf-8
+
+  profiles:
+    include:
+      - searcher # 搜索源
+      - dao # 数据源等..
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+
+
+
+
+
+
+

@@ -14,6 +14,7 @@
     <url>http://www.example.com</url>
 
     <properties>
+        <spring.version>5.0.9.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -29,7 +30,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>[5.0.16,)</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!--mybatis-->
@@ -66,13 +67,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>[5.0.16,)</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>[5.0.16,)</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!--spring-mvc-->
@@ -103,17 +104,19 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>[5.0.16,)</version>
+            <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>[5.0.16,)</version>
+            <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>[5.0.16,)</version>
+            <version>${spring.version}</version>
         </dependency>
 
 

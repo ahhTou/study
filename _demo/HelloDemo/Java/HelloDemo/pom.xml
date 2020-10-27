@@ -17,26 +17,78 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <hello.version>0.0.1-SNAPSHOT</hello.version>
     </properties>
 
     <modules>
-        <module>HelloEmail</module>
-        <module>HelloSearcher</module>
-        <module>HelloServer</module>
-        <module>HelloCommon</module>
+        <module>hello-nosql</module>
+        <module>hello-email</module>
+        <module>hello-common</module>
+        <module>hello-server</module>
+        <module>hello-searcher</module>
+        <module>hello-dao</module>
     </modules>
 
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 通用层包 -->
+            <dependency>
+                <groupId>com.ahhtou</groupId>
+                <artifactId>hello-common</artifactId>
+                <version>${hello.version}</version>
+            </dependency>
+            <!-- server -->
+            <dependency>
+                <groupId>com.ahhtou</groupId>
+                <artifactId>hello-server</artifactId>
+                <version>${hello.version}</version>
+            </dependency>
+
+            <!-- 持久层包 -->
+            <dependency>
+                <groupId>com.ahhtou</groupId>
+                <artifactId>hello-dao</artifactId>
+                <version>${hello.version}</version>
+            </dependency>
+
+            <!-- nosql -->
+            <dependency>
+                <groupId>com.ahhtou</groupId>
+                <artifactId>hello-nosql</artifactId>
+                <version>${hello.version}</version>
+            </dependency>
+
+            <!-- mail -->
+            <dependency>
+                <groupId>com.ahhtou</groupId>
+                <artifactId>hello-email</artifactId>
+                <version>${hello.version}</version>
+            </dependency>
+            <!-- searcher -->
+            <dependency>
+                <groupId>com.ahhtou</groupId>
+                <artifactId>hello-searcher</artifactId>
+                <version>${hello.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <!--  lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
     </dependencies>
 
     <build>

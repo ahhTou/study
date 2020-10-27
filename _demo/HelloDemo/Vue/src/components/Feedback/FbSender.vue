@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import FeedBack from 'assets/Bean/FeedBack'
+import FeedBack from '@/utils/bean/FeedBack'
 import FbBus from 'components/Feedback/FbBus'
 
 export default {
