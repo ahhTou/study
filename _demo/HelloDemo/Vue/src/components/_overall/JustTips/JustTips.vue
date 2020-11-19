@@ -74,9 +74,10 @@ export default {
   --timer: 1000;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50vw;
   z-index: 1000;
-  width: 100vw;
+  transform: translateX(-50%);
+  max-width: 80vw;
   height: 100px;
   @include flex();
 
@@ -84,7 +85,7 @@ export default {
     @include shadow-mid;
     box-sizing: border-box;
     $size: 50px;
-    max-width: 300px;
+    max-width: 80vw;
     min-width: 150px;
     height: $size;
     border-radius: $size;

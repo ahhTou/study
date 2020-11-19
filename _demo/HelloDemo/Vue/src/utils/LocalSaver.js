@@ -11,3 +11,7 @@ export function getAuthToken() {
     if (isEmpty(token)) return false
     else return token
 }
+
+export function removeAuthToken() {
+    window.localStorage.removeItem(AUTH_TOKEN_KEY)
+}

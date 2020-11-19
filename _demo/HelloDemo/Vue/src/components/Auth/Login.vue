@@ -30,6 +30,7 @@ import {HelloDom} from '@/utils/AnimeUtils'
 import {isEmpty} from '@/utils/Utils'
 import {saveAuthToken} from '@/utils/LocalSaver'
 import {checkLogin} from '@/utils/auth'
+import authBus from 'components/auth/authBus'
 
 export default {
   name: 'Login',
@@ -90,6 +91,9 @@ export default {
           this.isLoading = false
           // 保存 auth token
           saveAuthToken(data)
+          this.$justTips('欢迎回来', 'fresh')
+          // 通知另一组件检测
+          authBus.$emit('toLogin')
           this.$children[0].exit()
         }).catch(err => {
           this.isLoading = false

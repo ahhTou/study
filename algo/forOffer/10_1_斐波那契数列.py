@@ -15,4 +15,4 @@ class Solution:
 
 a = Solution()
 
-print(a.fib(10))
+print(a.fib(11))
