@@ -1,0 +1,68 @@
+/**index.wxss**/
+
+view {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#swiper-wrapper {
+  width: 100%;
+  height: 400rpx;
+}
+
+swiper {
+  position: relative;
+  width: 95vw;
+  height: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.swiper-img {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: 100%;
+}
+
+
+/* 跳转 */
+
+#navigator-list {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.navigator-wrapper {
+  width: 110rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.navigator {
+  width: 100%;
+  height: 110rpx;
+  background: white;
+  border-radius: 20rpx;
+  background-size: cover;
+  background-position: center;
+  background-image: url('https://s3.ax1x.com/2020/11/20/DQrl9J.jpg');
+}
+
+.navigator-title {
+  text-align: center;
+  color: white;
+}
+
+
+/* 引入的block组件的wrapper */
+#banner-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

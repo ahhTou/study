@@ -1,0 +1,25 @@
+/* components/select-bar/SelectBar.wxss */
+
+.select-bar-wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+  padding: 10rpx 15vw 10rpx 15vw;
+  height: 100rpx;
+  margin-bottom: 10rpx;
+}
+
+.a-selection {
+  font-size: 30rpx;
+  color: rgb(80, 80, 80);
+}
+
+.select-bar-wrapper .active {
+  color: rgb(200, 200, 200);
+  transform: scale(1.8);
+  margin: 5rpx;
+  border-bottom: 2px solid rgb(80, 80, 80);
+}

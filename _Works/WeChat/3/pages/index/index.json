@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "banner-block": "/components/normal-block-with-title/NormalBolckWithTitle",
+    "select-bar": "/components/select-bar/SelectBar"
+  }
+}

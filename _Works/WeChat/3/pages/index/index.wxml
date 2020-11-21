@@ -1,0 +1,53 @@
+<view>
+  <!-- 标题 -->
+  <text class="title">{{ title }}</text>
+
+  <select-bar></select-bar>
+
+  <!-- 轮播图 -->
+  <view id="swiper-wrapper" class="flex-center-box">
+    <swiper autoplay="true" indicator-dots="true" circular="true">
+      <swiper-item wx:for="{{imgList}}" wx:key="{{item.id}}">
+        <view class="swiper-img" style="background-image:url('{{ item.url }}');" />
+      </swiper-item>
+    </swiper>
+  </view>
+
+
+
+  <view class="a-br-dark">
+    ———— — 快速跳转 — ————
+  </view>
+
+  <!-- 导航 -->
+  <view id="navigator-list">
+    <view class="navigator-wrapper">
+      <navigator class="navigator" url="/pages/star/star" />
+      <text class="navigator-title">收藏</text>
+    </view>
+    <view class="navigator-wrapper">
+      <navigator class="navigator" open-type="switchTab" url="/pages/mine/mine" />
+      <text class="navigator-title">我的</text>
+    </view>
+    <view class="navigator-wrapper">
+      <navigator class="navigator" open-type="switchTab" url="/pages/video/video" />
+      <text class="navigator-title">视频</text>
+    </view>
+    <view class="navigator-wrapper">
+      <navigator class="navigator" open-type="switchTab" url="/pages/search/search" />
+      <text class="navigator-title">搜索</text>
+    </view>
+  </view>
+
+
+  <view class="a-br-dark">
+    ———— — 首页推荐 — ————
+  </view>
+
+  <!-- 推荐 -->
+  <view id="banner-wrapper">
+    <!-- 小组件  -->
+    <banner-block wx:for="{{ imgList }}" wx:key="{{ index }}" blockData="{{ item }}" />
+  </view>
+
+</view>

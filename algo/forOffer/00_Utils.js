@@ -105,3 +105,4 @@ let drawTree = (tree = new TreeNode()) => {
 createTreeMethod1([4, 2, 7, 1, 3, 6, 9])
 
 exports.createListNode = createListNode
+exports.createTreeMethod1 = createTreeMethod1

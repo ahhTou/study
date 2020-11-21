@@ -1,0 +1,34 @@
+.title {
+  width: 100%;
+  font-size: 20px;
+  font-weight: bolder;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+
+page {
+  background: #1e1e1e;
+  box-sizing: border-box;
+}
+
+.flex-center-box {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.a-br-dark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  margin: 20rpx 0 20rpx 0;
+  
+  color: rgb(80, 80, 80);
+}

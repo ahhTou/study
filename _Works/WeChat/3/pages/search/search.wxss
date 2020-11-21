@@ -1,0 +1,6 @@
+/* pages/search/search.wxss */
+
+.search-bar-wrapper {
+  width: 100%;
+}
+

@@ -1,0 +1,22 @@
+<view>
+  <text class="title">{{ title }}</text>
+
+  <view id="banner-list-wrapper">
+
+    <view 
+    bindtap="touchShake" 
+    class="flex-center-box banner-box {{ item.className }}" 
+    wx:for="{{imgList}}" 
+    wx:key="{{item.id}}" 
+    data-id="{{item.id}}" 
+    style="background-image:url('{{ item.url }}');">
+
+      <text class="banner-title">{{ item.title }}</text>
+    
+    </view>
+
+
+  </view>
+
+
+</view>
