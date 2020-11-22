@@ -1,0 +1,44 @@
+<!--components/_index/index-recommend-page/IndexRecommendPage.wxml-->
+
+<!-- 轮播图 -->
+<view class="swiper-wrapper">
+  <swiper autoplay="true" indicator-dots="true" circular="true">
+    <swiper-item wx:for="{{imgList}}" wx:key="{{item.id}}">
+      <view class="swiper-img" style="background-image:url('{{ item.url }}');" />
+    </swiper-item>
+  </swiper>
+</view>
+
+<simple-br>导航</simple-br>
+
+<!-- 导航 -->
+<view class="navigator-list">
+  <view class="navigator-wrapper">
+    <navigator class="navigator" url="/pages/star/star" />
+    <text class="navigator-title">收藏</text>
+  </view>
+  <view class="navigator-wrapper">
+    <navigator class="navigator" open-type="switchTab" url="/pages/mine/mine" />
+    <text class="navigator-title">我的</text>
+  </view>
+  <view class="navigator-wrapper">
+    <navigator class="navigator" open-type="switchTab" url="/pages/video/video" />
+    <text class="navigator-title">视频</text>
+  </view>
+  <view class="navigator-wrapper">
+    <navigator class="navigator" open-type="switchTab" url="/pages/search/search" />
+    <text class="navigator-title">搜索</text>
+  </view>
+</view>
+
+<simple-br>推荐</simple-br>
+
+
+<!-- 推荐 -->
+<view class="banner-wrapper">
+  <!-- 小组件  -->
+  <banner-block wx:for="{{ imgList }}" wx:key="id" blockData="{{ item }}" />
+</view>
+
+
+<simple-br>到底了</simple-br>

@@ -1,0 +1,13 @@
+<!--components/select-bar/SelectBar.wxml-->
+<view class="select-bar-wrapper">
+
+  <view
+  bindtap="toSelect" 
+  wx:for="{{ selectionData }}" 
+  wx:key="{{ id }}"
+  class="a-selection {{ item.id===currentSelection?'active':'' }}"
+  data-id="{{ item.id }}"
+  data-val="{{ item.val }}"
+  >{{ item.title }}</view>
+
+</view>
