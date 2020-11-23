@@ -1,0 +1,10 @@
+/* components/search-bar/SearhBar.wxss */
+
+.search-bar-input {
+  background: white;
+  width: 70vw;
+  height: 60rpx;
+  border-radius: 60rpx;
+  box-sizing: border-box;
+  padding: 0 30rpx 0 30rpx;
+}

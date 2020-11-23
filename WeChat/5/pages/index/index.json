@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "select-bar": "/components/select-bar/SelectBar",
+    "recommend": "/components/_index/index-recommend-page/IndexRecommendPage",
+    "latey": "/components/_index/index-latey-page/IndexLateyPage"
+  }
+}

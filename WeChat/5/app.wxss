@@ -1,0 +1,23 @@
+.title {
+  width: 100%;
+  font-size: 20px;
+  font-weight: bolder;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+
+page {
+  background: #1e1e1e;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.flex-center-box {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

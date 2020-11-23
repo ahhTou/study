@@ -1,0 +1,4 @@
+<!--components/_index/index-latey-page/IndexLateyPage.wxml-->
+<view class="title">
+  最新
+</view>

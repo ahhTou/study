@@ -1,0 +1,65 @@
+<!--components/_index/index-recommend-page/IndexRecommendPage.wxml-->
+
+<!-- 轮播图 with 精美大图-->
+<view class="swiper-wrapper">
+
+  <swiper class="swiper" autoplay="true" indicator-dots="true" circular="true">
+
+    <swiper-item class="cover-wrapper">
+        <img wx:for="{{ cover }}"  
+             wx:key="id" 
+             url="{{ baseUrl + item.thumb }}" 
+             class="cover-img" />
+    </swiper-item>
+    
+    <swiper-item wx:for="{{ cover }}" wx:key="id">
+      <img url="{{ baseUrl + item.thumb }}" />
+    </swiper-item>
+    
+  </swiper>
+
+</view>
+
+<!-- 时间栏 -->
+<view class="date-wrapper">
+  <view class="date-title"> ` {{ date.title }} `</view>
+  <view class="date-time">from {{ date.timeStr }}</view>
+  <view class="date-img-wrapper">
+    <img class="date-img" 
+         wx:for="{{ date.list }}" 
+         wx:key="id" 
+         url="{{ baseUrl + item.thumb }}" />
+  </view>
+</view>
+
+<!-- 导航 -->
+<view class="navigator-list">
+  <view class="navigator-wrapper">
+    <navigator class="navigator" url="/pages/star/star" />
+    <text class="navigator-title">收藏</text>
+  </view>
+  <view class="navigator-wrapper">
+    <navigator class="navigator" open-type="switchTab" url="/pages/mine/mine" />
+    <text class="navigator-title">我的</text>
+  </view>
+  <view class="navigator-wrapper">
+    <navigator class="navigator" open-type="switchTab" url="/pages/video/video" />
+    <text class="navigator-title">视频</text>
+  </view>
+  <view class="navigator-wrapper">
+    <navigator class="navigator" open-type="switchTab" url="/pages/search/search" />
+    <text class="navigator-title">搜索</text>
+  </view>
+</view>
+
+<simple-br>推荐</simple-br>
+
+
+<!-- 推荐 -->
+<view class="banner-wrapper">
+  <!-- 小组件  -->
+  <banner-block wx:for="{{ imgList }}" wx:key="id" blockData="{{ item }}" />
+</view>
+
+
+<simple-br>到底了</simple-br>

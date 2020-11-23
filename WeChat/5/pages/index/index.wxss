@@ -1,0 +1,20 @@
+/**index.wxss**/
+
+.index-wrapper {
+  --x: 0vw;
+  width: 100vw;
+  height: 100vh;
+}
+
+.index-content-wrapper {
+  --move: 0vw;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 200vw;
+  transition: all .3s;
+  transform: translateX(calc(-1 * var(--move)));
+}
+
+

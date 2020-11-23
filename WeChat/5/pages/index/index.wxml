@@ -1,0 +1,19 @@
+<view class="index-wrapper">
+
+  <!-- 导航 -->
+  <select-bar selectionData="{{ selectionData }}" bindToChangeShow="changeShow" />
+
+
+  <view class="index-content-wrapper" style="--move :{{ move }};">
+    <!-- 推荐 -->
+    <recommend imgList="{{ imgList }}" />
+
+
+    <!-- 最新 -->
+    <latey />
+
+    
+  </view>
+
+
+</view>
