@@ -1,0 +1,5 @@
+/* components/_index/index-category-page/IndexCategoryPage.wxss */
+
+:host {
+  width: 100vw;
+}

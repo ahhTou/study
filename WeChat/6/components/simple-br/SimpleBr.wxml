@@ -1,0 +1,4 @@
+<!--components/simple-br/SimpleBr.wxml-->
+  <view class="a-br-dark">
+    ——— — <slot></slot> — ———
+  </view>

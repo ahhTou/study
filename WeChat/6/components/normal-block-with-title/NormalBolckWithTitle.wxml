@@ -1,0 +1,11 @@
+<!--components/normal-block-with-bolck/NormalBolckWithTitle.wxml-->
+<view 
+  wx:key="{{blockData.id}}" 
+  bindtap="touchShake" 
+  class="flex-center-box banner-box {{ blockData.className }}" 
+  data-id="{{blockData.id}}" 
+  style="background-image:url('{{ blockData.url }}'); ">
+
+  <text class="banner-title ">{{ blockData.title }}</text>
+
+</view>

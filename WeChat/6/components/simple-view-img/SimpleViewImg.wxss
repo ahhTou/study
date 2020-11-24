@@ -1,0 +1,17 @@
+/* components/simple-view-img/SimpleViewImg.wxss */
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+
+.simple-view-img {
+  min-width: 50rpx;
+  min-height: 50rpx;
+  position: relative;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}

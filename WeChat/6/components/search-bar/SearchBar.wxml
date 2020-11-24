@@ -1,0 +1,4 @@
+<!--components/search-bar/SearhBar.wxml-->
+<view class="search-bar-wrapper">
+  <input class="search-bar-input" placeholder="键入文字，失焦搜索"></input>
+</view>

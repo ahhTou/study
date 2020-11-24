@@ -1,0 +1,4 @@
+<!--components/_index/index-category-page/IndexCategoryPage.wxml-->
+<view>
+  <img wx:for="{{ category }}" wx:key="_id" url="{{ baseUrl + item.cover }}" />
+</view>
