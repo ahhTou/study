@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "search-bar": "/components/search-bar/SearchBar",
+    "banner-block": "/components/normal-block-with-title/NormalBolckWithTitle"
+  }
+}

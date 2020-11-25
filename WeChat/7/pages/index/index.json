@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "select-bar": "/components/select-bar/SelectBar",
+    "recommend": "/components/_index/recommend/recommend",
+    "latey": "/components/_index/latey/latey",
+    "category": "/components/_index/category/category",
+    "album": "/components/_index/album/album"
+  }
+}

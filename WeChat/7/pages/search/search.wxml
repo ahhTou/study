@@ -1,0 +1,7 @@
+<view>
+  <text class="title">搜索</text>
+
+  <view class="search-bar-wrapper flex-center-box">
+    <search-bar></search-bar>
+  </view>
+</view>

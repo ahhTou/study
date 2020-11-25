@@ -1,0 +1,15 @@
+<!--components/_index/index-category-page/IndexCategoryPage.wxml-->
+<scroll-view scroll-y="true" class="category-scroll-view">
+  <view class="category-wrapper">
+
+    <navigator 
+        url="/pages/category/category?id={{ item.id }}&type=热门&title={{ item.rname }}" 
+        wx:for="{{ category }}" 
+        wx:key="_id"
+        class="category-item" >
+      <img url="{{ baseUrl + item.cover }}" class="category-img" />
+      <view class="category-text">{{ item.rname }}</view>
+    </navigator>
+  </view>
+  
+</scroll-view>

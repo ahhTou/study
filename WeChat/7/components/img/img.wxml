@@ -1,0 +1,3 @@
+<!--components/simple-view-img/SimpleViewImg.wxml-->
+
+<view class="simple-view-img" style="background-image:url('{{  url }}');" />

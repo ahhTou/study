@@ -574,3 +574,258 @@ return (
         key={post.id}    id={post.id}    title={post.title} />
     );
     ```
+
+## 9. 表单
+
+### 受控的组件 
+
+input & textarea
+
+```jsx
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('提交的名字: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    名字:
+                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                    <textarea value={this.state.value} onChange={this.handleChange} />
+                </label>
+                {this.state.value}
+                <input type="submit" value="提交" />
+            </form>
+        );
+    }
+}
+```
+
+selected
+
+```jsx
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: 'coconut'};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('你喜欢的风味是: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          选择你喜欢的风味:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="grapefruit">葡萄柚</option>
+            <option value="lime">酸橙</option>
+            <option value="coconut">椰子</option>
+            <option value="mango">芒果</option>
+          </select>
+        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+```
+
+### 不受控的
+
+```jsx
+<input type="file" />
+```
+
+### 控制多个表单
+
+```jsx
+class Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.name === 'isGoing' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          参与:
+          <input
+            name="isGoing"            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+        </label>
+        <br />
+        <label>
+          来宾人数:
+          <input
+            name="numberOfGuests"            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+      </form>
+    );
+  }
+}
+```
+
+从 表单中 的name 得到需要改变的值
+
+```jsx
+          <input
+            name="numberOfGuests"            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange} />
+        </label>
+```
+
+然后通过onChange改变
+
+```jsx
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.name === 'isGoing' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+```
+
+其中
+
+```jsx
+this.setState({
+  [name]: value
+});
+```
+等同于
+
+```jsx
+var partialState = {};
+partialState[name] = value;
+this.setState(partialState);
+```
+
+### 控制输入
+
+```jsx
+ReactDOM.render(<input value="hi" />, mountNode);
+
+// 解除
+setTimeout(function() {
+  ReactDOM.render(<input value={null} />, mountNode);
+}, 1000);
+```
+
+## 10. 状态提升
+
+- 两个子组件共享state
+- 使用同一个父组件，传入props
+- 但是子组件无法修改props
+- 所以父组件通过props传入函数，子组件调用函数，来修改父组件的state来完成两个子组件共享state
+- 这就是状态提升
+
+实例( 自己写的例子 )
+
+```jsx
+class Father extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            name1: '小明',
+            name2: '小刚'
+        }
+    }
+
+    changeName(who) {
+        console.log(who)
+        this.setState({
+            [who]: this.state[who] + 'Pro'
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                I am father
+                <Son name={this.state.name1}
+                     bro={this.state.name2}
+                     change={() => {
+                         this.changeName('name1')
+                     }}/>
+                <Son name={this.state.name2}
+                     bro={this.state.name1}
+                     change={() => {
+                         this.changeName('name2')
+                     }}/>
+            </div>
+        )
+    }
+}
+
+class Son extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+            <div>
+                I am son, my name is {this.props.name},
+                my brother is {this.props.bro}
+                <button onClick={() => this.props.change()}>改名</button>
+            </div>
+        )
+    }
+
+}
+
+ReactDOM.render(
+    <Father/>,
+    document.getElementById('root')
+)
+```
+
+## 11. 组合 vs 继承
+

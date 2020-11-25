@@ -18,7 +18,7 @@ let isLogin = window.localStorage.getItem('isLogin')
 
 
 window.onload = function () {
-    addEventListeners();
+    addEventListeners()
     checkLoginAndGetList()
 }
 

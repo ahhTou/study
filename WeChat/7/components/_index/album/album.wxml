@@ -1,0 +1,9 @@
+<!--components/_index/album/album.wxml-->
+<scroll-view scroll-y="true" enable-flex class="album-wrapper">
+
+  <view wx:for="{{ list }}" wx:key="id" class="album-item">
+    <view class="album-item-wrapper">
+      <img class="album-item-img"></img>
+    </view>
+  </view>
+</scroll-view>

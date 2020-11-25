@@ -1,0 +1,68 @@
+<!--components/_index/index-recommend-page/IndexRecommendPage.wxml-->
+<scroll-view class="recommend-scroll-view" scroll-y="true" bindscrolltolower="getHot">
+
+  <!-- 轮播图 with 精美大图-->
+  <view class="swiper-wrapper">
+
+    <swiper class="swiper" autoplay="true" indicator-dots="true" circular="true">
+
+      <swiper-item class="cover-wrapper">
+        <img wx:for="{{ cover }}" wx:key="id" url="{{ baseUrl + item.thumb }}" class="cover-img" />
+      </swiper-item>
+
+      <swiper-item wx:for="{{ cover }}" wx:key="id">
+        <img url="{{ baseUrl + item.thumb }}" />
+      </swiper-item>
+
+    </swiper>
+
+  </view>
+
+  <!-- 导航 -->
+  <!-- <view class="navigator-list-wrapper">
+    <view class="navigator-wrapper">
+      <navigator class="navigator" url="/pages/star/star" />
+      <text class="navigator-title">收藏</text>
+    </view>
+    <view class="navigator-wrapper">
+      <navigator class="navigator" open-type="switchTab" url="/pages/mine/mine" />
+      <text class="navigator-title">我的</text>
+    </view>
+    <view class="navigator-wrapper">
+      <navigator class="navigator" open-type="switchTab" url="/pages/video/video" />
+      <text class="navigator-title">视频</text>
+    </view>
+    <view class="navigator-wrapper">
+      <navigator class="navigator" open-type="switchTab" url="/pages/search/search" />
+      <text class="navigator-title">搜索</text>
+    </view>
+  </view> -->
+
+
+  <!-- 时间栏 -->
+  <view class="date-wrapper">
+    <view class="date-title"> ` {{ date.title }} `</view>
+    <view class="date-time">from {{ date.timeStr }}</view>
+    <view class="date-img-wrapper">
+      <img class="date-img" wx:for="{{ date.list }}" wx:key="id" url="{{ baseUrl + item.thumb }}" />
+    </view>
+  </view>
+
+  <view class="hot-wrapper">
+    <text class="hot-title">热门推荐</text>
+    <view class="hot-img-wrapper">
+      <img wx:for="{{ hot }}" class="hot-img" wx:key="_id" url="{{ baseUrl + item.thumb }}" />
+    </view>
+  </view>
+
+  <!-- <simple-br>推荐</simple-br> -->
+
+
+  <!-- 推荐 -->
+  <!-- <view class="banner-wrapper">
+
+    <banner-block wx:for="{{ imgList }}" wx:key="id" blockData="{{ item }}" />
+  </view>
+ -->
+
+</scroll-view>

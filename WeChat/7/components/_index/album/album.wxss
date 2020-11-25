@@ -1,0 +1,32 @@
+/* components/_index/album/album.wxss */
+
+.album-wrapper {
+  position: relative;
+  box-sizing: border-box;
+  width: 100vw;
+  height: calc(100vh - 110rpx);
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.album-item-wrapper {
+  width: 100%;
+}
+.album-item {
+  display: inline-block;
+  width: 45vw;
+  background: rgb(35, 35, 35);
+  border-radius: 30rpx;
+  padding: 10rpx;
+}
+
+.album-item:nth-child(1) {
+  width: 90vw;
+}
+
+.album-item-img {
+  width: 700rpx;
+  height: 700rpx;
+}

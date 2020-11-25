@@ -1,0 +1,4 @@
+<!--components/_index/index-latey-page/IndexLateyPage.wxml-->
+<scroll-view scorll-y="true" class="latey-wrapper">
+  
+</scroll-view>

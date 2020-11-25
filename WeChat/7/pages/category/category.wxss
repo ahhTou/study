@@ -1,0 +1,45 @@
+/* pages/category/category.wxss */
+.category-page-wrapper {
+  height: 100vh;
+}
+
+.category-page-wrapper .category-page-title {
+  display: inline-block;
+  text-align: center;
+  font-size: 60rpx;
+  margin-left: 30rpx;
+  padding: 0 20rpx 0 20rpx;
+  color: rgb(230, 230, 230);
+}
+
+.category-page-wrapper .category-page-type {
+  font-size: 30rpx;
+  color: rgb(230, 230, 230);
+}
+
+.cateory-page-list-wrapper {
+  margin-top: 30rpx;
+  width: 100%;
+  min-height: 10vh;
+  background: rgb(35, 35, 35);
+  border-radius: 30rpx;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 20rpx;
+}
+
+.cateory-page-list {
+  position: relative;
+  width: 100%;
+  border-radius: 30rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.cateory-page-img {
+  width: calc(100% / 3);
+  height: 300rpx;
+}

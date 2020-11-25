@@ -1,0 +1,16 @@
+<!--pages/category/category.wxml-->
+<scroll-view scroll-y="true" bindscrolltolower="getData" class="category-page-wrapper">
+  <text class="category-page-title"> {{ title }}</text>
+  <text class="category-page-type">{{ type }}</text>
+
+  <view class="cateory-page-list-wrapper">
+    <view class="cateory-page-list">
+      <img 
+        wx:for="{{ list }}"
+        wx:key="_id"
+        url="{{ baseUrl + item.thumb }}"
+        class="cateory-page-img"
+         />
+    </view>
+  </view>
+</scroll-view>
