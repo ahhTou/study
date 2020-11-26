@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    hello
+</div>
+<button id="button">按钮</button>
+</body>
+<script>
+    let $dom = document.getElementById('app')
+
+    let $btn = document.getElementById('button')
+
+
+    let obj = {}
+
+    Object.defineProperty(obj, 'val', {
+        set: (val) => {
+            $dom.innerText = val
+        }
+    })
+
+    $btn.onclick = () => {
+        obj.val = 'qqq'
+    }
+
+
+
+
+</script>
+</html>

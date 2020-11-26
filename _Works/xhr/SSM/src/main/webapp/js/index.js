@@ -1,6 +1,5 @@
-import {delCookie, getNicknameByUsername, getAllList} from './ajax.js'
-
-import {addByObj, updateOne, delOneByMovieId} from './ajax.js'
+import { delCookie, getNicknameByUsername, getAllList } from './ajax.js'
+import { addByObj, updateOne, delOneByMovieId } from './ajax.js'
 
 let currentSelectTable = null
 let baseData = {
