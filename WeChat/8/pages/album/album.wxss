@@ -1,0 +1,131 @@
+/* pages/album/album.wxss */
+
+.album-page-wrapper {
+  height: 100vh;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+view {
+  color: rgb(200, 200, 200);
+  border-radius: 30rpx;
+}
+
+.album-page-text-title {
+  width: 95%;
+  text-align: center;
+  color: white;
+  font-size: 50rpx;
+  margin: 15rpx;
+}
+
+.album-page-text-desr {
+  font-size: 20rpx;
+  color: rgb(200, 200, 200);
+  width: 95%;
+  margin: 15rpx;
+  text-align: center;
+}
+
+.ablum-page-swiper-wrapper {
+  width: 95%;
+  background: rgb(35, 35, 35);
+  height: 350rpx;
+  padding: 10rpx;
+}
+
+.ablum-page-swiper {
+  width: 100%;
+  height: 100%
+}
+
+
+.album-page-user-wrapper {
+  margin: 20rpx 0 20rpx 0;
+  width: 95%;
+  height: 200rpx;
+  background: rgb(35, 35, 35);
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.album-page-user-avatar-wrapper {
+  display: flex;
+  width: 200rpx;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  background: rgb(30, 30, 30);
+}
+
+.album-page-user-uploader {
+  width: 50rpx;
+  writing-mode: vertical-rl;
+  text-align: center;
+}
+
+.album-page-user-avatar {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 30rpx;
+}
+
+.album-page-user-about {
+  height: 150rpx;
+  padding-left: 50rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.album-page-user-name {
+  font-size: 40rpx;
+  color: rgb(200, 200, 200);
+}
+
+.album-page-user-vip {
+  padding: 5rpx;
+  font-size: 20rpx;
+  border-radius: 30rpx;
+  color: rgb(87, 190, 106);
+  font-weight: bolder;
+}
+
+.album-page-user-follower {
+  width: 100%;
+  font-size: 20rpx;
+  color: rgb(229, 67, 78)
+}
+
+
+.album-page-imgs-wrapper{
+  width: 95%;
+  background: rgb(35, 35, 35);
+}
+
+.album-page-imgs {
+  position: relative;
+  width: 100%;
+  padding: 20rpx;
+  min-height: 700rpx;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.album-page-img {
+  width: calc(100% / 3.1);
+  display: flex;
+  margin-bottom: 10rpx;
+  height: 350rpx;
+  border-radius: 0rpx;
+}

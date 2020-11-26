@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "banner-block": "/components/normal-block-with-title/NormalBolckWithTitle",
+    "simple-br": "/components/simple-br/SimpleBr",
+    "img": "/components/img/img"
+  }
+}

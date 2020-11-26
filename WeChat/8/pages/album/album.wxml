@@ -1,0 +1,35 @@
+<!--pages/album/album.wxml-->
+<scroll-view scroll-y="true" enable-flex  bindscrolltolower="getData" class="album-page-wrapper">
+
+  <view class="album-page-text-title">{{ data.name }}</view>
+  <view class="album-page-text-desr">“ {{ data.desc===""?data.name:data.desc }} ” </view>
+
+  <view class="ablum-page-swiper-wrapper">
+    <swiper class="ablum-page-swiper" autoplay="true">
+      <swiper-item class="ablum-page-swiper-item" wx:for="{{ data.imgs }}" wx:key="index">
+        <img class="ablum-page-swiper-img" url="{{ baseUrl + item }}" />
+      </swiper-item>
+    </swiper>
+  </view>
+
+
+  <view class="album-page-user-wrapper">
+    <view class="album-page-user-avatar-wrapper">
+      <view class="album-page-user-uploader">上传者</view>
+      <img class="album-page-user-avatar" url="{{ baseUrl + data.user.avatar }}" />
+    </view>
+    <view class="album-page-user-about">
+      <view class="album-page-user-name">{{ data.user.name }}</view>
+      <view class="album-page-user-vip"> {{ data.user.isvip?"Vip":"Memember"}}</view>
+      <view class="album-page-user-follower">❤ 已有 {{data.user.follower}} 名用户关注</view>
+    </view>
+  </view>
+
+  <view class="album-page-imgs-wrapper">
+    <view class="album-page-imgs">
+      <img class="album-page-img" wx:for="{{ list }}" wx:key="_id"  url="{{baseUrl + item.thumb}}"/>
+    </view>
+  </view>
+
+
+</scroll-view>

@@ -1,0 +1,27 @@
+<view class="index-wrapper">
+
+  <!-- 导航 -->
+  <select-bar selectionData="{{ selectionData }}" bindToChangeShow="changeShow" />
+
+
+  <view class="index-content-wrapper" style="--move :{{ move }};">
+    <!-- 推荐 -->
+    <recommend imgList="{{ imgList }}" />
+
+    <!-- 分类 -->
+    <category wx:if="{{ show.category === true }}" />
+    <view class="full-view" wx:else="{{ show.category === true }}"></view>
+
+    <!-- 专辑 -->
+    <album wx:if="{{ show.album === true }}" />
+    <view class="full-view" wx:else="{{ show.album === true }}"></view>
+
+    <!-- 最新 -->
+    <latey wx:if="{{ show.latey === true }}" />
+    <view class="full-view" wx:else="{{ show.latey === true }}"></view>
+
+
+  </view>
+
+
+</view>

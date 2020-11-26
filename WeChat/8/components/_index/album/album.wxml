@@ -1,0 +1,25 @@
+<!--components/_index/album/album.wxml-->
+<scroll-view scroll-y="true" enable-flex class="album-wrapper" bindscrolltolower="getData">
+
+  <view bindtap="toPage" 
+  wx:for="{{ list }}" 
+  wx:key="id" 
+  wx:for-item="father" 
+  data-index="{{ index }}"
+  class="album-item">
+
+    <view class="album-item-big-box">
+      <img class="album-item-big-img" url="{{ baseUrl + father.cover }}" />
+    </view>
+
+
+    <view class="album-item-little-box">
+      <view class="album-item-little-text">
+        {{ father.name }}
+      </view>
+        <img wx:for="{{father.imgs}}" wx:key="son" wx:for-item="son"  url="{{ baseUrl + son }}" 
+             class="album-item-little-img" />
+    </view>
+
+  </view>
+</scroll-view>
